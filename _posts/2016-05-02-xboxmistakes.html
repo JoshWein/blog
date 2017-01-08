@@ -3,10 +3,8 @@ layout: post
 title: 17 Mistakes Microsoft Made in the Xbox Security System
 title_description: '<small style="color: white">Reader friendly cached version from: <a href="http://www.xbox-linux.org" style="color: white">http://www.xbox-linux.org</a></small>'
 ---
-
-    <script src={{site.baseurl}}/js/jq.scrollTo.min.js></script>
     <link href="{{site.baseurl}}/css/prism.css" type="text/css" rel="stylesheet" />
-    <script type="text/javascript" src="{{site.baseurl}}/js/prism.js"></script>
+    <!-- <script type="text/javascript" src="{{site.baseurl}}/js/prism.js"></script> -->
     <style>
 	#sidebar {
 	    width:300px;
@@ -484,9 +482,11 @@ title_description: '<small style="color: white">Reader friendly cached version f
 					at the upper 512 bytes of the address space.
 					The simplest way to accomplish this is to mask the
 					address when reading from memory:
-<pre class="lang-c"><code>and ebx, 0FFFFFFFh; clear upper 4 bits
+{% highlight nasm %}
+and ebx, 0FFFFFFFh; clear upper 4 bits
 mov edi, [ebx] ; read from memory
-jmp next_instruction</code></pre>
+jmp next_instruction
+{% endhighlight %}
 					This way, the xcodes can only ready from the
 					lower 256 MB, which is no problem, as there are
 					only 64 MB of RAM, and memory mapped I/O can
@@ -515,7 +515,8 @@ jmp next_instruction</code></pre>
 					0:1:0, register 0x80. So the xcode interpreter
 					always clears this bit in case there is a write to this
 					PCI config space register:
-<pre class="lang-c"><code>	cmp ebx, 80000880h ; MCPX disable?
+{% highlight nasm %}
+cmp ebx, 80000880h ; MCPX disable?
 	jnz short not_mcpx_disable; no
 	and ecx, not 2 ; clear bit 1
 not_mcpx_disable:
@@ -525,7 +526,8 @@ not_mcpx_disable:
 	add dl, 4
 	mov eax, ecx
 	out dx, eax ; PCI configuration data
-	jmp short next_instruction</code></pre>
+	jmp short next_instruction
+{% endhighlight %}
 				</p>
 				</section>
 				<section id="encryptionandhashing">
@@ -619,12 +621,16 @@ not_mcpx_disable:
 					turn off the secret ROM in the very last instruction
 					inside the address space. This is a simplified version
 					of the idea:
-<pre class="lang-c"><code>FFFFFFF1 mov eax, 80000880h
+
+{% highlight nasm %}
+FFFFFFF1 mov eax, 80000880h
 FFFFFFF6 mov dx, 0CF8h
 FFFFFFF9 out dx, eax
 FFFFFFFB add dl, 4
 FFFFFFFC mov al, 2
-FFFFFFFE out dx, al</code></pre>
+FFFFFFFE out dx, al
+{% endhighlight %}
+
 					After the last instruction, the program counter
 					(EIP) will overflow to 00000000, which, according
 					to the CPU documentation, causes an exception, and
@@ -902,7 +908,8 @@ FFFFFFFE out dx, al</code></pre>
 					was found in the secret ROM code, attacking the
 					code that checks whether an xcode wants to disable
 					the secret ROM. Let us look at this code again:
- <pre class="lang-c"><code>cmp ebx, 80000880h ; MCPX disable?
+ {% highlight nasm %}
+ cmp ebx, 80000880h ; MCPX disable?
  jnz short not_mcpx_disable; no
  and ecx, not 2 ; clear bit 1
 not_mcpx_disable:
@@ -912,7 +919,8 @@ not_mcpx_disable:
  add dl, 4
  mov eax, ecx
  out dx, eax ; PCI configuration data
- jmp short next_instruction</code></pre>
+ jmp short next_instruction
+ {% endhighlight %}
 				</p>
 				<p>
 					The PCI config address is stored in the EBX register
@@ -920,12 +928,14 @@ not_mcpx_disable:
 					I/O port 0x0CF8, and the 32 bit data has to be sent
 					to I/O port 0x0CFC. The address is encoded like
 					this:
-<pre class="lang-c"><code>0-7 reg
+{% highlight nasm %}
+0-7 reg
 8-10 func
 11-15 device
 16-23 bus
 24-30 reserved
-31 always 1</code></pre>
+31 always 1
+{% endhighlight %}
 				</p>
 				<p>
 					The attack is pretty obvoius: there are seven reserved
@@ -935,11 +945,15 @@ not_mcpx_disable:
 					only some of the bits 24 to 30 changed? While the
 					instruction
 				</p>
-<pre class="lang-c"><code>POKEPCI(80000880h, 2)</code></pre>
+{% highlight nasm %}
+POKEPCI(80000880h, 2)
+{% endhighlight %}
 				<p>
 					will be caught, the instruction
 				</p>
-<pre class="lang-c"><code>POKEPCI(C0000880h, 2)</code></pre>
+{% highlight nasm %}
+POKEPCI(C0000880h, 2)
+{% endhighlight %}
 				<p>
 					will not be caught - and works just as well, because
 					the PCI bus controller just ignores the unused
@@ -979,11 +993,13 @@ not_mcpx_disable:
 					to put together the code to disable the secret ROM
 					using 8 bit I/O writes:
 				</p>
-<pre class="lang-c"><code>OUTB(0xcf8), 0x80
+{% highlight nasm %}
+OUTB(0xcf8), 0x80
 OUTB(0xcf9), 0x08
 OUTB(0xcfa), 0x00
 OUTB(0xcfb), 0x80
-OUTB(0xcfc), 0x02</code></pre>
+OUTB(0xcfc), 0x02
+{% endhighlight %}
 				<p>
 					This hack has been unreleased until now. It has
 					been found not long after the MIST hack, but kept
@@ -1852,15 +1868,6 @@ $(document).ready(function(){
             } else {
                 $('#navi').removeClass('stick');
             }
-    });
-
-    /**
-     * This part causes smooth scrolling using scrollto.js
-     * We target all a tags inside the nav, and apply the scrollto.js to it.
-     */
-    $("#navi a").click(function(evn){
-        evn.preventDefault();
-        $('html,body').scrollTo(this.hash, this.hash,{offset: -75});
     });
 
     /**

@@ -17,7 +17,7 @@
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" async></script>
    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
    <link href="{{ site.baseurl }}/css/blogstyle.css" rel="stylesheet">
-   <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+   <link href="{{ site.baseurl }}/css/syntax.css" rel="stylesheet">
    <title>
     Josh Wein - {{ page.title }}
 </title>
@@ -59,11 +59,22 @@
             <h4>{{ page.title_description }}</h4>
         </div>
     </div>
-    <div class="row" style="padding-top: 25px">
+    <div class="row content">
         <div class="col-md-8 col-md-offset-2">
             {{ content }}
         </div>
     </div>
 </div>
 </body>
+<script src={{site.baseurl}}/js/jq.scrollTo.min.js></script>
+<script>
+$(document).ready(function(){
+    $(".content a").click(function(evn){
+      if(/^#/.test(evn.target.hash) === true) {
+        evn.preventDefault();
+        $('html,body').scrollTo(this.hash, this.hash,{offset: -70});
+      }
+    });
+});
+</script>
 </html>
