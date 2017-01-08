@@ -5,6 +5,7 @@ title_description: This page will be to keep track of useful resources I've foun
 ---
 
 ### Books
+
 #### Software Development
 * [Algorithms to Live By: The Computer Science of Human Decisions - Brian Christian & Tom Griffiths](http://smile.amazon.com/gp/product/1627790365)
 * [Code Complete, Second Edition - Steve McConnell](http://cc2e.com/)
