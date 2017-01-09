@@ -5,7 +5,24 @@ title: Garbage Collection in Different Languages (in progress)
 
 Garbage collection is an interesting topic and a good way to learn about the benefits of using certain languages. So how is garbage collection handled in different languages?
 
+<div id="top"></div>
+
+* [C](#c)
 * [Java](#java)
+
+
+## C
+
+In standard C, garbage collection must be done by the programmer. By using malloc() and free(), you are able to allocate and free memory as you need it. This can lead to performance gains over regular garbage collection since your program won't need to spend the time going through all the objects to see what can be freed. On the other hand, you lose the automated object compression that other languages with built-in garbage collection get. The benefit of object locality from spending the time and memory on a garbage collector can sometimes lead to faster performance in the long run. It depends on the size of the program and other variables to determine which performs better.
+
+There are libraries for C that do exist to handle garbage collection such as The Boehm-Demers-Weiser GC Library. The Boehm GC uses a modified mark-sweep algorithm that utilizes four phases:
+
+1. Preparation: Clear the mark bit on every single object.
+2. Mark Phase: Set the mark bit on every reachable object.
+3. Sweep Phase: Scan the heap for any objects that don't have their mark bit set and return the to the free list.
+4. Finalization Phase: Any unreachable objects are enqueued for finalization. Finalization is the ability to execute user code right before an object is collected. This allows the system to reclain any system resources or non-garbage-collected memory associated with the object.
+
+##### [back to top](#top)
 
 ## Java
 
@@ -24,10 +41,14 @@ Once an object has passed the threshold age set by the JVM, it is moved from the
 
 The permanent generation no longer exists in JDK 8. In 2014, the JVM was updated to no longer need the permanent generation. All class metadata is now stored in native memory, with a tag "Metaspace" with unlimited space. It is still affected by garbage collection so when a class is unloaded due to garbage collection, the metadata is de-allocated as well. When a certain threshold of metadata storage is reached, the metadata is garbage collected. This threshold can be set by you, but also automatically raises and lowers based on the total space used my Metaspace.
 
+##### [back to top](#top)
+
 ---
 
 #### References
-
 * <http://bugs.openjdk.java.net/browse/JDK-8046112>
 * <http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning>
+* <http://homes.cs.washington.edu/~djg/papers/analogy_oopsla07.pdf>
+* <http://www.hboehm.info/gc/gcdescr.html>
 * <http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html>
+* <https://people.cs.umass.edu/~emery/pubs/04-17.pdf>
