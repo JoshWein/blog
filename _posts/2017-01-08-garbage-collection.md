@@ -10,6 +10,7 @@ Garbage collection is an interesting topic and a good way to learn about the ben
 ## Java
 
 In Java, garbage collection is performed automatically by the garbage collector located in the execution engine of the JVM. The higher level steps for garbage collection are as follows:
+
 1. The garbage collector marks every block of memory as either in use or not in use.
 2. All the unreferenced objects are removed; leaving pointers to free space, the JVM's memory allocator gets these pointers to use when allocating new objects. To improve performance, the remaining objects are compressed(moved closer to one another) to make new memory allocation faster.
 
@@ -25,6 +26,7 @@ The permanent generation no longer exists in JDK 8. In 2014, the JVM was updated
 
 ---
 #### References
+
 * <http://bugs.openjdk.java.net/browse/JDK-8046112>
 * <http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning>
 * <http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html>
