@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: Garbage Collection in Different Languages (in progress)
 ---
 

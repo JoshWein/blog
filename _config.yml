@@ -1,1 +1,11 @@
 baseurl: /blog
+
+disqus:
+    shortname: joshwein-xyz
+
+exclude: [
+  "_app",
+  "gulpfile.js",
+  "node_modules",
+  "package.json"
+  ]

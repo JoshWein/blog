@@ -1,0 +1,19 @@
+{
+  "name": "blog",
+  "description": "Personal blog",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoshWein/blog.git"
+  },
+  "author": "Josh Wein",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/JoshWein/blog/issues"
+  },
+  "devDependencies": {
+    "gulp-shell": "~0.5.2",
+    "gulp": "~3.9.1",
+    "lodash": "~4.17.4",
+    "browser-sync": "~2.18.6"
+  }
+}
