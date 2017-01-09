@@ -25,6 +25,7 @@ Once an object has passed the threshold age set by the JVM, it is moved from the
 The permanent generation no longer exists in JDK 8. In 2014, the JVM was updated to no longer need the permanent generation. All class metadata is now stored in native memory, with a tag "Metaspace" with unlimited space. It is still affected by garbage collection so when a class is unloaded due to garbage collection, the metadata is de-allocated as well. When a certain threshold of metadata storage is reached, the metadata is garbage collected. This threshold can be set by you, but also automatically raises and lowers based on the total space used my Metaspace.
 
 ---
+
 #### References
 
 * <http://bugs.openjdk.java.net/browse/JDK-8046112>
