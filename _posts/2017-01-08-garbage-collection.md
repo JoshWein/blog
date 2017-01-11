@@ -1,14 +1,15 @@
 ---
 layout: post
-title: Garbage Collection in Different Languages (in progress)
+title: Garbage Collection in Different Languages
 ---
 
-Garbage collection is an interesting topic and a good way to learn about the benefits of using certain languages. So how is garbage collection handled in different languages?
+Garbage collection is the automatic process of memory management. A garbage collector tries to clear up any unused memory or "garbage" to save space for a program. Different languages sometimes have different ways of handling garbage collection with some lower level languages relying on the you to handle memory management on your own. I decided to put together a quick rundown of how garbage collection and/or memory management is handled in different languages. It's interesting to see the differences between the languages.
 
 <div id="top"></div>
 
 * [C](#c)
 * [Java](#java)
+* [JavaScript](#javascript)
 * [Python](#python)
 
 ## C
@@ -43,6 +44,48 @@ The permanent generation no longer exists in JDK 8. In 2014, the JVM was updated
 
 ##### [back to top](#top)
 
+## JavaScript
+
+JavaScript's garbage collector uses a "Mark-and-sweep" algorithm to handle the issue of reference cycles. [See Python for a more in-depth explanation of reference cycles.](#python)
+
+Mark-and-sweep works by doing the following:
+
+1. Starting from the global JavaScript object, find all objects referenced by it.
+2. Continue a search of any objects referenced by these etc.
+3. Collect any objects that weren't reach and delete them.
+
+This handles reference cycles by by avoiding the problem completely. In a reference cycle, an object has a circle reference to itself with no other objects referencing it. This means that the global object has no reference to the object so it's deemed unreachable.
+
+A limitation of garbage collection in JavaScript is that objects must be made explicitly unreachable in order to be garbage collected, otherwise they never will be. Therefore, if you initialize an instance of an object and never use it again in the program it will never be garbage collected. You would have to do something like this:
+
+{% highlight javascript %}
+var Person = function() {
+	this.name = "John";
+};
+var temp = new Person();
+newPerson = 7; // the  Person object we created the line above gets made unreachable
+{% endhighlight %}
+
+This means, that some cases unused objects can pile up and cause memory leaks. You have to be careful not to accidentally create global variables by doing this:
+
+{% highlight javascript %}
+function foo() {
+	bar = "global variable";
+}
+{% endhighlight %}
+
+and instead do this:
+
+{% highlight javascript %}
+function foo() {
+	var bar = "local variable";
+}
+{% endhighlight %}
+
+Otherwise they'll never be garbage collected, besides the other problems it can cause.
+
+##### [back to top](#top)
+
 ## Python
 
 Python uses both reference counting and an automatic garbage collector to handle memory management. Reference counting works by using a number to keep track of how many times an object is being referenced. Once this value hits zero we know it is no longer needed and can be freed.
@@ -74,6 +117,7 @@ Python also exposes the garbage collector if you want to disable it by calling g
 
 * <http://arctrix.com/nas/python/gc/>
 * <http://bugs.openjdk.java.net/browse/JDK-8046112>
+* <http://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management>
 * <http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning>
 * <http://docs.python.org/3/library/gc.html>
 * <http://homes.cs.washington.edu/~djg/papers/analogy_oopsla07.pdf>
