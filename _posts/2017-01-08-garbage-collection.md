@@ -3,13 +3,14 @@ layout: post
 title: Garbage Collection in Different Languages
 ---
 
-Garbage collection is the automatic process of memory management. A garbage collector tries to clear up any unused memory or "garbage" to save space for a program. Different languages sometimes have different ways of handling garbage collection with some lower level languages relying on the you to handle memory management on your own. I decided to put together a quick rundown of how garbage collection and/or memory management is handled in different languages. It's interesting to see the differences between the languages.
-
 <div id="top"></div>
+
+Garbage collection is the automatic process of memory management. A garbage collector tries to clear up any unused memory or "garbage" to save space for a program. Different languages sometimes have different ways of handling garbage collection with some lower level languages relying on you to handle memory management on your own. I decided to put together a quick rundown of how garbage collection and/or memory management is handled in different languages. It's interesting to see the differences between the languages.
 
 * [C](#c)
 * [Java](#java)
 * [JavaScript](#javascript)
+* [Lisp](#lisp)
 * [Python](#python)
 
 ## C
@@ -41,6 +42,8 @@ The young generation is divided into three spaces: Eden and two "survivor" space
 Once an object has passed the threshold age set by the JVM, it is moved from the Survivor Space to the Old Generation. This gets garbage collected much less frequently since it takes longer to fill up. The downside to this is that when it does get garbage collected it is much slower than the garbage collection of the young generation. This is because most of the objects dealt with by the garbage collector for the old generation are still in use.
 
 The permanent generation no longer exists in JDK 8. In 2014, the JVM was updated to no longer need the permanent generation. All class metadata is now stored in native memory, with a tag "Metaspace" with unlimited space. It is still affected by garbage collection so when a class is unloaded due to garbage collection, the metadata is de-allocated as well. When a certain threshold of metadata storage is reached, the metadata is garbage collected. This threshold can be set by you, but also automatically raises and lowers based on the total space used my Metaspace.
+
+The garbage collection process of Java is the same as any language that uses the JVM and doesn't use it's own garbage collector. Languages like Clojure, Scala and Groovy use the JVM-implemented garbage collector described above.
 
 ##### [back to top](#top)
 
@@ -86,6 +89,24 @@ Otherwise they'll never be garbage collected, besides the other problems it can 
 
 ##### [back to top](#top)
 
+## Lisp
+
+There have been many different implementations of Lisp over the years but we'll be looking at Common Lisp which was created around 1985 and still in use today. A common garbage collection scheme used in Lisp implementations is a two-space system. After a cetain amount of memory allocation, the garbage collector is triggered and does the following:
+
+1. It walks from all of the available object roots to every reachable object.
+2. Copies all reachable objects from the current memory space to the new space.
+3. Updates all of the pointers to point to the new objects.
+4. Marks everything in the old space as free.
+
+There are also other implementations that handle garbage collection differently in Lisp. For example, [CMUCL](https://www.cons.org/cmucl/) will the two-space collector on non-x86 platforms but use a generational collector on x86 platforms. It is very similar to the generational collector described in the [Java](#java) section with some minor differences. Some of those differences are:
+
+* Uses six generations.
+* "Mostly-copies", which means that if the collector is unsure if the memory location contains a reference, it leaves it in place and promotes it to the next generation. It won't copy it to a new area.
+
+Every implementation of Lisp must comply to the Common Lisp ANSI standard and have a garbage collector. Most if not all implementations use some form of either the two-space or generational collector.
+
+##### [back to top](#top)
+
 ## Python
 
 Python uses both reference counting and an automatic garbage collector to handle memory management. Reference counting works by using a number to keep track of how many times an object is being referenced. Once this value hits zero we know it is no longer needed and can be freed.
@@ -117,11 +138,14 @@ Python also exposes the garbage collector if you want to disable it by calling g
 
 * <http://arctrix.com/nas/python/gc/>
 * <http://bugs.openjdk.java.net/browse/JDK-8046112>
+* <http://cons.org>
 * <http://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management>
 * <http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning>
 * <http://docs.python.org/3/library/gc.html>
+* <http://hboehm.info/gc/gcdescr.html>
 * <http://homes.cs.washington.edu/~djg/papers/analogy_oopsla07.pdf>
+* <http://john.freml.in/sbcl-optimise-gc>
+* <http://lispworks.com/documentation/HyperSpec/Front/index.htm>
+* <http://oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html>
 * <http://people.cs.umass.edu/~emery/pubs/04-17.pdf>
 * <http://svn.python.org/view/python/trunk/Modules/gcmodule.c?revision=81029&view=markup>
-* <http://www.hboehm.info/gc/gcdescr.html>
-* <http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html>
