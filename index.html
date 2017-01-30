@@ -9,9 +9,11 @@ title_description: This blog will serve as a place to put any interesting things
 	<a class="list-group-item" href="{{ site.baseurl }}{{ post.url }}">
 		{{ post.title }}
 		{{ post.category }}
-		<span class="badge">
-			{{ post.date | date: '%B %d, %Y' }}
-		</span>
+		<h4>
+			<small>
+				{{ post.date | date: '%B %d, %Y' }}
+			</small>
+		</h4>
 	</a>
 	{% endfor %}
 </div>
