@@ -22,12 +22,14 @@ title_description: This page will be to keep track of useful resources I've foun
 ---
 
 ### Websites
+* [Code My UI - CSS Inspiration and Snippets](https://codemyui.com/)
 * [Cybrary - Free Cyber Security training including an ethical hacking course.](http://www.cybrary.it)
 * [Dev Docs - Combines multiple API documentations in a fast, organized, and searchable interface.](http://devdocs.io)
 * [Firecode - Practice Java, C, C++, and Python interview problems.](http://www.firecode.io)
 * [Free Code Camp - Learn front end and full stack development.](http://www.freecodecamp.com)
 * [Learn You a Haskell for Great Good! - Free guide for learning Haskell and functional programming.](http://learnyouahaskell.com/chapters)
 * [Music For Programming - Large amount of background music to listen to while programming.](http://musicforprogramming.net)
+* [Radio Garden - Listen to radio from around the world](http://radio.garden/)
 
 ---
 
