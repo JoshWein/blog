@@ -30,6 +30,7 @@ title_description: This page will be to keep track of useful resources I've foun
 * [Learn You a Haskell for Great Good! - Free guide for learning Haskell and functional programming.](http://learnyouahaskell.com/chapters)
 * [Music For Programming - Large amount of background music to listen to while programming.](http://musicforprogramming.net)
 * [Radio Garden - Listen to radio from around the world](http://radio.garden/)
+* [The Art, Science, and Engineering of Programming - Free online academic journal focusing on programming.](http://programming-journal.org/)
 
 ---
 
