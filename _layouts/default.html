@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
-  <meta charset="utf-8">
-  <meta content="IE=edge" http-equiv="X-UA-Compatible">
-  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-X0211WWCBC"></script>
   <script>
@@ -13,70 +12,55 @@
 
       gtag('config', 'G-X0211WWCBC');
   </script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> <!-- Javascript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" async></script>
-  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+  <meta name="theme-color" content="#1c1f22">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="{{ site.baseurl }}/css/blogstyle.css" rel="stylesheet">
   <link href="{{ site.baseurl }}/css/syntax.css" rel="stylesheet">
-  <title>
-    Josh Wein - {{ page.title }}
-  </title>
+  <title>Josh Wein - {{ page.title }}</title>
 </head>
 <body>
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header page-scroll">
-        <button class="navbar-toggle" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse"type="button">
-          <span class="sr-only">
-            Toggle navigation
-          </span><span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span></button> <a class="navbar-brand" href="/contact.html">Contact</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id=
-        "bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-          <li class="hidden">
-            <a href="#page-top"></a>
-          </li>
-          <li class="page-scroll">
-            <a href="{{ site.baseurl }}/">Blog</a>
-          </li>
-          <li class="page-scroll">
-            <a href="/">Back to Main Page</a>
-          </li>
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-  <div class="container-fluid">
-    <div class="row header">
-      <div class="col-md-12 text-center">
-        <h1>{{ page.title }}</h1>
-        <h4>{{ page.title_description }}</h4>
-        {% if page.date != null %}
-        	<h5>Written on: {{ page.date | date: '%B %d, %Y' }}</h5>
-        {% endif %}
-      </div>
-    </div>
-    <div class="row content">
-      <div class="col-md-8 col-md-offset-2">
-        {{ content }}
-      </div>
-    </div>
+<header class="bar">
+  <div class="wrap">
+    <a class="home" href="/">josh<b>wein</b>.xyz</a>
+    <nav>
+      <a href="/#about">about</a>
+      <a href="/#skills">skills</a>
+      <a href="/#projects">projects</a>
+      <a href="/#experience">experience</a>
+      <a href="/resume.pdf">resume</a>
+      <a href="/photores.html">photo restoration</a>
+      <a href="{{ site.baseurl }}/" aria-current="page">blog</a>
+      <a href="/contact.html">contact</a>
+    </nav>
   </div>
+</header>
+
+<main>
+  <div class="wrap page-head">
+    <h1>{{ page.title }}</h1>
+    {% if page.title_description %}<div class="role">{{ page.title_description }}</div>{% endif %}
+    {% if page.date != null %}<div class="date">Written on: {{ page.date | date: '%B %d, %Y' }}</div>{% endif %}
+    <div class="rule" aria-hidden="true"></div>
+  </div>
+  <section class="page-body">
+    <div class="wrap content">
+      {{ content }}
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2049 <em>Josh Wein</em></span>
+    <nav>
+      <a href="https://github.com/JoshWein">github</a>
+      <a href="https://www.linkedin.com/in/joshwein1/">linkedin</a>
+      <a href="https://www.facebook.com/joswein/">facebook</a>
+    </nav>
+  </div>
+</footer>
 </body>
-<script src={{site.baseurl}}/js/jq.scrollTo.min.js></script>
-<script>
-  $(document).ready(function(){
-    $(".content a").click(function(evn){
-      if(/^#/.test(evn.target.hash) === true) {
-        evn.preventDefault();
-        $('html,body').scrollTo(this.hash, this.hash,{offset: -70});
-      }
-    });
-  });
-</script>
 </html>
