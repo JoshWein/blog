@@ -2,20 +2,22 @@
 layout: post
 title: Garbage Collection in Different Languages
 title_description: Updated November 2026 for current versions of Java, JavaScript engines, SBCL and Python.
-description: 'Garbage collection is the automatic process of memory management. A quick rundown of how garbage collection and/or memory management is handled in C, Java, JavaScript, Lisp and Python.'
+description: 'Garbage collection is the automatic process of memory management. A quick rundown of how garbage collection and/or memory management is handled in C, Go, Java, JavaScript, Lisp, Python and Rust.'
 ---
 
 <div id="top"></div>
 
 Garbage collection is the automatic process of memory management. A garbage collector tries to clear up any unused memory or "garbage" to save space for a program. Different languages sometimes have different ways of handling garbage collection with some lower level languages relying on you to handle memory management on your own. I decided to put together a quick rundown of how garbage collection and/or memory management is handled in different languages. It's interesting to see the differences between the languages.
 
-> **Update (November 2026):** I originally wrote this in January 2017. A lot has changed since then, especially in Java and Python, so I've updated each section, fixed a few mistakes in the original, and added sources for the new material at the bottom.
+> **Update (November 2026):** I originally wrote this in January 2017. A lot has changed since then, especially in Java and Python, so I've updated each section, fixed a few mistakes in the original, added sections on Go and Rust, and added sources for the new material at the bottom.
 
 * [C](#c)
+* [Go](#go)
 * [Java](#java)
 * [JavaScript](#javascript)
 * [Lisp](#lisp)
 * [Python](#python)
+* [Rust](#rust)
 
 ## C
 
@@ -29,6 +31,24 @@ There are libraries for C that do exist to handle garbage collection such as The
 4. Finalization Phase: Any unreachable objects are enqueued for finalization. Finalization is the ability to execute user code right before an object is collected. This allows the system to reclaim any system resources or non-garbage-collected memory associated with the object.
 
 Because C doesn't tell the collector which words in memory are pointers, the Boehm GC is conservative: anything that looks like it could be a pointer into the heap is treated as one. Since it can't be sure whether a value is really a pointer, it can't safely move objects and rewrite pointers to them, so you don't get the compaction mentioned above.
+
+##### [back to top](#top)
+
+## Go
+
+Go has a garbage collector built into its runtime. It's a tracing collector that uses mark-sweep, the same basic idea as the [JavaScript](#javascript) section: starting from the roots, mark every value that can still be reached, then free everything that wasn't marked. Two things make it different from the [Java](#java) collectors:
+
+* It does most of its work concurrently with your program instead of stopping everything while it runs.
+* It's non-moving. Live objects stay where they are, so there's no compaction step.
+
+Go also tries to avoid creating garbage in the first place. The compiler runs escape analysis on every value: if it can prove a value doesn't outlive the function that created it, the value goes on the goroutine's stack and is freed automatically when the function returns. Only values that "escape to the heap" are the garbage collector's problem. You can see the compiler's decisions with `go build -gcflags=-m` (or `-m=3` for more detail).
+
+There are two main knobs for tuning it:
+
+* `GOGC` sets how much the heap can grow before the next collection, as a percentage of the live heap plus the GC roots (goroutine stacks and globals). The default is `GOGC=100`, so with 8 MiB of live heap and 2 MiB of stacks and globals, the next collection starts after roughly another 10 MiB is allocated. `GOGC=off` turns the collector off entirely.
+* `GOMEMLIMIT` (added in Go 1.19) sets a soft limit on the total memory the Go runtime uses, which makes the collector run more often as you get close to it.
+
+The newest change is the "Green Tea" collector, which became the default in Go 1.26 (February 2026). It still uses mark-sweep, but instead of scanning objects one at a time as it finds them, it works through memory a page at a time, which uses the CPU cache much better. The Go team expects a 10–40% reduction in garbage collection overhead for programs that lean on the collector heavily, though results vary.
 
 ##### [back to top](#top)
 
@@ -163,6 +183,27 @@ Python also exposes the garbage collector if you want to disable it by calling g
 
 ##### [back to top](#top)
 
+## Rust
+
+Rust doesn't have a garbage collector, and you don't call malloc() and free() yourself like in [C](#c) either. Memory is managed through a system of ownership with rules that the compiler checks; if your code breaks a rule, it doesn't compile. The rules are:
+
+1. Each value in Rust has an owner.
+2. There can only be one owner at a time.
+3. When the owner goes out of scope, the value will be dropped.
+
+"Dropped" means Rust automatically calls `drop` for the value at the closing curly bracket of the owner's scope, which is where its memory (and anything else it holds, like a file handle) is cleaned up. Since the compiler knows exactly where every value's owner goes out of scope, there's nothing left to do at runtime: no tracing, no pauses.
+
+To use a value without taking ownership of it you borrow it with a reference. The borrow checker enforces two more rules: at any given time you can have either one mutable reference or any number of immutable references, and references must always be valid. That second rule means the compiler won't let a reference outlive the data it points to, so you can't end up with a dangling pointer the way you can in C.
+
+When a value really does need more than one owner, like a node in a graph, Rust gives you reference counting in the standard library instead of a collector:
+
+* `Rc<T>` keeps a count of how many owners a value has and drops it when the count reaches zero. It's only for use within a single thread.
+* `Arc<T>` ("atomically reference counted") does the same thing but updates the count with atomic operations, so it can be shared between threads. That's slower, so the docs recommend `Rc<T>` when you don't need to share across threads.
+
+This brings back the same problem [Python](#python) has: reference cycles. Two `Rc` values that point at each other will never reach a count of zero, so they leak. Rust doesn't have a cycle collector to clean that up. Instead you break the cycle yourself with `Weak<T>`, a reference that doesn't count toward ownership (for example a child node pointing back at its parent). The Rust book is upfront that preventing memory leaks entirely is not one of Rust's guarantees, and that leaks are considered memory safe.
+
+##### [back to top](#top)
+
 ---
 
 #### References
@@ -185,6 +226,10 @@ Original sources (2017):
 Added in the November 2026 update:
 
 * C: [A garbage collector for C and C++ (Boehm GC home page)](https://www.hboehm.info/gc/)
+* Go: [A Guide to the Go Garbage Collector](https://go.dev/doc/gc-guide)
+* Go: [runtime package documentation (GOGC)](https://pkg.go.dev/runtime)
+* Go: [Go 1.26 Release Notes: New garbage collector](https://go.dev/doc/go1.26)
+* Go: [The Green Tea Garbage Collector, Go blog (2025)](https://go.dev/blog/greenteagc)
 * Java: [JEP 122: Remove the Permanent Generation](https://openjdk.org/jeps/122)
 * Java: [Other Considerations: Class Metadata, Java SE 25 GC Tuning Guide](https://docs.oracle.com/en/java/javase/25/gctuning/other-considerations.html)
 * Java: [JEP 248: Make G1 the Default Garbage Collector (JDK 9)](https://openjdk.org/jeps/248)
@@ -206,3 +251,8 @@ Added in the November 2026 update:
 * Python: [PEP 683: Immortal Objects, Using a Fixed Refcount (3.12)](https://peps.python.org/pep-0683/)
 * Python: [PEP 779: Criteria for supported status for free-threaded Python](https://peps.python.org/pep-0779/)
 * Python: [What's New In Python 3.14: Garbage collection](https://docs.python.org/3/whatsnew/3.14.html)
+* Rust: [What Is Ownership?, The Rust Programming Language](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
+* Rust: [References and Borrowing, The Rust Programming Language](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
+* Rust: [Rc&lt;T&gt;, the Reference Counted Smart Pointer, The Rust Programming Language](https://doc.rust-lang.org/book/ch15-04-rc.html)
+* Rust: [Reference Cycles Can Leak Memory, The Rust Programming Language](https://doc.rust-lang.org/book/ch15-06-reference-cycles.html)
+* Rust: [std::sync::Arc documentation](https://doc.rust-lang.org/std/sync/struct.Arc.html)
