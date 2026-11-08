@@ -1,4 +1,12 @@
+title: Josh Wein
+description: This blog will serve as a place to put any interesting things I've discovered or learned while working on projects or studying.
+url: https://www.joshwein.xyz
 baseurl: /blog
+author: Josh Wein
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
 
 disqus:
     shortname: joshwein-xyz
