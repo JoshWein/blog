@@ -43,6 +43,9 @@ title_description: '<small style="color: white">Reader friendly cached version f
 	#content section:first-child > h2:first-child {
 		margin-top: 0;
 	}
+	#disqus_thread {
+		grid-column: 1 / -1;
+	}
 	@media (max-width: 860px) {
 		.content {
 			display: block;
@@ -1857,11 +1860,17 @@ OUTB(0xcfc), 0x02
 		list.appendChild(li);
 		links[sec.id] = a;
 	});
+	// Highlight the topmost section whose heading area is in view.
+	var visible = {};
 	var observer = new IntersectionObserver(function (entries) {
-		entries.forEach(function (entry) {
-			if (!entry.isIntersecting) return;
-			Object.keys(links).forEach(function (id) { links[id].classList.remove('nav-active'); });
-			links[entry.target.id].classList.add('nav-active');
+		entries.forEach(function (entry) { visible[entry.target.id] = entry.isIntersecting; });
+		var current = null;
+		for (var i = 0; i < sections.length; i++) {
+			if (visible[sections[i].id]) { current = sections[i].id; break; }
+		}
+		if (!current) return;
+		Object.keys(links).forEach(function (id) {
+			links[id].classList.toggle('nav-active', id === current);
 		});
 	}, { rootMargin: '-80px 0px -60% 0px' });
 	sections.forEach(function (sec) { observer.observe(sec); });
