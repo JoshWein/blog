@@ -2,6 +2,7 @@
 layout: post
 title: Garbage Collection in Different Languages
 title_description: Updated November 2026 for current versions of Java, JavaScript engines, SBCL and Python.
+description: 'Garbage collection is the automatic process of memory management. A quick rundown of how garbage collection and/or memory management is handled in C, Java, JavaScript, Lisp and Python.'
 ---
 
 <div id="top"></div>

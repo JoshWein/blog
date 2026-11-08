@@ -2,6 +2,7 @@
 layout: post
 title: Useful Resources for Developers
 title_description: This page will be to keep track of useful resources I've found that I think would benefit anyone who uses them.
+description: 'This page will be to keep track of useful resources I''ve found that I think would benefit anyone who uses them.'
 ---
 
 ### Books
