@@ -4,8 +4,9 @@ disqus:
     shortname: joshwein-xyz
 
 exclude: [
-  "_app",
-  "gulpfile.js",
-  "node_modules",
-  "package.json"
+  "Gemfile",
+  "Gemfile.lock",
+  "README.md",
+  "vendor",
+  ".bundle"
   ]
