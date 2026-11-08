@@ -4,67 +4,62 @@ title: 17 Mistakes Microsoft Made in the Xbox Security System
 title_description: '<small style="color: white">Reader friendly cached version from: <a href="http://www.xbox-linux.org" style="color: white">http://www.xbox-linux.org</a></small>'
 ---
     <style>
-    .content {
-    	padding: 0;
-    }
+	.content {
+		display: grid;
+		grid-template-columns: 240px minmax(0, 1fr);
+		gap: 40px;
+		align-items: start;
+	}
 	#sidebar {
-	    width:300px;
-	    float:left;
-	   	position: absolute;
-	   	height: 100%;
+		position: sticky;
+		top: 80px;
+		max-height: calc(100vh - 100px);
+		overflow-y: auto;
+		scrollbar-width: thin;
 	}
-	#navi{
-	    width:300px;
-	    background-color:rgb(240,255,255);
-	    border:solid 1px rgb(220,220,220);
-	    padding:0 12px;
-	    overflow-y: auto;
-	    margin-top: 49px;
-	    padding-top: 10px;
-	    padding-bottom: 50px;
-	    height: 100%;
+	#navi ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0 0 0 14px;
+		border-left: 1px solid var(--line);
+		font-family: var(--mono);
+		font-size: 13px;
+		line-height: 1.4;
 	}
-	#navi.stick{
-	    position: fixed;
-	    top: 37px;
-	    z-index: 10000;
-	    margin-top:12px;
-	    height: 100%;
-	}
-	#navi ul{
-	    list-style-type:none;
-	    margin:0;
-	    padding:0;
-	}
-	#navi li{
-
+	#navi li {
+		margin: 0 0 10px;
 	}
 	#navi li a {
-	    color:rgb(50,50,50);
-	    font-weight:700;
+		color: var(--muted);
+		text-decoration: none;
 	}
+	#navi li a:hover,
 	#navi a.nav-active {
-	    color:#ccc;
+		color: var(--green);
 	}
-	#content {
-		margin-left: 300px;
+	#content section > * {
+		max-width: 780px;
 	}
-	@media (max-width: 667px) {
-	    #sidebar{
-	        display:none;
-	    }
-	    #content {
-	    	margin-left: 0;
-	    }
+	#content section:first-child > h2:first-child {
+		margin-top: 0;
+	}
+	#disqus_thread {
+		grid-column: 1 / -1;
+	}
+	@media (max-width: 860px) {
+		.content {
+			display: block;
+		}
+		#sidebar {
+			display: none;
+		}
 	}
     </style>
 
     <div id="sidebar">
         <div id="nav-anchor"></div>
         <nav id="navi">
-            <ul>
-            	<div id="placeholder"></div>
-            </ul>
+            <ul id="placeholder"></ul>
         </nav>
     </div><!-- /sidebar -->
     <div class="container-fluid" id="content">
@@ -1850,63 +1845,34 @@ OUTB(0xcfc), 0x02
 			</div>
 
 <script>
-$(document).ready(function(){
-	var sectionLinks = $("section");
-	for(var i = 0; i < sectionLinks.length; i++) {
-		$("#placeholder").append("<li><a href='#" + sectionLinks[i].id + "'>" + sectionLinks[i].childNodes[1].innerText + "</a></li>")
-	}
-
-    /**
-     * This part does the "fixed navigation after scroll" functionality
-     * We use the jQuery function scroll() to recalculate our variables as the
-     * page is scrolled/
-     */
-    $(window).scroll(function(){
-        var window_top = $(window).scrollTop() + 12; // the "12" should equal the margin-top value for nav.stick
-        var div_top = $('#nav-anchor').offset().top;
-            if (window_top > div_top) {
-                $('#navi').addClass('stick');
-            } else {
-                $('#navi').removeClass('stick');
-            }
-    });
-
-    /**
-     * This part handles the highlighting functionality.
-     * We use the scroll functionality again, some array creation and
-     * manipulation, class adding and class removing, and conditional testing
-     */
-    var aChildren = $("#navi li").children(); // find the a children of the list items
-    var aArray = []; // create the empty aArray
-    for (var i=0; i < aChildren.length; i++) {
-        var aChild = aChildren[i];
-        var ahref = $(aChild).attr('href');
-        aArray.push(ahref);
-    } // this for loop fills the aArray with attribute href values
-
-    $(window).scroll(function(){
-        var windowPos = $(window).scrollTop(); // get the offset of the window from the top of page
-        var windowHeight = $(window).height(); // get the height of the window
-        var docHeight = $(document).height();
-
-        for (var i=0; i < aArray.length; i++) {
-            var theID = aArray[i];
-            var divPos = $(theID).offset().top - 150; // get the offset of the div from the top of page
-            var divHeight = $(theID).height(); // get the height of the div in question
-            if (windowPos >= divPos && windowPos < (divPos + divHeight )) {
-                $("a[href='" + theID + "']").addClass("nav-active");
-            } else {
-                $("a[href='" + theID + "']").removeClass("nav-active");
-            }
-        }
-
-        if(windowPos + windowHeight == docHeight) {
-            if (!$("#navi li:last-child a").hasClass("nav-active")) {
-                var navActiveCurrent = $(".nav-active").attr("href");
-                $("a[href='" + navActiveCurrent + "']").removeClass("nav-active");
-                $("#navi li:last-child a").addClass("nav-active");
-            }
-        }
-    });
-});
+(function () {
+	// Build the sidebar from the page's sections, then highlight the one in view.
+	var sections = document.querySelectorAll('#content section');
+	var list = document.getElementById('placeholder');
+	var links = {};
+	sections.forEach(function (sec) {
+		var heading = sec.querySelector('h2');
+		var li = document.createElement('li');
+		var a = document.createElement('a');
+		a.href = '#' + sec.id;
+		a.textContent = heading ? heading.textContent.trim() : sec.id;
+		li.appendChild(a);
+		list.appendChild(li);
+		links[sec.id] = a;
+	});
+	// Highlight the topmost section whose heading area is in view.
+	var visible = {};
+	var observer = new IntersectionObserver(function (entries) {
+		entries.forEach(function (entry) { visible[entry.target.id] = entry.isIntersecting; });
+		var current = null;
+		for (var i = 0; i < sections.length; i++) {
+			if (visible[sections[i].id]) { current = sections[i].id; break; }
+		}
+		if (!current) return;
+		Object.keys(links).forEach(function (id) {
+			links[id].classList.toggle('nav-active', id === current);
+		});
+	}, { rootMargin: '-80px 0px -60% 0px' });
+	sections.forEach(function (sec) { observer.observe(sec); });
+})();
 </script>

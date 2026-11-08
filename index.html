@@ -4,16 +4,11 @@ title: Blog
 title_description: This blog will serve as a place to put any interesting things I've discovered or learned while working on projects or studying.
 ---
 
-<div class="list-group">
+<ol class="post-list">
 	{% for post in site.posts %}
-	<a class="list-group-item" href="{{ site.baseurl }}{{ post.url }}">
-		{{ post.title }}
-		{{ post.category }}
-		<h4>
-			<small>
-				{{ post.date | date: '%B %d, %Y' }}
-			</small>
-		</h4>
-	</a>
+	<li>
+		<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+		<time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%B %d, %Y' }}</time>
+	</li>
 	{% endfor %}
-</div>
+</ol>
