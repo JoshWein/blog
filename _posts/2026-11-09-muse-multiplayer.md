@@ -8,7 +8,7 @@ description: 'Muse started as a college cloud computing project: a multiplayer i
 
 [Muse](https://www.joshwein.xyz/muse/app.html) is a little instrument that lives on my site. You click (or touch) the canvas and it plays a note: the height picks the note and how far left or right you are sets the volume. Hold the mouse down and the note repeats on the beat (every 8th note, or every quarter note for drums). Open the same room as someone else and you hear each other's notes and see each other's cursors.
 
-It started as a cloud computing class project in college. The idea came straight from [Plink](https://experiments.withgoogle.com/plink-multiplayer-music-experience), a multiplayer music Chrome Experiment that DinahMoe released in 2011 where you click and move your mouse to make music with up to three strangers. I always thought it was one of the coolest things on the web, so I made my own version. The original Muse was JavaScript, an HTML5 canvas, and a NodeJS server with [Socket.IO](https://socket.io/docs/v4/rooms/) to pass notes around and keep rooms separate. I made the sounds myself in Ableton Live.
+It started as a cloud computing class project in college. The idea came straight from [Plink](https://dinahmoelabs.com/plink), a multiplayer music Chrome Experiment that DinahMoe released in 2011 where you click and move your mouse to make music with up to three strangers. I always thought it was one of the coolest things on the web, so I made my own version. The original Muse was JavaScript, an HTML5 canvas, and a NodeJS server with [Socket.IO](https://socket.io/docs/v4/rooms/) to pass notes around and keep rooms separate. I made the sounds myself in Ableton Live.
 
 The server didn't survive. By the time Muse made it onto this site in 2017, the multiplayer code was commented out and it was a single-player toy. It stayed that way for almost ten years.
 
@@ -24,7 +24,7 @@ This month I finally brought it back. I'll be walking through how multiplayer wo
 
 ## Why no server this time
 
-The lesson I took from the first version is that the part of a side project that dies first is the part you have to keep running. Static files on GitHub Pages will be around as long as GitHub is. A Node process on some free host won't. Free hosting for side projects comes and goes; the one I used for some of my other college projects, OpenShift Online 2, [was shut down in late 2017](https://www.redhat.com/en/blog/migrate-to-v3-v2-eol) and took everything on it with it.
+The lesson I took from the first version is that the part of a side project that dies first is the part you have to keep running. Static files on GitHub Pages will be around as long as GitHub is. A Node process on some free host won't. Free hosting for side projects comes and goes; the one I used for some of my other college projects, OpenShift, [shut down at the end of 2017](https://www.redhat.com/en/blog/migrate-to-v3-v2-eol) and took everything on it with it.
 
 So this time the rule was no server. Muse uses [Firebase Realtime Database](https://firebase.google.com/docs/database), which is a hosted JSON tree that every client can listen to. When something changes, every client listening to that part of the tree gets the update over a websocket. That's all a game like this really needs: each player writes their own state, and everyone reads everyone else's.
 
@@ -157,6 +157,7 @@ The bigger takeaway for me wasn't technical though. The first version of Muse di
 
 ## Sources
 
+* [Plink](https://dinahmoelabs.com/plink), DinahMoe
 * [Plink multiplayer music experience](https://experiments.withgoogle.com/plink-multiplayer-music-experience), Experiments with Google
 * [Socket.IO: Rooms](https://socket.io/docs/v4/rooms/)
 * [Migrate to v3: OpenShift Online v2 end of life](https://www.redhat.com/en/blog/migrate-to-v3-v2-eol), Red Hat
