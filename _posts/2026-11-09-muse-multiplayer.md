@@ -12,7 +12,7 @@ It started as a cloud computing class project in college. The idea came straight
 
 The server didn't survive. By the time Muse made it onto this site in 2017, the multiplayer code was commented out and it was a single-player toy. It stayed that way for almost ten years.
 
-This month I finally brought it back. I'll be walking through how multiplayer works now, what I had to figure out to keep everyone on the same beat, and the audio bugs I didn't know I had until I started listening closely.
+This month I finally brought it back. I'll be walking through how multiplayer works now, what I had to figure out to keep everyone on the same beat, and the audio bugs I didn't know I had.
 
 * [Why no server this time](#why-no-server-this-time)
 * [Rooms, cursors and security rules](#rooms-cursors-and-security-rules)
