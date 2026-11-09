@@ -6,9 +6,9 @@ description: 'Muse started as a college cloud computing project: a multiplayer i
 
 <div id="top"></div>
 
-[Muse](https://www.joshwein.xyz/muse/app.html) is a little instrument that lives on my site. You click (or touch) the canvas and it plays a note: the height picks the note and how far left or right you are sets the volume. Hold the mouse down and the note repeats on the beat. Open the same room as someone else and you hear each other's notes and see each other's cursors.
+[Muse](https://www.joshwein.xyz/muse/app.html) is a little instrument that lives on my site. You click (or touch) the canvas and it plays a note: the height picks the note and how far left or right you are sets the volume. Hold the mouse down and the note repeats on the beat (every 8th note, or every quarter note for drums). Open the same room as someone else and you hear each other's notes and see each other's cursors.
 
-It started as a cloud computing class project in college. The idea came straight from [Plink](https://experiments.withgoogle.com/plink-multiplayer-music-experience), a multiplayer music Chrome Experiment that DinahMoe released in 2011 where you play with strangers by moving your mouse up and down. I always thought it was one of the coolest things on the web, so I made my own version. The original Muse was JavaScript, an HTML5 canvas, and a NodeJS server with [Socket.IO](https://socket.io/docs/v4/rooms/) to pass notes around and keep rooms separate. I made the sounds myself in Ableton Live.
+It started as a cloud computing class project in college. The idea came straight from [Plink](https://experiments.withgoogle.com/plink-multiplayer-music-experience), a multiplayer music Chrome Experiment that DinahMoe released in 2011 where you click and move your mouse to make music with up to three strangers. I always thought it was one of the coolest things on the web, so I made my own version. The original Muse was JavaScript, an HTML5 canvas, and a NodeJS server with [Socket.IO](https://socket.io/docs/v4/rooms/) to pass notes around and keep rooms separate. I made the sounds myself in Ableton Live.
 
 The server didn't survive. By the time Muse made it onto this site in 2017, the multiplayer code was commented out and it was a single-player toy. It stayed that way for almost ten years.
 
@@ -24,7 +24,7 @@ This month I finally brought it back. I'll be walking through how multiplayer wo
 
 ## Why no server this time
 
-The lesson I took from the first version is that the part of a side project that dies first is the part you have to keep running. Static files on GitHub Pages will be around as long as GitHub is. A Node process on some free host won't. Free hosting for side projects comes and goes; the one I used for some of my other college projects, OpenShift Online 2, [shut down at the end of 2017](https://www.redhat.com/en/blog/migrate-to-v3-v2-eol) and took everything on it with it.
+The lesson I took from the first version is that the part of a side project that dies first is the part you have to keep running. Static files on GitHub Pages will be around as long as GitHub is. A Node process on some free host won't. Free hosting for side projects comes and goes; the one I used for some of my other college projects, OpenShift Online 2, [was shut down in late 2017](https://www.redhat.com/en/blog/migrate-to-v3-v2-eol) and took everything on it with it.
 
 So this time the rule was no server. Muse uses [Firebase Realtime Database](https://firebase.google.com/docs/database), which is a hosted JSON tree that every client can listen to. When something changes, every client listening to that part of the tree gets the update over a websocket. That's all a game like this really needs: each player writes their own state, and everyone reads everyone else's.
 
@@ -41,7 +41,7 @@ rooms/{room}/players/{uid} = {
 }
 {% endhighlight %}
 
-There are up to five pointers because phones and tablets can have five fingers on the screen. `x` and `y` are stored from 0 to 1 instead of in pixels, so a phone and a wide monitor line up. Each client sends its pointers about 15 times a second and plays everyone else's notes locally when they arrive. No audio goes over the network, only "this player has a finger down at this spot with this instrument".
+There are up to five pointers because phones and tablets can have five fingers on the screen. `x` and `y` are stored from 0 to 1 instead of in pixels, so a phone and a wide monitor line up. Each client sends its pointers at most about 15 times a second (and skips the send when nothing moved) and plays everyone else's notes locally when they arrive. No audio goes over the network, only "this player has a finger down at this spot with this instrument".
 
 When you close the tab your record needs to go away, or the room fills up with ghosts. Firebase handles that with [`onDisconnect()`](https://firebase.google.com/docs/database/web/offline-capabilities), which lets a client tell the server ahead of time "if I disappear, delete this". One thing that bit me: `onDisconnect` is one-shot. If your connection drops and comes back, the server already ran your disconnect handler, so you have to register it again and resend your state.
 
@@ -58,7 +58,7 @@ The scary part of having no server is that every client talks straight to the da
 }
 {% endhighlight %}
 
-Every field gets a type and range check, and the `$other` rule rejects any field I didn't plan for. It's the same idea as validating input on a server, except the database does it for you.
+The real rule also requires you to be a member of the room before you can write. Every field gets a type and range check, and the `$other` rule rejects any field I didn't plan for. It's the same idea as validating input on a server, except the database does it for you.
 
 A room holds 8 players. Everyone else who joins watches and waits in line. There's no server to decide who's next, so every client sorts the room's members by the time they joined and comes up with the same queue on its own. The first 8 play, and when someone leaves, the next person in line moves up. Watchers don't write cursor data, so a big crowd doesn't mean a big download.
 
@@ -66,7 +66,7 @@ A room holds 8 players. Everyone else who joins watches and waits in line. There
 
 ## Keeping everyone on the same beat
 
-This was the hard part. When you hold a note down it repeats on every 8th note, and if your repeats and mine aren't lined up, a room of people sounds like a mess instead of music.
+This was the hard part. When you hold a note down it repeats on the beat, and if your repeats and mine aren't lined up, a room of people sounds like a mess instead of music.
 
 The fix is a shared clock. Every computer's clock is a little off, but Firebase tells each client how far off it is through a special location called `.info/serverTimeOffset`:
 
@@ -101,7 +101,7 @@ export function changeTempo(clock, bpm, t, lead = 0) {
 }
 {% endhighlight %}
 
-Everyone gets the new clock before it starts, everyone switches on the same step, and nobody hears the beat jump.
+Unless someone's connection is really slow, everyone gets the new clock before it starts, everyone switches on the same step, and nobody hears the beat jump.
 
 ##### [back to top](#top)
 
@@ -149,7 +149,7 @@ While I was in there I added a few instruments that don't use samples at all. Th
 
 If I were starting from scratch I'd change how notes are timed. Right now the beat uses `setTimeout`, which runs on the main thread, so if the browser is busy drawing the visualizer or collecting garbage, a beat can land a few milliseconds late. Chris Wilson's article ["A tale of two clocks"](https://web.dev/articles/audio-scheduling) explains the better approach: use a timer only to look a little ahead, and schedule the actual notes on the audio clock (`AudioContext.currentTime`), which runs on its own thread and doesn't drift. It's the standard way to build a sequencer in the browser and it's next on my list.
 
-The other thing worth calling out is that other players' notes play when they arrive, so you hear them about one network round trip late. For a jam toy it's fine, since held notes snap to the shared beat anyway. A real online band app would need a lot more than this.
+The other thing worth calling out is that other players' notes play when they arrive, so you hear them a little late: the trip through Firebase plus up to 66 ms of send throttling. For a jam toy it's fine, since held notes snap to the shared beat anyway. A real online band app would need a lot more than this.
 
 The bigger takeaway for me wasn't technical though. The first version of Muse died because it needed something I had to keep running. This version is static files and a hosted database with rules, and I expect it to still be working in another ten years. Come [play](https://www.joshwein.xyz/muse/app.html#lobby) and see if anyone's in the lobby. The code is all [on GitHub](https://github.com/JoshWein/joshwein.github.io/tree/main/muse).
 
