@@ -25,3 +25,22 @@ UTF-8. Run `export LANG=en_US.UTF-8` (or `C.UTF-8`) and try again.
 
 Pushing to `main` runs `.github/workflows/jekyll-gh-pages.yml`, which builds
 the site and deploys it to GitHub Pages.
+
+## Ads
+
+Posts have one small "sponsored" slot at the end, above the comments. It is off
+until you turn it on in `_config.yml`:
+
+```yaml
+ads:
+  enabled: true
+  provider: ethicalads          # or adsense
+  ethicalads_publisher: "your-id"
+  adsense_client: ""            # only for adsense, e.g. "ca-pub-..."
+  adsense_slot: ""              # only for adsense
+```
+
+Nothing loads until `enabled` is true and the chosen provider's ID is set. The
+blog index never shows an ad, and a single post can opt out with `ads: false`
+in its front matter. For AdSense, `ads.txt` has to live at the domain root,
+which is the main site repo (JoshWein/joshwein.github.io), not this one.
