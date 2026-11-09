@@ -11,6 +11,16 @@ plugins:
 disqus:
     shortname: joshwein-xyz
 
+# Ads: one small slot at the end of each post, above the comments.
+# Stays off until enabled is true and the provider's ID is filled in.
+# A post can opt out with `ads: false` in its front matter.
+ads:
+  enabled: false
+  provider: ethicalads        # ethicalads or adsense
+  ethicalads_publisher: ""    # your EthicalAds publisher ID, e.g. "joshwein"
+  adsense_client: ""          # e.g. "ca-pub-1234567890123456"
+  adsense_slot: ""            # the numeric ad unit ID from AdSense
+
 exclude: [
   "Gemfile",
   "Gemfile.lock",

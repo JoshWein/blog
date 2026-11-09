@@ -93,3 +93,14 @@ footer a:hover { color: var(--green); }
   .page-head { padding-top: 64px; padding-bottom: 36px; }
   .content .post-list li { grid-template-columns: 1fr; gap: 4px; }
 }
+
+/* ---- ad slot (see _includes/ad.html) ---- */
+.content .ad-slot { margin: 3em 0 1em; padding: 14px 16px 16px; border: 1px dashed var(--line); border-radius: 4px; }
+.content .ad-slot .ad-label { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: lowercase; letter-spacing: .04em; margin-bottom: 8px; }
+.content .ad-slot .ad-label::before { content: "// "; color: var(--green-dark); }
+.content .ad-slot ins.adsbygoogle { min-height: 90px; }
+/* EthicalAds dark theme, matched to the site's palette */
+.content .ad-slot [data-ea-publisher].loaded .ea-content { background: var(--bg-2) !important; border: 0 !important; box-shadow: none !important; margin: 0 !important; }
+.content .ad-slot [data-ea-publisher].loaded .ea-content a, .content .ad-slot [data-ea-publisher].loaded .ea-content { color: var(--text) !important; }
+.content .ad-slot [data-ea-publisher].loaded .ea-callout a { color: var(--muted) !important; }
+.content .ad-slot:has([data-ea-publisher]:empty) { display: none; }

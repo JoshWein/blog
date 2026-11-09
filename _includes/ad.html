@@ -1,0 +1,22 @@
+{%- comment -%}
+  One unobtrusive ad slot, shown at the end of a post above the comments.
+  Inert until a publisher ID is set under `ads:` in _config.yml.
+  A post can opt out with `ads: false` in its front matter.
+{%- endcomment -%}
+{%- assign ads = site.ads -%}
+{%- if ads.enabled and page.ads != false -%}
+  {%- if ads.provider == "ethicalads" and ads.ethicalads_publisher and ads.ethicalads_publisher != "" -%}
+<aside class="ad-slot" aria-label="Sponsored">
+  <div class="ad-label">sponsored</div>
+  <div data-ea-publisher="{{ ads.ethicalads_publisher }}" data-ea-type="image" class="ad-ethical horizontal"></div>
+</aside>
+<script async src="https://media.ethicalads.io/media/client/ethicalads.min.js"></script>
+  {%- elsif ads.provider == "adsense" and ads.adsense_client and ads.adsense_client != "" and ads.adsense_slot and ads.adsense_slot != "" -%}
+<aside class="ad-slot" aria-label="Sponsored">
+  <div class="ad-label">sponsored</div>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ads.adsense_client }}" data-ad-slot="{{ ads.adsense_slot }}" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+</aside>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ ads.adsense_client }}" crossorigin="anonymous"></script>
+<script>(window.adsbygoogle = window.adsbygoogle || []).push({});</script>
+  {%- endif -%}
+{%- endif -%}
