@@ -35,7 +35,7 @@ a:hover { color: var(--ink); background: var(--hl); }
 .wrap { max-width: 960px; margin: 0 auto; padding: 0 28px; }
 
 /* top bar */
-.bar { position: sticky; top: 0; z-index: 10; padding: 12px 0; }
+.bar { position: sticky; top: 0; z-index: 10; padding: 12px 0; background: var(--desk); }
 .bar .wrap { display: flex; align-items: center; justify-content: space-between; height: 52px; gap: 20px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 0 18px; max-width: 1000px; }
 .bar .home { font-family: var(--head); font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; white-space: nowrap; }
 .bar .home b { font-weight: 700; background: linear-gradient(transparent 55%, var(--hl) 55%); }
