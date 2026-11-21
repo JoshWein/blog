@@ -1,0 +1,12 @@
+{
+  "name": "joshwein-blog",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "a11y": "node scripts/a11y-check.mjs _site"
+  },
+  "devDependencies": {
+    "axe-core": "4.14.1",
+    "playwright": "1.63.0"
+  }
+}

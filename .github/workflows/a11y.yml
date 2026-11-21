@@ -1,0 +1,37 @@
+# Builds the blog and runs axe-core (WCAG 2.2 AA + best practices) on every
+# page at desktop and phone widths. Any violation fails the check.
+# Run it locally with:
+#   LANG=C.UTF-8 bundle exec jekyll build -d _site/blog && npm ci && npm run a11y
+name: Accessibility
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  axe:
+    runs-on: ubuntu-latest
+    env:
+      LANG: C.UTF-8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Build with Jekyll
+        run: bundle exec jekyll build -d _site/blog
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run axe
+        run: npm run a11y

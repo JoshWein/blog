@@ -21,6 +21,29 @@ Jekyll version and plugins as the deployed site.
 If the build fails with `Invalid US-ASCII character`, your shell's locale isn't
 UTF-8. Run `export LANG=en_US.UTF-8` (or `C.UTF-8`) and try again.
 
+## Accessibility check
+
+Every pull request runs `.github/workflows/a11y.yml`, which builds the site and
+runs [axe-core](https://github.com/dequelabs/axe-core) (WCAG 2.2 AA plus best
+practices) on every page at desktop and phone widths. Any violation fails the
+check. To run it locally (needs Node 20+):
+
+```sh
+bundle exec jekyll build -d _site/blog
+npm ci
+npx playwright install chromium   # first time only
+npm run a11y
+```
+
+A few patterns that keep posts passing:
+
+- Headings go up one level at a time (`##`, then `###`). To keep a smaller
+  look, add `{: .as-h3}` or `{: .as-h4}` under the heading.
+- "Back to top" links are a plain paragraph, not a heading:
+  `[back to top](#top)` followed by `{: .back-top}`.
+- Wide code blocks get `tabindex="0"` from `_layouts/post.html` so keyboard
+  users can scroll them.
+
 ## Deploying
 
 Pushing to `main` runs `.github/workflows/jekyll-gh-pages.yml`, which builds

@@ -38,7 +38,8 @@ Because C doesn't tell the collector which words in memory are pointers, the Boe
 * **The Boehm GC is still around.** Its home page lists 8.2.8 as the current stable release, and development now happens on GitHub.
 * **The bigger change was outside the language.** In February 2024 the White House Office of the National Cyber Director published "Back to the Building Blocks", a report making the case that technology manufacturers can keep entire classes of vulnerabilities out of their software by adopting memory safe programming languages. Manual memory management went from being mostly a performance trade-off to being part of a security conversation, and that's one of the reasons [Rust](#rust) got so much attention.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Go
 
@@ -60,7 +61,8 @@ There are two main knobs for tuning it:
 * **2022: a memory limit.** Go 1.19 added `GOMEMLIMIT`, so you can tell the runtime how much memory it's allowed to use instead of only tuning `GOGC`. That's especially useful in containers with a hard memory limit.
 * **2026: Green Tea.** The "Green Tea" collector became the default in Go 1.26 (February 2026). It still uses mark-sweep, but instead of scanning objects one at a time as it finds them, it works through memory a page at a time, which uses the CPU cache much better. The Go team expects a 10–40% reduction in garbage collection overhead for programs that lean on the collector heavily, though results vary.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Java
 
@@ -92,7 +94,8 @@ The interesting part is the full circle: ZGC and Shenandoah both started out non
 
 The garbage collection process of Java is the same as any language that uses the JVM and doesn't implement its own garbage collector. Languages like Clojure, Scala, Groovy and Kotlin (on the JVM) use whichever JVM collector the program is started with.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## JavaScript
 
@@ -143,7 +146,8 @@ Real engines are more complicated than plain mark-and-sweep. V8 (used in Chrome 
 
 The basic model I described in 2017 is still how you should think about it as a developer: if it's reachable it stays, if it isn't it eventually goes.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Lisp
 
@@ -165,7 +169,8 @@ In practice every Common Lisp implementation has a garbage collector, and most i
 
 Lisp changed the least of anything here, which makes sense for a language standardized decades ago. SBCL, which forked from CMUCL in December 1999 and is now one of the most widely used open source Common Lisps, still uses the same style of generational, mostly-copying collector by default. The one notable addition: since SBCL 2.3.8 (August 2023) there is an optional parallel mark-region collector that you can choose when building SBCL. It marks in parallel and avoids moving objects.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Python
 
@@ -200,7 +205,8 @@ Python also exposes the garbage collector if you want to disable it by calling g
 * **Free-threaded Python (3.13, officially supported in 3.14).** CPython can now be built without the GIL. That build uses a different collector: it is not generational, it pauses all other threads while it runs, and instead of linked lists it finds tracked objects by scanning the mimalloc heap it allocates from.
 * **The 3.14 incremental collector, and its rollback.** Python 3.14.0 shipped a new incremental collector with only two generations, to cut pause times on large heaps. After reports of high memory use in production, Python 3.14.5 went back to the three-generation collector from 3.13.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Rust
 
@@ -227,17 +233,20 @@ This brings back the same problem [Python](#python) has: reference cycles. Two `
 * **2018: non-lexical lifetimes.** Non-lexical lifetimes (NLL) landed with the Rust 2018 edition. They base a borrow's lifetime on the program's control flow instead of the enclosing block. Code that was obviously fine but used to be rejected (like borrowing a value again after the last use of an earlier borrow, still inside the same block) started compiling.
 * **Memory safety became policy.** The 2024 White House report from the [C](#c) section recommends memory safe languages in general rather than naming one, but Rust is the one on this list that gets memory safety without a garbage collector.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Ten years on
 
 Looking back across all seven languages, none of them abandoned the basic ideas from 2017. Tracing collectors still mark what's reachable and throw away the rest, generations are still the main trick (even the Java collectors that tried to do without them added them back), and reference counting still needs help with cycles. What changed is mostly where the work happens: the JVM, Go and V8 collectors now do much of their work on background threads, and Rust does its memory management in the compiler at build time instead of with a collector at run time.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ---
 
-#### References
+### References
+{: .as-h4}
 
 Original sources (2017):
 

@@ -6,7 +6,7 @@ description: 'While I was working on Muse, I ran into a fun problem. Since most 
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
 <p>While I was working on <a href="../muse/app.html">Muse,</a> I ran into a fun problem. The application relied heavily on everyone's x and y coordinates and since most people's screens were different sizes this meant that other people's mouse pointers would display in the wrong locations.</p>
 <p>To fix this I realized that I needed some way to scale everyone's coordinates to a default scale. It ended up being the same equation I use to figure out what grade I got out of 100 when getting an exam out of 130 or 47.</p>
-<h3>The Equation</h3>
+<h2 class="as-h3">The Equation</h2>
 <div class="math text-center" style="margin-bottom: 10px">
     <div style="padding-bottom: 10px">
         \(Scaling: coordinate * {default scale \over current scale}\)
@@ -23,12 +23,12 @@ description: 'While I was working on Muse, I ran into a fun problem. Since most 
     \(Sending: 9 * {100 \over 10} = 90\)<br>
     \(Receiving: 90 / {100 \over 10} = 9\)
 </p>
-<h3>Sending</h3>
+<h2 class="as-h3">Sending</h2>
 <pre class="lang-c"><code>socket.emit('mouseCoord',  {
     x: mouse.x * (2000/windowWidth),
     y: mouse.y * (2000/windowHeight)
 };</code></pre>
-<h3>Receiving</h3>
+<h2 class="as-h3">Receiving</h2>
 <pre class="lang-c"><code>updateCursor(
     data.x/(2000/windowWidth),
     data.y/(2000/windowHeight)

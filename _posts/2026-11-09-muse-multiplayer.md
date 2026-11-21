@@ -62,7 +62,8 @@ The real rule also requires you to be a member of the room before you can write.
 
 A room holds 8 players. Everyone else who joins watches and waits in line. There's no server to decide who's next, so every client sorts the room's members by the time they joined and comes up with the same queue on its own. The first 8 play, and when someone leaves, the next person in line moves up. Watchers don't write cursor data, so a big crowd doesn't mean a big download.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Keeping everyone on the same beat
 
@@ -103,7 +104,8 @@ export function changeTempo(clock, bpm, t, lead = 0) {
 
 Unless someone's connection is really slow, everyone gets the new clock before it starts, everyone switches on the same step, and nobody hears the beat jump.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Loops that fit in a URL
 
@@ -123,7 +125,8 @@ export function encodeLoop(notes) {
 
 Because a loop is just a short string, the same format works for the room and for share links. The room stores each player's loop as one database value, and a share link looks like `app.html?loop=...&bpm=100`. The security rules check the string too: only the characters `0-9` and `a-v`, at most 640 characters long. The decoder also skips anything malformed and caps how many notes can land on one step, so a hand-crafted link can't stack hundreds of sounds on one beat and blow out your speakers.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Fixing the clicks
 
@@ -143,7 +146,8 @@ The last source of crackle was clipping. Eight people all holding notes adds up 
 
 While I was in there I added a few instruments that don't use samples at all. The drums, piano, marimba, strings and synth are all generated in the browser. The strings use the [Karplus-Strong algorithm](https://en.wikipedia.org/wiki/Karplus%E2%80%93Strong_string_synthesis), which is one of my favorite tricks: you fill a short buffer with random noise and keep averaging it with itself, and it turns into a surprisingly real plucked string. The length of the buffer sets the pitch.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## What I'd do differently
 
@@ -153,7 +157,8 @@ The other thing worth calling out is that other players' notes play when they ar
 
 The bigger takeaway for me wasn't technical though. The first version of Muse died because it needed something I had to keep running. This version is static files and a hosted database with rules, and I expect it to still be working in another ten years. Come [play](https://www.joshwein.xyz/muse/app.html#lobby) and see if anyone's in the lobby. The code is all [on GitHub](https://github.com/JoshWein/joshwein.github.io/tree/main/muse).
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Sources
 
