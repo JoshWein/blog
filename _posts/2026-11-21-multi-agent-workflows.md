@@ -185,6 +185,8 @@ With five or six agents going, the hard part stops being the code and starts bei
 
 What's worked for me is having an agent build a small visual command center for the project: one page that shows the plan, what each agent is doing, and what's waiting on me. I've built a different one for each project so far, because each project had its own quirks. A migration wants to show progress per service. A side project cleanup wants to show which repos still need a deploy. Agents make this cheap enough that a one-off dashboard is fine. When the project ends, I throw it away.
 
+The part I get the most out of is a visual view of the whole roadmap that stays up to date. For me, a list of Jira links wasn't enough. An interactive flow diagram that showed every lane of the project and the dependencies between them gave me a much better feel for where things actually stood. That's just what works for me, though. Build whatever view helps you see the state of things at a glance.
+
 Here's a made-up example of the kind of thing I mean:
 
 <figure class="diagram">
