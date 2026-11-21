@@ -221,3 +221,21 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 .cc.ladder { grid-template-columns: repeat(5, 1fr); gap: 8px; }
 .cc.ladder .card b { font-family: var(--mono); color: var(--accent); margin-right: 2px; }
 @media (max-width: 760px) { .cc.ladder { grid-template-columns: 1fr 1fr; } }
+
+/* fan-out: worker status cycle (8s, offset per worker to match its ticket) */
+.diagram .st { opacity: 0; }
+.diagram .st-work { opacity: 1; }
+.diagram .st-done { fill: var(--accent); }
+.diagram .prflow { opacity: 0; }
+@supports (offset-path: path('M0 0')) {
+  .diagram .st-wait { animation: st-wait 8s linear infinite; }
+  .diagram .st-work { animation: st-work 8s linear infinite; }
+  .diagram .st-pr { animation: st-pr 8s linear infinite; }
+  .diagram .prflow { animation: st-pr 8s linear infinite, dash 1.6s linear infinite; }
+  .diagram .st-done { animation: st-done 8s linear infinite; }
+}
+@keyframes st-wait { 0%, 21% { opacity: 1; } 23%, 100% { opacity: 0; } }
+@keyframes st-work { 0%, 21% { opacity: 0; } 23%, 60% { opacity: 1; } 62%, 100% { opacity: 0; } }
+@keyframes st-pr { 0%, 60% { opacity: 0; } 62%, 86% { opacity: 1; } 88%, 100% { opacity: 0; } }
+@keyframes st-done { 0%, 86% { opacity: 0; } 88%, 98% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .diagram .st, .diagram .prflow { animation: none; } }
