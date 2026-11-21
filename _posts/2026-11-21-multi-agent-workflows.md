@@ -31,7 +31,9 @@ This post covers how that workflow fits together. It's for people who already us
 
 I'm not loyal to one tool. My main one is [Claude Code](https://code.claude.com/docs/en/overview), and I use OpenAI's [Codex](https://developers.openai.com/codex) a lot alongside it. When I run out of tokens on both, I drop to GitHub Copilot. For some kinds of web research I still just use ChatGPT in the browser, because it's good at that and doesn't need access to my code.
 
-The fact that I mix them matters more than which ones I pick. Different models make different mistakes, and that turns out to be the most useful thing about having more than one. More on that in the review section. This lineup will also probably look different in a few months. Every harness and model keeps improving, and whichever is best at a given job changes often, so I try not to get too attached.
+The fact that I mix them matters more than which ones I pick. Different models make different mistakes, and that turns out to be the most useful thing about having more than one. More on that in the review section.
+
+This lineup will probably look different in a few months. Every harness and model keeps improving, and whichever is best at a given job changes often, so I try not to get too attached.
 
 ## Get grilled before anything gets built
 
@@ -107,7 +109,7 @@ The other thing that makes fan-out work is splitting along boundaries that don't
 
 ### Git worktrees
 
-[Git worktrees](https://git-scm.com/docs/git-worktree) are the cheap way to do that. A worktree is a second (or tenth) working directory attached to the same repository. Each one has its own branch and its own files, but they all share one `.git` directory, so you're not cloning the repo again or downloading history again. One agent can be halfway through a refactor in one folder while another runs tests on a bug fix in the next, and neither one sees the other's half-finished edits.
+[Git worktrees](https://git-scm.com/docs/git-worktree) are the cheap way to do that. A worktree is a second (or tenth) working directory attached to the same repository. Each one usually has its own branch and its own files, but they all share the same history and objects, so you're not cloning the repo again or downloading history again. One agent can be halfway through a refactor in one folder while another runs tests on a bug fix in the next, and neither one sees the other's half-finished edits.
 
 {% highlight bash %}
 # a new folder on a new branch, next to your main checkout
@@ -120,7 +122,7 @@ git worktree list
 git worktree remove ../myrepo-ticket-42
 {% endhighlight %}
 
-Claude Code has this built in. Its [worktree docs](https://code.claude.com/docs/en/worktrees) describe each session getting "a separate copy of the files to edit, so one session can build a feature while a second fixes a bug." You can start a session with `claude --worktree`, ask Claude to "use worktrees for your agents" so each subagent gets its own, or set `isolation: worktree` on a custom subagent so it always does. Claude Code removes the temporary worktrees it makes for subagents on its own.
+Claude Code has this built in. Its [worktree docs](https://code.claude.com/docs/en/worktrees) describe each session getting "a separate copy of the files to edit, so one session can build a feature while a second fixes a bug." You can start a session with `claude --worktree`, ask Claude to "use worktrees for your agents" so each subagent gets its own, or set `isolation: worktree` on a custom subagent so it always does. If a subagent's worktree ends up with no changes, Claude Code removes it on its own.
 
 A few things to know before you lean on them:
 
