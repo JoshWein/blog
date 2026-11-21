@@ -40,6 +40,8 @@ await new Promise(r => server.listen(0, "127.0.0.1", r));
 const origin = `http://127.0.0.1:${server.address().port}`;
 
 const VIEWPORTS = [{ name: "desktop", width: 1280, height: 900 }, { name: "phone", width: 390, height: 844 }];
+// The theme has a prefers-color-scheme: dark variant, so check both.
+const SCHEMES = ["light", "dark"];
 const browser = await chromium.launch();
 const page = await browser.newPage();
 // Keep runs deterministic: only load files from the local build,
@@ -49,6 +51,8 @@ await page.route("**/*", r => allowed(r.request().url()) ? r.continue() : r.abor
 
 let failures = 0;
 const files = await htmlFiles(root);
+for (const scheme of SCHEMES) {
+await page.emulateMedia({ colorScheme: scheme });
 for (const vp of VIEWPORTS) {
 await page.setViewportSize({ width: vp.width, height: vp.height });
 for (const file of files) {
@@ -56,7 +60,7 @@ for (const file of files) {
   await page.goto(url, { waitUntil: "load" });
   await page.addScriptTag({ content: axeSource });
   const { violations } = await page.evaluate(tags => axe.run(document, { runOnly: { type: "tag", values: tags } }), TAGS);
-  const name = `${url.slice(origin.length)} (${vp.name})`;
+  const name = `${url.slice(origin.length)} (${vp.name}, ${scheme})`;
   if (!violations.length) { console.log(`ok    ${name}`); continue; }
   failures += violations.length;
   console.log(`FAIL  ${name}`);
@@ -67,7 +71,8 @@ for (const file of files) {
   }
 }
 }
+}
 await browser.close();
 server.close();
-console.log(`\n${files.length} pages checked at ${VIEWPORTS.length} widths, ${failures} violation(s).`);
+console.log(`\n${files.length} pages checked at ${VIEWPORTS.length} widths in ${SCHEMES.length} color schemes, ${failures} violation(s).`);
 process.exit(failures ? 1 : 0);
