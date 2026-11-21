@@ -313,7 +313,7 @@ Right now I'm the last step on most PRs, but not all of them. For certain projec
   <text class="sub" x="220" y="111" text-anchor="middle">tests, reviews, CI</text>
   <rect class="box" x="330" y="65" width="160" height="60" rx="4"/>
   <text class="lbl" x="410" y="93" text-anchor="middle">safe to skip me?</text>
-  <text class="sub" x="410" y="111" text-anchor="middle">docs, trusted projects</text>
+  <text class="sub" x="410" y="111" text-anchor="middle">docs, low-risk projects</text>
   <rect class="box hot" x="530" y="20" width="180" height="50" rx="4"/>
   <text class="lbl" x="620" y="50" text-anchor="middle">auto-merge</text>
   <rect class="box" x="530" y="125" width="180" height="50" rx="4"/>
