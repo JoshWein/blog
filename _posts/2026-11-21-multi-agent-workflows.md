@@ -17,6 +17,7 @@ This post covers how that workflow fits together. It's for people who already us
 * [Fan out to parallel agents](#fan-out-to-parallel-agents)
 * [Review across models, not within one](#review-across-models-not-within-one)
 * [A throwaway command center](#a-throwaway-command-center)
+* [Automate the friction away](#automate-the-friction-away)
 * [Guardrails](#guardrails)
 * [Packaging what works](#packaging-what-works)
 * [What I want to try next](#what-i-want-to-try-next)
@@ -181,6 +182,21 @@ The "needs me" column is the one that matters. Agents are fast, so I'm usually t
 
 ##### [back to top](#top)
 
+## Automate the friction away
+
+If I had to pick one main point for this whole post, it's this: use the tools to take the friction out of the work, and then use the time you get back to run more things in parallel. My test is simple. If starting my day or picking a project back up takes more than typing "resume", there's friction left to remove. Once getting started is that cheap, the next step is adding more parallel work while the current work is running.
+
+A few things that have helped the most:
+
+* **Scheduled jobs.** The one I use every day is a morning brief. Before I sit down, an agent has already pulled together my setup for the day: my open tickets, what merged yesterday, and any announcements or news that matter to my work. I start the day reading one page instead of opening ten tabs.
+* **PR watchers.** Small scripts that keep my open PRs synced with the main branch and merge them once they're approved and green. A PR that's done shouldn't need me to click a button.
+* **Cleanup scripts.** Agents create a lot of mess: disk space, old branches, workspaces nobody is using anymore. I have scripts that clean that up on a schedule. Where I can, I run agents in [remote execution environments](https://code.claude.com/docs/en/claude-code-on-the-web) instead, because a cloud container that gets thrown away when the session ends is the easiest cleanup there is. I still use local development where reuse matters more, like a big repo that's slow to set up or a build cache that takes a long time to warm.
+* **Notifications.** This builds on the command center. An agent that's waiting on me is just sitting there, so I want to know right away. Some way of getting pinged, whether it's a phone notification or a browser notification, keeps things from sitting for hours. In Claude Code you can hook into its [`Notification` event](https://code.claude.com/docs/en/hooks) and send that wherever you'll actually see it.
+
+None of these are big projects. Most of them are a short script or a scheduled prompt, and agents are good at writing those too.
+
+##### [back to top](#top)
+
 ## Guardrails
 
 Agents are confident, and they're confident about things that stopped being true. The guardrail I lean on most is redundant verification. I have the agents double- and triple-check their assumptions throughout the work, even when nothing seems to have changed. Is that branch still where you think it is? Did another agent already merge something that touches this file? Does the test actually fail without your fix? It's cheap to ask an agent to check, and it's expensive when one builds an hour of work on a stale assumption.
@@ -249,6 +265,8 @@ The fan-out and the command centers came later for me. The grilling and the cros
 * [Claude Code overview](https://code.claude.com/docs/en/overview), Anthropic
 * [Create custom subagents](https://code.claude.com/docs/en/sub-agents), Claude Code docs
 * [Agent skills](https://code.claude.com/docs/en/skills), Claude Code docs
+* [Hooks reference](https://code.claude.com/docs/en/hooks), Claude Code docs
+* [Claude Code on the web](https://code.claude.com/docs/en/claude-code-on-the-web), Claude Code docs
 * [Plugins](https://code.claude.com/docs/en/plugins), Claude Code docs
 * [Introduction to the Model Context Protocol](https://modelcontextprotocol.io/introduction)
 * [Codex](https://developers.openai.com/codex), OpenAI
