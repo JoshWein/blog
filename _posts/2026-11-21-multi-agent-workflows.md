@@ -349,6 +349,59 @@ Tests aren't one thing, though. They come in a lot of strengths, and the more of
 
 Lauren Tan's talk ["All Code Is Slop (Except Mine)"](https://ai.engineer/code/2026/talks/lauren-tan) is a good tour of the strong end. Her team has agents drive the real app to verify their changes, uses property-based testing on the UI, and has used [TLA+](https://lamport.azurewebsites.net/tla/tla.html) model checking and [Lean](https://lean-lang.org/) proofs on the parts that really can't break. She's also clear that formal verification is "not a silver bullet". You don't need every rung on every project. The point is to know the ladder exists and to climb it where the risk is.
 
+It also helps to think about all of this as Swiss cheese. The [Swiss cheese model](https://en.wikipedia.org/wiki/Swiss_cheese_model) comes from accident analysis in fields like aviation and healthcare. Every layer of defense has holes, and as the article puts it, "the system produces failures when holes in each slice momentarily align." A "make no mistakes" line in a prompt is a layer, just a very holey one. AGENTS.md and skills are a little better. Lint, types, tests, a review from a different model, and my own read all have holes too, just in different places. No single layer has to be perfect. The goal is to stack enough different ones that a bug has to get lucky at every single one of them. Security people call the same idea [defense in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)).
+
+<figure class="diagram">
+<svg viewBox="0 0 720 290" role="img" aria-labelledby="sc-t sc-d">
+  <title id="sc-t">Swiss cheese layers stopping bugs</title>
+  <desc id="sc-d">Bugs travel left to right through six layers of defense, each drawn as a slice of cheese with holes. The first two layers, a "make no mistakes" prompt and AGENTS.md with skills, are full of holes and every bug gets through them. Lint and type checks stop the first bug. Tests stop the second. A review by a different model stops the third. The last bug makes it all the way to me, and I catch it.</desc>
+  <rect class="slice soft" x="110" y="35" width="36" height="185" rx="6"/>
+  <ellipse class="hole" cx="128" cy="60" rx="11" ry="9"/>
+  <ellipse class="hole" cx="128" cy="105" rx="11" ry="9"/>
+  <ellipse class="hole" cx="128" cy="150" rx="11" ry="9"/>
+  <ellipse class="hole" cx="128" cy="195" rx="11" ry="9"/>
+  <ellipse class="hole" cx="128" cy="128" rx="7" ry="5"/>
+  <ellipse class="hole" cx="128" cy="212" rx="6" ry="4"/>
+  <text class="sub" x="128" y="240" text-anchor="middle">"make no</text>
+  <text class="sub" x="128" y="256" text-anchor="middle">mistakes"</text>
+  <rect class="slice soft" x="210" y="35" width="36" height="185" rx="6"/>
+  <ellipse class="hole" cx="228" cy="60" rx="11" ry="9"/>
+  <ellipse class="hole" cx="228" cy="105" rx="11" ry="9"/>
+  <ellipse class="hole" cx="228" cy="150" rx="11" ry="9"/>
+  <ellipse class="hole" cx="228" cy="195" rx="11" ry="9"/>
+  <ellipse class="hole" cx="228" cy="128" rx="7" ry="5"/>
+  <ellipse class="hole" cx="228" cy="212" rx="6" ry="4"/>
+  <text class="sub" x="228" y="240" text-anchor="middle">AGENTS.md</text>
+  <text class="sub" x="228" y="256" text-anchor="middle">and skills</text>
+  <rect class="slice hard" x="310" y="35" width="36" height="185" rx="6"/>
+  <ellipse class="hole" cx="328" cy="105" rx="11" ry="9"/>
+  <ellipse class="hole" cx="328" cy="150" rx="11" ry="9"/>
+  <ellipse class="hole" cx="328" cy="195" rx="11" ry="9"/>
+  <text class="sub" x="328" y="240" text-anchor="middle">lint and</text>
+  <text class="sub" x="328" y="256" text-anchor="middle">types</text>
+  <rect class="slice hard" x="410" y="35" width="36" height="185" rx="6"/>
+  <ellipse class="hole" cx="428" cy="150" rx="11" ry="9"/>
+  <ellipse class="hole" cx="428" cy="195" rx="11" ry="9"/>
+  <text class="sub" x="428" y="240" text-anchor="middle">tests</text>
+  <rect class="slice mid" x="510" y="35" width="36" height="185" rx="6"/>
+  <ellipse class="hole" cx="528" cy="195" rx="11" ry="9"/>
+  <text class="sub" x="528" y="240" text-anchor="middle">review by</text>
+  <text class="sub" x="528" y="256" text-anchor="middle">another model</text>
+  <rect class="slice mid" x="610" y="35" width="36" height="185" rx="6"/>
+  <text class="sub" x="628" y="240" text-anchor="middle">me</text>
+  <g class="blocked"><path d="M295 55 L305 65 M305 55 L295 65"/></g>
+  <g class="blocked"><path d="M395 100 L405 110 M405 100 L395 110"/></g>
+  <g class="blocked"><path d="M495 145 L505 155 M505 145 L495 155"/></g>
+  <g class="blocked"><path d="M595 190 L605 200 M605 190 L595 200"/></g>
+  <g class="bug" style="offset-path: path('M20 60 H300'); animation-delay:-6s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
+  <g class="bug" style="offset-path: path('M20 105 H400'); animation-delay:-4.5s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
+  <g class="bug" style="offset-path: path('M20 150 H500'); animation-delay:-3s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
+  <g class="bug" style="offset-path: path('M20 195 H600'); animation-delay:-1.5s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
+  <text class="sub" x="20" y="25">bugs</text>
+</svg>
+<figcaption>every layer has holes; the trick is stacking enough different ones that the holes rarely line up</figcaption>
+</figure>
+
 The habit I'm trying to build: when a reviewer, human or model, flags the same kind of problem twice, ask whether it could be a check instead of a comment. A lint rule or a test catches it every time, for free, and nobody has to remember it.
 
 Most of the time you still want the agent to use its judgment. The deterministic layer is for the short list of things where judgment isn't the point.
@@ -485,6 +538,7 @@ Anthropic's advice in [Building effective agents](https://www.anthropic.com/rese
 * [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system), Anthropic (2025)
 * [The TLA+ home page](https://lamport.azurewebsites.net/tla/tla.html), Leslie Lamport
 * [Lean](https://lean-lang.org/), the Lean theorem prover
+* [Swiss cheese model](https://en.wikipedia.org/wiki/Swiss_cheese_model) and [Defense in depth (computing)](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)), Wikipedia
 * [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices), Claude Code docs
 * [Run parallel sessions with worktrees](https://code.claude.com/docs/en/worktrees), Claude Code docs
 * [git-worktree documentation](https://git-scm.com/docs/git-worktree), Git
