@@ -105,31 +105,7 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
 
 The part that took me a while to figure out is the standing instruction. Without one, an agent finishes its task, reports back, and sits there until I notice. Now I almost always tell the coordinator something like "when a task is done, keep picking up the next unblocked piece of work". That one sentence turns a batch of tasks into a queue that drains itself. "Unblocked" is the important word. It keeps agents from grabbing work that depends on something another agent hasn't finished yet.
 
-The other thing that makes fan-out work is splitting along boundaries that don't overlap. Two agents editing the same file at the same time will make a mess, the same way two people would. If the plan can't be split cleanly, I'd rather run fewer agents. When agents do need to work in the same repo at the same time, give each one its own checkout.
-
-### Git worktrees
-
-[Git worktrees](https://git-scm.com/docs/git-worktree) are the cheap way to do that. A worktree is a second (or tenth) working directory attached to the same repository. Each one usually has its own branch and its own files, but they all share the same history and objects, so you're not cloning the repo again or downloading history again. One agent can be halfway through a refactor in one folder while another runs tests on a bug fix in the next, and neither one sees the other's half-finished edits.
-
-{% highlight bash %}
-# a new folder on a new branch, next to your main checkout
-git worktree add ../myrepo-ticket-42 -b ticket-42
-
-# see what's checked out where
-git worktree list
-
-# clean up when the PR merges
-git worktree remove ../myrepo-ticket-42
-{% endhighlight %}
-
-Claude Code has this built in. Its [worktree docs](https://code.claude.com/docs/en/worktrees) describe each session getting "a separate copy of the files to edit, so one session can build a feature while a second fixes a bug." You can start a session with `claude --worktree`, ask Claude to "use worktrees for your agents" so each subagent gets its own, or set `isolation: worktree` on a custom subagent so it always does. If a subagent's worktree ends up with no changes, Claude Code removes it on its own.
-
-A few things to know before you lean on them:
-
-* **A worktree is a fresh checkout.** Untracked files like `.env` aren't there. Claude Code can copy them over if you list them in a `.worktreeinclude` file.
-* **Dependencies and build caches aren't shared.** Each worktree needs its own install and its own first build, which is why I still keep long-lived local checkouts for big repos that are slow to set up.
-* **Git won't check out the same branch in two worktrees at once.** That's a feature. Each ticket gets its own branch.
-* **They pile up.** Remove them when the work merges, or have a cleanup script do it for you (more on that below).
+The other thing that makes fan-out work is splitting along boundaries that don't overlap. Two agents editing the same file at the same time will make a mess, the same way two people would. If the plan can't be split cleanly, I'd rather run fewer agents. When agents do need to work in the same repo at the same time, give each one its own checkout. [Git worktrees](https://git-scm.com/docs/git-worktree) are the cheap way to do that: extra working folders attached to the same repo, each on its own branch, and Claude Code can [set them up for you](https://code.claude.com/docs/en/worktrees). Once you're running a lot of agents, it's probably worth keeping a pool of worktrees that are already set up and get reused between tickets, so each new agent doesn't wait on a fresh install and first build. [treehouse](https://github.com/kunchenguid/treehouse) is one tool that manages a pool like that.
 
 [back to top](#top)
 {: .back-top}
@@ -407,6 +383,7 @@ Anthropic's advice in [Building effective agents](https://www.anthropic.com/rese
 * [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices), Claude Code docs
 * [Run parallel sessions with worktrees](https://code.claude.com/docs/en/worktrees), Claude Code docs
 * [git-worktree documentation](https://git-scm.com/docs/git-worktree), Git
+* [treehouse](https://github.com/kunchenguid/treehouse), a pool of reusable git worktrees for agents
 * Panickssery, Bowman and Feng, ["LLM Evaluators Recognize and Favor Their Own Generations"](https://arxiv.org/abs/2404.13076) (2024)
 * Du et al., ["Improving Factuality and Reasoning in Language Models through Multiagent Debate"](https://arxiv.org/abs/2305.14325) (2023)
 * Shinn et al., ["Reflexion: Language Agents with Verbal Reinforcement Learning"](https://arxiv.org/abs/2303.11366) (2023)
