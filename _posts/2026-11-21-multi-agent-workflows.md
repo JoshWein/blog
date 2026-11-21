@@ -180,7 +180,7 @@ Here's a made-up example of the kind of thing I mean:
     <div class="card done">lint cleanup<small>merged</small></div>
   </div>
 </div>
-<figcaption>an example command center (made up for this post)</figcaption>
+<figcaption>an example command center</figcaption>
 </figure>
 
 The "needs me" column is the one that matters. Agents are fast, so I'm usually the bottleneck, and anything that shows me where I'm holding things up pays for itself.
@@ -210,7 +210,7 @@ The second half of that is making agents loud about their assumptions. I put ins
 
 I think of it like an airport. It's good to know which runway a pilot plans to land on, and which way they'll taxi once they're down, before it happens rather than after. Nobody in the tower is assuming the pilot is bad. It's that saying the plan out loud is how two planes find out they were headed for the same spot.
 
-The other guardrails are the ones I've already mentioned. Grill before building so the agents aren't guessing. Split work so agents don't collide. Review with a different model than the one that wrote the code. And I still read every PR myself before it merges.
+The other guardrails are the ones I've already mentioned. Grill before building so the agents aren't guessing. Split work so agents don't collide. Review with a different model than the one that wrote the code. And I still read every PR myself before it merges. I even reviewed this entire blog post before posting it!
 
 ##### [back to top](#top)
 
