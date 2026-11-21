@@ -244,16 +244,16 @@ I think of it like an airport. It's good to know which runway a pilot plans to l
 
 <figure class="diagram">
 <svg viewBox="0 0 720 245" role="img" aria-labelledby="rw-t rw-d">
-  <title id="rw-t">Agents announcing their plans before landing</title>
-  <desc id="rw-d">Two agents approach the same runway. Each one states out loud where it plans to land and what it assumes: agent 1 is landing on auth.ts and assumes main is up to date, agent 2 is also landing on auth.ts and assumes nobody else is editing it. Both calls go to the tower, which is me, a reviewer, or another agent. The tower sees they picked the same spot and holds agent 2, which waits while agent 1 taxis in.</desc>
+  <title id="rw-t">Two planes radioing their plans before landing</title>
+  <desc id="rw-d">Two planes approach the same runway from opposite ends. Plane 1 radios that it is landing on runway 2 from the west. Plane 2 radios that it is also landing on runway 2, from the other direction. Both calls go to the tower, which stands for me, a reviewer, or another agent. The tower hears that they picked the same runway and tells plane 2 to hold while plane 1 lands.</desc>
   <rect class="box" x="10" y="15" width="230" height="78" rx="4"/>
-  <text class="lbl" x="125" y="40" text-anchor="middle">agent 1 says</text>
-  <text class="sub" x="125" y="60" text-anchor="middle">landing on: auth.ts</text>
-  <text class="sub" x="125" y="78" text-anchor="middle">assuming: main is up to date</text>
+  <text class="lbl" x="125" y="40" text-anchor="middle">plane 1 radios in</text>
+  <text class="sub" x="125" y="60" text-anchor="middle">"landing on runway 2,</text>
+  <text class="sub" x="125" y="78" text-anchor="middle">coming in from the west"</text>
   <rect class="box" x="480" y="15" width="230" height="78" rx="4"/>
-  <text class="lbl" x="595" y="40" text-anchor="middle">agent 2 says</text>
-  <text class="sub" x="595" y="60" text-anchor="middle">landing on: auth.ts</text>
-  <text class="sub" x="595" y="78" text-anchor="middle">assuming: nobody else edits it</text>
+  <text class="lbl" x="595" y="40" text-anchor="middle">plane 2 radios in</text>
+  <text class="sub" x="595" y="60" text-anchor="middle">"also landing on runway 2,</text>
+  <text class="sub" x="595" y="78" text-anchor="middle">from the other direction"</text>
   <path class="wire" d="M240 54 H280"/><path class="flow" d="M240 54 H280"/>
   <path class="wire" d="M480 54 H440"/><path class="flow" d="M480 54 H440" style="animation-delay:-.8s"/>
   <rect class="box hot" x="280" y="15" width="160" height="78" rx="4"/>
@@ -262,14 +262,14 @@ I think of it like an airport. It's good to know which runway a pilot plans to l
   <text class="sub" x="360" y="78" text-anchor="middle">or another agent</text>
   <path class="wire" d="M360 93 V115"/><path class="flow" d="M360 93 V115" style="animation-delay:-.4s"/>
   <g class="pulse"><rect class="alert" x="230" y="115" width="260" height="50" rx="4"/></g>
-  <text class="lbl" x="360" y="137" text-anchor="middle">same spot: hold agent 2</text>
+  <text class="lbl" x="360" y="137" text-anchor="middle">same runway: plane 2, hold</text>
   <text class="sub" x="360" y="155" text-anchor="middle">caught before anyone lands</text>
   <path class="wire" d="M60 93 V190" stroke-dasharray="3 4"/>
   <path class="wire" d="M660 93 V190" stroke-dasharray="3 4"/>
   <rect class="runway" x="10" y="190" width="700" height="44" rx="3"/>
   <line class="rwline" x1="20" y1="212" x2="700" y2="212"/>
   <rect class="spot" x="315" y="192" width="90" height="40" rx="3"/>
-  <text class="rwlbl" x="360" y="227" text-anchor="middle">auth.ts</text>
+  <text class="rwlbl" x="360" y="227" text-anchor="middle">runway 2</text>
   <g transform="translate(60 212)"><g class="taxi"><path class="plane" d="M-18 -2 L12 -2 Q20 0 12 2 L-18 2 Z M-2 -2 L-10 -15 L-4 -15 L8 -2 Z M-2 2 L-10 15 L-4 15 L8 2 Z M-16 -2 L-21 -9 L-17 -9 L-11 -2 Z M-16 2 L-21 9 L-17 9 L-11 2 Z"/></g></g>
   <g transform="translate(660 212) scale(-1 1)"><g><path class="plane" d="M-18 -2 L12 -2 Q20 0 12 2 L-18 2 Z M-2 -2 L-10 -15 L-4 -15 L8 -2 Z M-2 2 L-10 15 L-4 15 L8 2 Z M-16 -2 L-21 -9 L-17 -9 L-11 -2 Z M-16 2 L-21 9 L-17 9 L-11 2 Z"/></g></g>
 </svg>
