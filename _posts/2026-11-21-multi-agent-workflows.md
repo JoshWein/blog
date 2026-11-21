@@ -8,7 +8,7 @@ description: 'Most of my code is written by agents now, and the job has turned i
 
 A year ago I'd have described my job as writing code. Now it's closer to running a small team. On a normal day I have a few agents working at once, each on a different part of the plan, and most of my time goes into deciding what they should work on, unblocking them, and reviewing what comes back.
 
-I do this at work, where I'm a tech lead, and on my own projects. Earlier this month I used it to clean up this site, the blog, and a pile of old side projects. In about three days that came to around 40 merged pull requests across the two repos, each one opened by an agent and reviewed before I merged it.
+I do this at work, where I'm a tech lead, and on my own projects. Earlier this month I used it to clean up this site and its blog, plus a pile of old side projects that live on the site. In about three days that came to around 40 merged pull requests across the site and blog repos, each one opened by an agent and reviewed before I merged it.
 
 This post covers how that workflow fits together. It's for people who already use agents, and also for people who've only tried a chat window and wonder what the fuss is about. I'll keep work examples generic. The workflow is the interesting part anyway.
 
@@ -104,7 +104,7 @@ A model reviewing its own work tends to agree with itself. It made its choices f
 In practice it goes one of two ways:
 
 * Claude writes the code and asks Codex to review it.
-* Codex writes the code, and then a separate Claude session and Codex both review it.
+* Codex writes the code, and then a separate Claude session and a fresh Codex session both review it. That way there's always at least one reviewer that isn't the model that wrote it.
 
 Either way, the review comments go back to whoever wrote the code, they fix it, and it goes around again until the reviewers stop finding real problems. Only then does a PR get opened, and then the automated PR reviews run on top and get addressed too. On my personal projects, every PR also gets a final review from a separate, cheaper model before I merge.
 
@@ -121,7 +121,7 @@ Either way, the review comments go back to whoever wrote the code, they fix it, 
   <text class="sub" x="155" y="36" text-anchor="middle">fix + re-review</text>
   <path class="wire" d="M535 100 C535 40 390 40 390 100"/>
   <path class="flow" d="M535 100 C535 40 390 40 390 100" style="animation-delay:-.8s"/>
-  <text class="sub" x="462" y="36" text-anchor="middle">address comments</text>
+  <text class="sub" x="462" y="36" text-anchor="middle">fix + re-run</text>
   <rect class="box" x="20" y="100" width="110" height="60" rx="4"/>
   <text class="lbl" x="75" y="128" text-anchor="middle">write</text>
   <text class="sub" x="75" y="146" text-anchor="middle">model A</text>

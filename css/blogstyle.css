@@ -131,7 +131,7 @@ footer a:hover { color: var(--green); }
 .cc .run small::before { content: "● "; color: var(--green); animation: pulse 1.6s ease-in-out infinite; }
 .cc .wait { border-left-color: #f2c27b; }
 .cc .done { border-left-color: var(--green-dark); opacity: .7; }
-@media (max-width: 760px) { .cc { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) { .cc { grid-template-columns: 1fr 1fr; } .diagram .lbl { font-size: 17px; } .diagram .sub { font-size: 13px; } }
 @media (prefers-reduced-motion: reduce) {
   .diagram .flow, .diagram .pulse, .cc .run small::before { animation: none; }
 }
