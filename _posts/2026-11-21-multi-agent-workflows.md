@@ -93,10 +93,10 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
   <rect class="box" x="600" y="120" width="100" height="60" rx="4"/>
   <text class="lbl" x="650" y="148" text-anchor="middle">PRs</text>
   <circle class="dot pulse" cx="650" cy="166" r="4"/>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 45 432 45'); animation-delay: 0s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#1</text></g>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 115 432 115'); animation-delay: 2s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#2</text></g>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 185 432 185'); animation-delay: 4s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#3</text></g>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 255 432 255'); animation-delay: 6s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#4</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 45 396 45'); animation-delay: 0s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#1</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 115 396 115'); animation-delay: 2s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#2</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 185 396 185'); animation-delay: 4s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#3</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 255 396 255'); animation-delay: 6s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#4</text></g>
 </svg>
 <figcaption>tickets come off the queue, the coordinator hands them out, and several agents work at once</figcaption>
 </figure>
@@ -251,7 +251,7 @@ So when something has to always happen, or never happen, I try to move it out of
 
 * **Tests, type checks and linters** that the agent has to get green before it says it's done. "Done" means the checks pass, not that the agent says it's done.
 * **[Hooks](https://code.claude.com/docs/en/hooks-guide)** that run at fixed points in the agent's loop, like formatting every file it edits or blocking edits to generated code. In the docs' words, "certain actions always happen rather than relying on the LLM to choose to run them."
-* **CI and branch protection** as the last word. No matter what any agent or reviewer thinks, nothing merges without passing checks and a person approving it.
+* **CI and branch protection** as the last word. No matter what any agent or reviewer thinks, nothing merges without passing checks, and anything that isn't set up to auto-merge needs a person to approve it.
 * **Scripts for checkable assumptions.** If an assumption can be checked with a script, like whether the branch is up to date or whether a config value exists, a script beats asking the agent to remember to check.
 
 The habit I'm trying to build: when a reviewer, human or model, flags the same kind of problem twice, ask whether it could be a check instead of a comment. A lint rule or a test catches it every time, for free, and nobody has to remember it.
@@ -273,8 +273,8 @@ Right now I'm the last step on most PRs, but not all of them. For certain projec
   <path class="wire" d="M290 95 H330"/><path class="flow" d="M290 95 H330" style="animation-delay:-.5s"/>
   <path class="wire" d="M490 95 C510 95 510 45 530 45"/><path class="flow" d="M490 95 C510 95 510 45 530 45" style="animation-delay:-1s"/>
   <path class="wire" d="M490 95 C510 95 510 150 530 150"/>
-  <text class="sub" x="512" y="60" text-anchor="end">yes</text>
-  <text class="sub" x="512" y="140" text-anchor="end">no</text>
+  <text class="sub" x="498" y="62" text-anchor="end">yes</text>
+  <text class="sub" x="498" y="138" text-anchor="end">no</text>
   <text class="sub" x="310" y="88" text-anchor="middle">yes</text>
   <path class="wire" d="M220 125 C220 190 60 190 60 125" stroke-dasharray="4 4"/>
   <path class="wire" d="M54 135 L60 125 L66 135"/>

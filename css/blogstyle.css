@@ -175,6 +175,7 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 /* mock command center: sticky notes */
 .cc { font-family: var(--sans); font-size: 13px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .cc .col { min-width: 0; }
+.cc.two { grid-template-columns: 1fr 1fr; } /* two-column comparison figure */
 .cc .cc-h { margin: 0 0 8px; font-family: var(--head); font-size: 14px; font-weight: 700; color: var(--ink); }
 .cc .card { background: var(--bg); border: 1px solid var(--line); border-radius: 3px; padding: 7px 9px; margin-bottom: 8px; color: var(--ink); overflow-wrap: anywhere; }
 .cc .card small { display: block; color: var(--muted); font-size: 12px; }
@@ -193,8 +194,10 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 .diagram .ticket rect { fill: var(--wait-bg); stroke: var(--wait-line); stroke-width: 1.2; }
 .diagram .ticket text { fill: var(--wait-text); font-size: 11px; font-family: var(--mono); }
 .diagram .qtop { animation: qpull 2s ease-in-out infinite; }
-.diagram .mover { opacity: 0; offset-rotate: 0deg; offset-distance: 0%; animation: pull 8s ease-in-out infinite; }
+.diagram .mover { display: none; }
+@supports (offset-path: path('M0 0')) {
+  .diagram .mover { display: inline; opacity: 0; offset-rotate: 0deg; offset-distance: 0%; animation: pull 8s ease-in-out infinite; }
+}
 @keyframes qpull { 0%, 100% { opacity: 1; } 8% { opacity: .15; } 40% { opacity: 1; } }
 @keyframes pull { 0% { offset-distance: 0%; opacity: 0; } 4% { opacity: 1; } 22% { offset-distance: 100%; opacity: 1; } 28%, 100% { offset-distance: 100%; opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .diagram .qtop { animation: none; } .diagram .mover { display: none; } }
-.cc.two { grid-template-columns: 1fr 1fr; }
