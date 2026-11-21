@@ -1,20 +1,41 @@
-/* Dark Rouge/Pygments theme in the site palette */
-.highlight { background: transparent; color: #dfe6e2; }
-.highlight .c, .highlight .cm, .highlight .c1, .highlight .cs { color: #8a9791; font-style: italic }
-.highlight .cp { color: #9fb4ab }
-.highlight .err { color: #ff8a80 }
-.highlight .k, .highlight .kc, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr { color: #45ce93; font-weight: 500 }
-.highlight .kt, .highlight .nc, .highlight .nn { color: #8fd8ff }
-.highlight .o, .highlight .ow { color: #c3cec9 }
-.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo { color: #f2c27b }
-.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .se, .highlight .sh, .highlight .si, .highlight .sx, .highlight .s1, .highlight .ss, .highlight .sr { color: #c6e88a }
-.highlight .nf, .highlight .fm { color: #edffff; font-weight: 500 }
-.highlight .na, .highlight .nb, .highlight .bp { color: #62ce9b }
-.highlight .nt { color: #45ce93 }
-.highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi { color: #dfe6e2 }
-.highlight .gd { color: #ff8a80 }
-.highlight .gi { color: #c6e88a }
+/* Light Rouge/Pygments theme */
+.highlight { background: transparent; color: #1f2328; }
+.highlight .c, .highlight .cm, .highlight .c1, .highlight .cs { color: #5c6662; font-style: italic }
+.highlight .cp { color: #4d5a55 }
+.highlight .err { color: #b3261e }
+.highlight .k, .highlight .kc, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr { color: #0b6b42; font-weight: 600 }
+.highlight .kt, .highlight .nc, .highlight .nn { color: #1c5aa0 }
+.highlight .o, .highlight .ow { color: #3d4440 }
+.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo { color: #8f4a00 }
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .se, .highlight .sh, .highlight .si, .highlight .sx, .highlight .s1, .highlight .ss, .highlight .sr { color: #8a2f12 }
+.highlight .nf, .highlight .fm { color: #111; font-weight: 600 }
+.highlight .na, .highlight .nb, .highlight .bp { color: #0b6463 }
+.highlight .nt { color: #0b6b42 }
+.highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi { color: #1f2328 }
+.highlight .gd { color: #b3261e }
+.highlight .gi { color: #0b6b42 }
 .highlight .ge { font-style: italic }
 .highlight .gs { font-weight: bold }
-.highlight .gh, .highlight .gu { color: #8f9a95 }
-.highlight .w { color: #4a524e }
+.highlight .gh, .highlight .gu { color: #5c6662 }
+.highlight .w { color: #8a918e }
+
+/* Dark mode syntax colors */
+@media (prefers-color-scheme: dark) {
+  .highlight { color: #dfe6e2; }
+  .highlight .c, .highlight .cm, .highlight .c1, .highlight .cs { color: #93a19b }
+  .highlight .cp { color: #a6b9b1 }
+  .highlight .err { color: #ff9a90 }
+  .highlight .k, .highlight .kc, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr { color: #6fdca6 }
+  .highlight .kt, .highlight .nc, .highlight .nn { color: #8fd0ff }
+  .highlight .o, .highlight .ow { color: #c3cec9 }
+  .highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo { color: #f2c27b }
+  .highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .se, .highlight .sh, .highlight .si, .highlight .sx, .highlight .s1, .highlight .ss, .highlight .sr { color: #c6e88a }
+  .highlight .nf, .highlight .fm { color: #f2f6fa }
+  .highlight .na, .highlight .nb, .highlight .bp { color: #7fd6cf }
+  .highlight .nt { color: #6fdca6 }
+  .highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi { color: #dfe6e2 }
+  .highlight .gd { color: #ff9a90 }
+  .highlight .gi { color: #c6e88a }
+  .highlight .gh, .highlight .gu { color: #97a5b4 }
+  .highlight .w { color: #6b7782 }
+}
