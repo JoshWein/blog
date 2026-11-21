@@ -195,6 +195,8 @@ Here's a made-up example of the kind of thing I mean:
 
 The "needs me" column is the one that matters. Agents are fast, so I'm usually the bottleneck, and anything that shows me where I'm holding things up pays for itself.
 
+The other half of keeping this manageable is protecting my own focus. Even with several projects going at once, I try to keep things smooth instead of overwhelming. I give each project a longer chunk of focus rather than bouncing between all of them every few minutes. The agents don't mind waiting a bit, but every switch costs me time to reload where things stand, and with enough of them, that overhead eats most of the time the agents saved.
+
 [back to top](#top)
 {: .back-top}
 
