@@ -10,7 +10,7 @@ A year ago I'd have described my job as writing code (not really, but I'd like t
 
 I do this at work, where I'm a tech lead, and on my own projects. Earlier this month I used it to clean up this site and its blog, plus a pile of old side projects that live on the site. The amount of work I can get through has gone up a lot, both there and at work, and every change was still opened as a pull request by an agent and reviewed before I merged it.
 
-This post covers how that workflow fits together. It's for people who already use agents, and also for people who've only tried a chat window and wonder what the fuss is about.
+This post covers how that workflow fits together. It's for people who already use agents, and also for people who've only tried a chat window and wonder what the fuss is about. But it's actually mainly for me, as a living document that I can update as things change.
 
 * [The tools](#the-tools)
 * [Get grilled before anything gets built](#get-grilled-before-anything-gets-built)
