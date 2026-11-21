@@ -20,7 +20,7 @@ This post covers how that workflow fits together. It's for people who already us
 * [Automate the friction away](#automate-the-friction-away)
 * [Guardrails](#guardrails)
 * [Deterministic validation](#deterministic-validation)
-* [Next step: auto-merging](#next-step-auto-merging)
+* [Auto-merging](#auto-merging)
 * [Packaging what works](#packaging-what-works)
 * [What I want to try next](#what-i-want-to-try-next)
 * [This is a leadership problem too](#this-is-a-leadership-problem-too)
@@ -153,7 +153,7 @@ Either way, the review comments go back to whoever wrote the code, they fix it, 
 <figcaption>two review loops before the PR reaches me</figcaption>
 </figure>
 
-None of this means I stop reviewing. I still review every PR my agents generate, because every so often an obvious, confidently wrong mistake makes it through all of the automated reviews. What the loops buy me is that by the time a PR reaches me, most of the small stuff is gone and I can spend my attention on whether the change is the right one.
+None of this means I stop reviewing. I still review most of the PRs my agents generate, and all of the ones that change real code, because every so often an obvious, confidently wrong mistake makes it through all of the automated reviews. What the loops buy me is that by the time a PR reaches me, most of the small stuff is gone and I can spend my attention on whether the change is the right one.
 
 [back to top](#top)
 {: .back-top}
@@ -218,7 +218,7 @@ The second half of that is making agents loud about their assumptions. I put ins
 
 I think of it like an airport. It's good to know which runway a pilot plans to land on, and which way they'll taxi once they're down, before it happens rather than after. Nobody in the tower is assuming the pilot is bad. It's that saying the plan out loud is how two planes find out they were headed for the same spot.
 
-The other guardrails are the ones I've already mentioned. Grill before building so the agents aren't guessing. Split work so agents don't collide. Review with a different model than the one that wrote the code. And I still read every PR myself before it merges. I even reviewed this entire blog post before posting it!
+The other guardrails are the ones I've already mentioned. Grill before building so the agents aren't guessing. Split work so agents don't collide. Review with a different model than the one that wrote the code. And I still read most PRs myself before they merge. I even reviewed this entire blog post before posting it!
 
 [back to top](#top)
 {: .back-top}
@@ -241,11 +241,11 @@ Most of the time you still want the agent to use its judgment. The deterministic
 [back to top](#top)
 {: .back-top}
 
-## Next step: auto-merging
+## Auto-merging
 
-Right now I'm the last step on every PR. The obvious next step is to stop being the last step on some of them.
+Right now I'm the last step on most PRs, but not all of them. For certain projects, and for docs, we already auto-merge.
 
-Docs are where I'd start. A change to a README or a doc comment is low risk, easy to revert, and the reviewer loops and checks above already catch most problems in it. Once those pass, there's not much left for me to add by clicking merge. GitHub's [auto-merge](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/automatically-merging-a-pull-request) and [protected branch rules](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) get you most of the way there: require the checks to pass, and have a small workflow turn on auto-merge for PRs whose changes are all docs.
+Docs are the easy place to start. A change to a README or a doc comment is low risk, easy to revert, and the reviewer loops and checks above already catch most problems in it. Once those pass, there's not much left for me to add by clicking merge. GitHub's [auto-merge](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/automatically-merging-a-pull-request) and [protected branch rules](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) get you most of the way there: require the checks to pass, and have a small workflow turn on auto-merge for PRs whose changes are all docs.
 
 Docs are also becoming less important in the first place. A lot of documentation exists so the next person can understand the code without reading all of it. Agents are getting better and better at reading the code and its context directly, so they need less of that written down, and a stale doc matters less when nobody is relying on it.
 
