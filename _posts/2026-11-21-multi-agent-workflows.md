@@ -31,7 +31,7 @@ This post covers how that workflow fits together. It's for people who already us
 
 I'm not loyal to one tool. My main one is [Claude Code](https://code.claude.com/docs/en/overview), and I use OpenAI's [Codex](https://developers.openai.com/codex) a lot alongside it. When I run out of tokens on both, I drop to GitHub Copilot. For some kinds of web research I still just use ChatGPT in the browser, because it's good at that and doesn't need access to my code.
 
-The fact that I mix them matters more than which ones I pick. Different models make different mistakes, and that turns out to be the most useful thing about having more than one. More on that in the review section.
+The fact that I mix them matters more than which ones I pick. Different models make different mistakes, and that turns out to be the most useful thing about having more than one. More on that in the review section. This lineup will also probably look different in a few months. Every harness and model keeps improving, and whichever is best at a given job changes often, so I try not to get too attached.
 
 ## Get grilled before anything gets built
 
@@ -48,14 +48,14 @@ It feels slow for the first ten minutes. Then it saves hours, because every agen
 
 ## Fan out to parallel agents
 
-Once there's a plan, I usually have one session act as a coordinator. It splits the plan into areas that don't step on each other and starts a subagent for each one, all at the same time. Claude Code supports this directly: [subagents](https://code.claude.com/docs/en/sub-agents) each run in their own context window with their own instructions, so one can be deep in a migration while another writes tests and neither fills up the other's context with noise. Anthropic calls this the [orchestrator-workers](https://www.anthropic.com/research/building-effective-agents) pattern, where "a central LLM dynamically breaks down tasks, delegates them to worker LLMs, and synthesizes their results."
+Once there's a plan, I usually have one session act as a coordinator. It breaks the plan into tickets that don't step on each other, then hands each ticket to a generic worker agent, several at the same time. As the coordinator sees a worker finish, it passes that worker the next unblocked ticket. Claude Code supports this directly: [subagents](https://code.claude.com/docs/en/sub-agents) each run in their own context window with their own instructions, so one can be deep in a migration while another writes tests and neither fills up the other's context with noise. Anthropic calls this the [orchestrator-workers](https://www.anthropic.com/research/building-effective-agents) pattern, where "a central LLM dynamically breaks down tasks, delegates them to worker LLMs, and synthesizes their results."
 
 It isn't free. When Anthropic wrote up [their multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system), a lead agent with parallel subagents beat a single Claude Opus 4 agent by 90.2% on their internal research eval, but multi-agent systems used about 15 times more tokens than a normal chat. Fan-out buys you speed and coverage, and you pay for it in tokens.
 
 <figure class="diagram">
 <svg viewBox="0 0 720 320" role="img" aria-labelledby="fan-t fan-d">
   <title id="fan-t">Fan-out diagram</title>
-  <desc id="fan-d">I turn the plan into a queue of tickets. The coordinator pulls tickets off the queue one at a time and hands each to one of four agents working in parallel. Each agent opens a pull request, and when its work is done the loop goes back to the coordinator to pull the next unblocked ticket.</desc>
+  <desc id="fan-d">I turn the plan into a queue of tickets. The coordinator pulls tickets off the queue one at a time and hands each to one of four generic worker agents working in parallel. Each worker opens a pull request, and when a worker is done the coordinator passes it the next unblocked ticket.</desc>
   <path class="wire" d="M90 150 H110"/><path class="flow" d="M90 150 H110"/>
   <path class="wire" d="M230 150 H250"/><path class="flow" d="M230 150 H250" style="animation-delay:-.6s"/>
   <path class="wire" d="M370 150 C390 150 390 45 410 45"/><path class="flow" d="M370 150 C390 150 390 45 410 45" style="animation-delay:-0.0s"/>
@@ -68,8 +68,8 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
   <path class="wire" d="M550 255 C575 255 575 150 600 150"/>
   <path class="wire" d="M650 180 C650 340 310 340 310 180" stroke-dasharray="4 4"/>
   <path class="wire" d="M304 190 L310 180 L316 190"/>
-  <text class="sub" x="300" y="240" text-anchor="end">done? pull the next</text>
-  <text class="sub" x="300" y="256" text-anchor="end">unblocked ticket</text>
+  <text class="sub" x="300" y="240" text-anchor="end">worker done? it gets</text>
+  <text class="sub" x="300" y="256" text-anchor="end">the next ticket</text>
   <rect class="box" x="10" y="125" width="80" height="50" rx="4"/>
   <text class="lbl" x="50" y="148" text-anchor="middle">me</text>
   <text class="sub" x="50" y="164" text-anchor="middle">the plan</text>
@@ -83,13 +83,13 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
   <text class="lbl" x="310" y="148" text-anchor="middle">coordinator</text>
   <text class="sub" x="310" y="166" text-anchor="middle">assigns tickets</text>
   <rect class="box" x="410" y="20" width="140" height="50" rx="4"/>
-  <text class="lbl" x="480" y="50" text-anchor="middle">agent: api</text>
+  <text class="lbl" x="480" y="50" text-anchor="middle">worker agent</text>
   <rect class="box" x="410" y="90" width="140" height="50" rx="4"/>
-  <text class="lbl" x="480" y="120" text-anchor="middle">agent: ui</text>
+  <text class="lbl" x="480" y="120" text-anchor="middle">worker agent</text>
   <rect class="box" x="410" y="160" width="140" height="50" rx="4"/>
-  <text class="lbl" x="480" y="190" text-anchor="middle">agent: tests</text>
+  <text class="lbl" x="480" y="190" text-anchor="middle">worker agent</text>
   <rect class="box" x="410" y="230" width="140" height="50" rx="4"/>
-  <text class="lbl" x="480" y="260" text-anchor="middle">agent: docs</text>
+  <text class="lbl" x="480" y="260" text-anchor="middle">worker agent</text>
   <rect class="box" x="600" y="120" width="100" height="60" rx="4"/>
   <text class="lbl" x="650" y="148" text-anchor="middle">PRs</text>
   <circle class="dot pulse" cx="650" cy="166" r="4"/>
@@ -98,12 +98,36 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
   <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 185 396 185'); animation-delay: 4s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#3</text></g>
   <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 255 396 255'); animation-delay: 6s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#4</text></g>
 </svg>
-<figcaption>tickets come off the queue, the coordinator hands them out, and several agents work at once</figcaption>
+<figcaption>tickets come off the queue, the coordinator hands them out, and several worker agents work at once</figcaption>
 </figure>
 
 The part that took me a while to figure out is the standing instruction. Without one, an agent finishes its task, reports back, and sits there until I notice. Now I almost always tell the coordinator something like "when a task is done, keep picking up the next unblocked piece of work". That one sentence turns a batch of tasks into a queue that drains itself. "Unblocked" is the important word. It keeps agents from grabbing work that depends on something another agent hasn't finished yet.
 
-The other thing that makes fan-out work is splitting along boundaries that don't overlap. Two agents editing the same file at the same time will make a mess, the same way two people would. If the plan can't be split cleanly, I'd rather run fewer agents. When agents do need to work in the same repo at the same time, give each one its own checkout. [Git worktrees](https://code.claude.com/docs/en/worktrees) make that cheap: each session gets "a separate copy of the files to edit, so one session can build a feature while a second fixes a bug."
+The other thing that makes fan-out work is splitting along boundaries that don't overlap. Two agents editing the same file at the same time will make a mess, the same way two people would. If the plan can't be split cleanly, I'd rather run fewer agents. When agents do need to work in the same repo at the same time, give each one its own checkout.
+
+### Git worktrees
+
+[Git worktrees](https://git-scm.com/docs/git-worktree) are the cheap way to do that. A worktree is a second (or tenth) working directory attached to the same repository. Each one has its own branch and its own files, but they all share one `.git` directory, so you're not cloning the repo again or downloading history again. One agent can be halfway through a refactor in one folder while another runs tests on a bug fix in the next, and neither one sees the other's half-finished edits.
+
+{% highlight bash %}
+# a new folder on a new branch, next to your main checkout
+git worktree add ../myrepo-ticket-42 -b ticket-42
+
+# see what's checked out where
+git worktree list
+
+# clean up when the PR merges
+git worktree remove ../myrepo-ticket-42
+{% endhighlight %}
+
+Claude Code has this built in. Its [worktree docs](https://code.claude.com/docs/en/worktrees) describe each session getting "a separate copy of the files to edit, so one session can build a feature while a second fixes a bug." You can start a session with `claude --worktree`, ask Claude to "use worktrees for your agents" so each subagent gets its own, or set `isolation: worktree` on a custom subagent so it always does. Claude Code removes the temporary worktrees it makes for subagents on its own.
+
+A few things to know before you lean on them:
+
+* **A worktree is a fresh checkout.** Untracked files like `.env` aren't there. Claude Code can copy them over if you list them in a `.worktreeinclude` file.
+* **Dependencies and build caches aren't shared.** Each worktree needs its own install and its own first build, which is why I still keep long-lived local checkouts for big repos that are slow to set up.
+* **Git won't check out the same branch in two worktrees at once.** That's a feature. Each ticket gets its own branch.
+* **They pile up.** Remove them when the work merges, or have a cleanup script do it for you (more on that below).
 
 [back to top](#top)
 {: .back-top}
@@ -379,7 +403,8 @@ Anthropic's advice in [Building effective agents](https://www.anthropic.com/rese
 * [Building effective agents](https://www.anthropic.com/research/building-effective-agents), Anthropic (2024)
 * [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system), Anthropic (2025)
 * [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices), Claude Code docs
-* [Run parallel sessions with Git worktrees](https://code.claude.com/docs/en/worktrees), Claude Code docs
+* [Run parallel sessions with worktrees](https://code.claude.com/docs/en/worktrees), Claude Code docs
+* [git-worktree documentation](https://git-scm.com/docs/git-worktree), Git
 * Panickssery, Bowman and Feng, ["LLM Evaluators Recognize and Favor Their Own Generations"](https://arxiv.org/abs/2404.13076) (2024)
 * Du et al., ["Improving Factuality and Reasoning in Language Models through Multiagent Debate"](https://arxiv.org/abs/2305.14325) (2023)
 * Shinn et al., ["Reflexion: Language Agents with Verbal Reinforcement Learning"](https://arxiv.org/abs/2303.11366) (2023)
