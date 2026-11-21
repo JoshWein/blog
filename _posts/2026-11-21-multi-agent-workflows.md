@@ -36,7 +36,7 @@ The most common way agent work goes wrong for me isn't bad code. It's good code 
 
 So I start most real pieces of work by having the agent interview me. Matt Pocock has a set of open source [skills](https://github.com/mattpocock/skills) for this. His `grilling` skill tells the agent to "interview the user relentlessly about a plan, decision, or idea until every branch of the design tree is resolved". His `wayfinder` skill goes further for work that's too big for one session. It plans the work as "a shared map of decision tickets on the issue tracker" and resolves them one at a time.
 
-It feels slow for the first ten minutes. Then it saves hours, because every agent that picks up a piece of the plan later gets the answers instead of guesses. This post started the same way. The agent drafting it asked me two rounds of questions before it wrote anything.
+It feels slow for the first ten minutes. Then it saves hours, because every agent that picks up a piece of the plan later gets the answers instead of guesses.
 
 ##### [back to top](#top)
 
