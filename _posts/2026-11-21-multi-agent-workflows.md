@@ -153,7 +153,7 @@ Either way, the review comments go back to whoever wrote the code, they fix it, 
 <figcaption>two review loops before the PR reaches me</figcaption>
 </figure>
 
-None of this means I stop reviewing. I still review most of the PRs my agents generate, and all of the ones that change real code, because every so often an obvious, confidently wrong mistake makes it through all of the automated reviews. What the loops buy me is that by the time a PR reaches me, most of the small stuff is gone and I can spend my attention on whether the change is the right one.
+None of this means I stop reviewing. I still review most of the PRs my agents generate, because every so often an obvious, confidently wrong mistake makes it through all of the automated reviews. What the loops buy me is that by the time a PR reaches me, most of the small stuff is gone and I can spend my attention on whether the change is the right one.
 
 [back to top](#top)
 {: .back-top}
