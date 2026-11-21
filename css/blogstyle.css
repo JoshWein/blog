@@ -256,17 +256,18 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 .diagram .slice.mid { fill: var(--bg); stroke: var(--ink); }
 .diagram .hole { fill: var(--fig-bg); stroke: var(--wire); stroke-width: 1; }
 .diagram .blocked path { stroke: var(--bug); stroke-width: 2.5; stroke-linecap: round; opacity: .55; }
-.diagram .bug circle { fill: var(--bug); }
-.diagram .bug path { stroke: var(--bug); stroke-width: 1.6; stroke-linecap: round; }
+.diagram .bug circle, .diagram .bug-static circle { fill: var(--bug); }
+.diagram .bug path, .diagram .bug-static path { stroke: var(--bug); stroke-width: 1.6; stroke-linecap: round; }
 .diagram .bug { display: none; }
 @supports (offset-path: path('M0 0')) {
+  .diagram .bug-static { display: none; }
   .diagram .bug { display: inline; offset-rotate: 0deg; animation: bugrun 6s ease-in infinite; }
 }
 @keyframes bugrun {
   0% { offset-distance: 0%; opacity: 0; transform: scale(1); }
   5% { opacity: 1; }
   60% { offset-distance: 100%; opacity: 1; transform: scale(1); }
-  68% { offset-distance: 100%; opacity: .8; transform: scale(1.8, .5); }
-  80%, 100% { offset-distance: 100%; opacity: 0; transform: scale(2, .3); }
+  68% { offset-distance: 100%; opacity: .8; transform: scale(.5, 1.6); }
+  80%, 100% { offset-distance: 100%; opacity: 0; transform: scale(.3, 1.8); }
 }
-@media (prefers-reduced-motion: reduce) { .diagram .bug { display: none; } .diagram .blocked path { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .diagram .bug { display: none; } .diagram .bug-static { display: inline; } }

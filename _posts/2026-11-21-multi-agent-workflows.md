@@ -393,10 +393,14 @@ It also helps to think about all of this as Swiss cheese. The [Swiss cheese mode
   <g class="blocked"><path d="M395 100 L405 110 M405 100 L395 110"/></g>
   <g class="blocked"><path d="M495 145 L505 155 M505 145 L495 155"/></g>
   <g class="blocked"><path d="M595 190 L605 200 M605 190 L595 200"/></g>
-  <g class="bug" style="offset-path: path('M20 60 H300'); animation-delay:-6s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
+  <g class="bug" style="offset-path: path('M20 60 H300'); animation-delay:0s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
   <g class="bug" style="offset-path: path('M20 105 H400'); animation-delay:-4.5s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
   <g class="bug" style="offset-path: path('M20 150 H500'); animation-delay:-3s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
   <g class="bug" style="offset-path: path('M20 195 H600'); animation-delay:-1.5s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
+  <g class="bug-static" transform="translate(298 60)"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
+  <g class="bug-static" transform="translate(398 105)"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
+  <g class="bug-static" transform="translate(498 150)"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
+  <g class="bug-static" transform="translate(598 195)"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g>
   <text class="sub" x="20" y="25">bugs</text>
 </svg>
 <figcaption>every layer has holes; the trick is stacking enough different ones that the holes rarely line up</figcaption>
