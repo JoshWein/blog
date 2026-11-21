@@ -253,13 +253,13 @@ The other guardrails are the ones I've already mentioned. Grill before building 
 
 ## Deterministic validation
 
-Everything in the guardrails section is still an instruction, and an instruction is a request. Agents follow them nearly every time, but nearly isn't always. Anthropic's [Claude Code best practices](https://code.claude.com/docs/en/best-practices) split instructions into two kinds. Non-deterministic ones (your prompt, a CLAUDE.md file, a skill) are read by the model, and "there's no guarantee that it'll follow your instructions." Deterministic ones (hooks, deny rules, tests, CI, branch protection) are enforced by the tooling, and they apply "every time, no matter what the model decided to do."
+Everything in the guardrails section is still an instruction, and an instruction is a request. Agents follow them nearly every time, but nearly isn't always. Anthropic's [Claude Code best practices](https://code.claude.com/docs/en/best-practices) split instructions into two kinds. Non-deterministic ones (your prompt, an AGENTS.md file, a skill) are read by the model, and "there's no guarantee that it'll follow your instructions." Deterministic ones (hooks, deny rules, tests, CI, branch protection) are enforced by the tooling, and they apply "every time, no matter what the model decided to do."
 
 <figure class="diagram">
-<div class="cc two" role="img" aria-label="Two columns. Instructions the model decides whether to follow: your prompt, CLAUDE.md and skills, asking it to prove it's done, and its own summary of what it did. Rules the tooling enforces: tests and type checks, hooks, deny rules and the sandbox, and CI with branch protection.">
+<div class="cc two" role="img" aria-label="Two columns. Instructions the model decides whether to follow: your prompt, AGENTS.md and skills, asking it to prove it's done, and its own summary of what it did. Rules the tooling enforces: tests and type checks, hooks, deny rules and the sandbox, and CI with branch protection.">
   <div class="col"><p class="cc-h">the model decides</p>
     <div class="card wait">your prompt<small>usually followed</small></div>
-    <div class="card wait">CLAUDE.md and skills<small>usually followed</small></div>
+    <div class="card wait">AGENTS.md and skills<small>usually followed</small></div>
     <div class="card wait">"show me it's done"<small>usually followed</small></div>
     <div class="card wait">its own summary<small>usually right</small></div>
   </div>
