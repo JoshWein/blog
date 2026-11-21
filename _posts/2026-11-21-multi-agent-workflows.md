@@ -74,7 +74,8 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
     <path class="wire" d="M540 255 C570 255 570 150 600 150"/>
   </g>
   <path class="wire" d="M465 280 C465 298 250 298 250 180" stroke-dasharray="4 4"/>
-  <text class="sub" x="300" y="292">done? pick up more unblocked work</text>
+  <text class="sub" x="240" y="232" text-anchor="end">done? pick up</text>
+  <text class="sub" x="240" y="248" text-anchor="end">more unblocked work</text>
   <rect class="box" x="20" y="120" width="110" height="60" rx="4"/>
   <text class="lbl" x="75" y="148" text-anchor="middle">me</text>
   <text class="sub" x="75" y="166" text-anchor="middle">the plan</text>
