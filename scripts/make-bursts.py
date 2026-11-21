@@ -1,6 +1,6 @@
 # Generates css/bursts-{light,dark}.svg: wall-drawing style line bursts.
 # Usage: python3 scripts/make-bursts.py css   (same seed gives the same drawing)
-import random, math, sys
+import random, math, sys, os
 W, H = 1600, 1500
 r = random.Random(7)
 lines = []  # (x1,y1,x2,y2,color,width)
@@ -35,6 +35,7 @@ while len(lines) < 23 + 34:
     lines.append((x - L/2*math.cos(a), y - L/2*math.sin(a), x + L/2*math.cos(a), y + L/2*math.sin(a), col, 1.1 if col != "b" else 1.3))
 pal = {"light": {"b": "#2f5fb3", "r": "#d4483c", "y": "#e2b21c", "op": .5},
        "dark":  {"b": "#6f9be8", "r": "#ef7b6f", "y": "#f0cf5c", "op": .6}}
+os.makedirs(sys.argv[1], exist_ok=True)
 for mode, p in pal.items():
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" stroke-linecap="round" opacity="{p["op"]}">']
     for x1, y1, x2, y2, c, w in lines:
