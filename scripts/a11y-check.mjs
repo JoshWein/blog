@@ -25,7 +25,9 @@ async function htmlFiles(dir) {
 }
 
 const server = createServer(async (req, res) => {
-  let path = decodeURIComponent(new URL(req.url, "http://x").pathname);
+  let path;
+  try { path = decodeURIComponent(new URL(req.url, "http://x").pathname); }
+  catch { res.writeHead(400).end(); return; }
   if (path.endsWith("/")) path += "index.html";
   const file = resolve(root, "." + path);
   if (!file.startsWith(root + sep)) { res.writeHead(403).end(); return; }

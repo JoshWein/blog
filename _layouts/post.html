@@ -8,7 +8,7 @@ layout: default
 {% endif %}
 <script>
 // Code blocks that scroll sideways need to be reachable by keyboard
-// (axe: scrollable-region-focusable). Recheck when the width changes.
+// (axe: scrollable-region-focusable). Recheck when fonts load or the width changes.
 (function () {
   function mark() {
     document.querySelectorAll('.content pre').forEach(function (pre) {
@@ -18,5 +18,7 @@ layout: default
   }
   mark();
   window.addEventListener('resize', mark);
+  // Web fonts can widen lines after first paint.
+  if (document.fonts) document.fonts.ready.then(mark);
 })();
 </script>
