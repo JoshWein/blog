@@ -255,7 +255,7 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 .diagram .slice.hard { fill: var(--hl); stroke: var(--run-line); }
 .diagram .slice.mid { fill: var(--bg); stroke: var(--ink); }
 .diagram .hole { fill: var(--fig-bg); stroke: var(--wire); stroke-width: 1; }
-.diagram .blocked path, .diagram .bug-hit path { stroke: var(--bug); stroke-width: 2.5; stroke-linecap: round; }
+.diagram .blocked path, .diagram .bug .bug-hit path { stroke: var(--bug); stroke-width: 2.5; stroke-linecap: round; }
 .diagram .blocked path { opacity: .55; }
 .diagram .bug circle, .diagram .bug-static circle { fill: var(--bug); }
 .diagram .bug path, .diagram .bug-static path { stroke: var(--bug); stroke-width: 1.6; stroke-linecap: round; }
