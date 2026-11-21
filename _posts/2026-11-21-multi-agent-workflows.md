@@ -19,6 +19,7 @@ This post covers how that workflow fits together. It's for people who already us
 * [A throwaway command center](#a-throwaway-command-center)
 * [Automate the friction away](#automate-the-friction-away)
 * [Guardrails](#guardrails)
+* [Deterministic validation](#deterministic-validation)
 * [Packaging what works](#packaging-what-works)
 * [What I want to try next](#what-i-want-to-try-next)
 * [This is a leadership problem too](#this-is-a-leadership-problem-too)
@@ -213,6 +214,23 @@ The other guardrails are the ones I've already mentioned. Grill before building 
 
 ##### [back to top](#top)
 
+## Deterministic validation
+
+Everything in the guardrails section is still an instruction, and an instruction is a request. Agents follow them nearly every time, but nearly isn't always. Anthropic's [Claude Code best practices](https://code.claude.com/docs/en/best-practices) split instructions into two kinds. Non-deterministic ones (your prompt, a CLAUDE.md file, a skill) are read by the model, and "there's no guarantee that it'll follow your instructions." Deterministic ones (hooks, deny rules, tests, CI, branch protection) are enforced by the tooling, and they apply "every time, no matter what the model decided to do."
+
+So when something has to always happen, or never happen, I try to move it out of the prompt and into something that runs:
+
+* **Tests, type checks and linters** that the agent has to get green before it says it's done. "Done" means the checks pass, not that the agent says it's done.
+* **[Hooks](https://code.claude.com/docs/en/hooks-guide)** that run at fixed points in the agent's loop, like formatting every file it edits or blocking edits to generated code. In the docs' words, "certain actions always happen rather than relying on the LLM to choose to run them."
+* **CI and branch protection** as the last word. No matter what any agent or reviewer thinks, nothing merges without passing checks and a person approving it.
+* **Scripts for checkable assumptions.** If an assumption can be checked with a script, like whether the branch is up to date or whether a config value exists, a script beats asking the agent to remember to check.
+
+The habit I'm trying to build: when a reviewer, human or model, flags the same kind of problem twice, ask whether it could be a check instead of a comment. A lint rule or a test catches it every time, for free, and nobody has to remember it.
+
+Most of the time you still want the agent to use its judgment. The deterministic layer is for the short list of things where judgment isn't the point.
+
+##### [back to top](#top)
+
 ## Packaging what works
 
 Once a workflow works more than once, I try to package it so I don't have to explain it again. Claude Code has three pieces that help here:
@@ -258,7 +276,7 @@ You don't need any of the parallel stuff to get value. If you've only used a cha
 2. Before your next bigger task, ask it to interview you about the plan before it writes any code.
 3. Have a different model review the change before you open the PR.
 4. Once that feels normal, run two agents at once on two separate pieces of work.
-5. When you catch yourself explaining the same thing twice, turn it into a skill.
+5. When you catch yourself explaining the same thing twice, turn it into a skill, a standing instruction, or deterministic validation.
 
 Anthropic's advice in [Building effective agents](https://www.anthropic.com/research/building-effective-agents) applies to people too: start with "the simplest solution possible" and only add complexity when you need it. The fan-out and the command centers came later for me. The grilling and the cross-model review were the two things that made the biggest difference, and you can start both this week.
 
@@ -269,7 +287,7 @@ Anthropic's advice in [Building effective agents](https://www.anthropic.com/rese
 * [Claude Code overview](https://code.claude.com/docs/en/overview), Anthropic
 * [Create custom subagents](https://code.claude.com/docs/en/sub-agents), Claude Code docs
 * [Agent skills](https://code.claude.com/docs/en/skills), Claude Code docs
-* [Hooks reference](https://code.claude.com/docs/en/hooks), Claude Code docs
+* [Hooks reference](https://code.claude.com/docs/en/hooks) and [hooks guide](https://code.claude.com/docs/en/hooks-guide), Claude Code docs
 * [Claude Code on the web](https://code.claude.com/docs/en/claude-code-on-the-web), Claude Code docs
 * [Plugins](https://code.claude.com/docs/en/plugins), Claude Code docs
 * [Introduction to the Model Context Protocol](https://modelcontextprotocol.io/introduction)
