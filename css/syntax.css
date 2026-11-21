@@ -1,6 +1,6 @@
 /* Dark Rouge/Pygments theme in the site palette */
 .highlight { background: transparent; color: #dfe6e2; }
-.highlight .c, .highlight .cm, .highlight .c1, .highlight .cs { color: #7d8a84; font-style: italic }
+.highlight .c, .highlight .cm, .highlight .c1, .highlight .cs { color: #8a9791; font-style: italic }
 .highlight .cp { color: #9fb4ab }
 .highlight .err { color: #ff8a80 }
 .highlight .k, .highlight .kc, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr { color: #45ce93; font-weight: 500 }

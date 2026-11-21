@@ -6,3 +6,17 @@ layout: default
 {% if site.disqus.shortname %}
 	{% include disqus_comments.html %}
 {% endif %}
+<script>
+// Code blocks that scroll sideways need to be reachable by keyboard
+// (axe: scrollable-region-focusable). Recheck when the width changes.
+(function () {
+  function mark() {
+    document.querySelectorAll('.content pre').forEach(function (pre) {
+      if (pre.scrollWidth > pre.clientWidth) pre.setAttribute('tabindex', '0');
+      else pre.removeAttribute('tabindex');
+    });
+  }
+  mark();
+  window.addEventListener('resize', mark);
+})();
+</script>

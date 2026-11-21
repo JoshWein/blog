@@ -59,7 +59,7 @@ description: 'This article is about the security system of the Xbox and the mist
 
     <div id="sidebar">
         <div id="nav-anchor"></div>
-        <nav id="navi">
+        <nav id="navi" aria-label="Sections">
             <ul id="placeholder"></ul>
         </nav>
     </div><!-- /sidebar -->
@@ -236,6 +236,7 @@ description: 'This article is about the security system of the Xbox and the mist
 					address 0xFFFFFFF0 in the address space, which is
 					usually flash memory. For the Xbox, this is obviously
 					no good idea, as flash memory can be:
+				</p>
 					<ul>
 					<li>replaced, by removing the chip, fitting a socket
 					and inserting a replacement chip.</li>
@@ -253,7 +254,7 @@ description: 'This article is about the security system of the Xbox and the mist
 					ROM instead of flash memory, but ROM is more
 					expensive than flash memory.
 					Thus, the machine must not start from flash memory.</li>
-				</p>
+					</ul>
 				</section>
 				<section id="microsoftperspective">
 				<h2>
@@ -1513,7 +1514,7 @@ OUTB(0xcfc), 0x02
 				<h2>
 					Design
 				</h2>
-				<h4>#1: Security vs. Money</h4>
+				<h3 class="as-h4">#1: Security vs. Money</h3>
 				<p>
 					Be very careful with tradeoffs between security
 					and money. There are rarely sensible compromises.
@@ -1547,7 +1548,7 @@ OUTB(0xcfc), 0x02
 					This would have made modchips virtually
 					impossible.</li>
 					</ul>
-				<h4>#2: Security vs. Speed</h4>
+				<h3 class="as-h4">#2: Security vs. Speed</h3>
 				<p>
 					Don't trade security for speed. Although it may be
 					true that the product in question must be as fast as
@@ -1570,7 +1571,7 @@ OUTB(0xcfc), 0x02
 					and the possibility of booting another operating
 					system.
 				</p>
-				<h4>#3: Combinations of Weaknesses</h4>
+				<h3 class="as-h4">#3: Combinations of Weaknesses</h3>
 				<p>
 					Be aware of the fact that a combination of security
 					flaws can lead to a successful attack. Don't think
@@ -1600,7 +1601,7 @@ OUTB(0xcfc), 0x02
 					note that hackers have enough fantasy to find out
 					these combinations.
 				</p>
-				<h4>#4: Hackers' Resources</h4>
+				<h3 class="as-h4">#4: Hackers' Resources</h3>
 				<p>
 					Understand that hackers may have excellent resources.
 					Hobbyists may use resources from work or
@@ -1623,7 +1624,7 @@ OUTB(0xcfc), 0x02
 					and using all of his expertise, bunnie could build his
 					own hardware that could sniff the bus.
 				</p>
-				<h4>#5: Barriers and Obstacles</h4>
+				<h3 class="as-h4">#5: Barriers and Obstacles</h3>
 				<p>
 					Don't make anything “harder for hackers”. Instead
 					make it “impossible for hackers”, or, if it cannot be
@@ -1661,7 +1662,7 @@ OUTB(0xcfc), 0x02
 					Instead, they should have made sure that there are
 					no bugs in that security code.</li>
 				</ul>
-				<h4>#6: Hacker Groups</h4>
+				<h3 class="as-h4">#6: Hacker Groups</h3>
 					<p>Don't use one security system for different purposes,
 					or else attackers with very different goals
 					will jointly attack it, being a lot more effective.
@@ -1681,7 +1682,7 @@ OUTB(0xcfc), 0x02
 					implicitly, by using the results of each other. No
 					Linux hackers ever attacked the Playstation. When
 					you are fair, people don't fight you.</p>
-				<h4>#7: Security by Obscurity</h4>
+				<h3 class="as-h4">#7: Security by Obscurity</h3>
 					<p>Security by obscurity does not work. Well-proven
 					algorithms like SHA-1 and RSA work (of course
 					given your implementation is well-proven as well).
@@ -1690,7 +1691,7 @@ OUTB(0xcfc), 0x02
 					on a standard DVD drive) and the hard disk contents
 					using different methods. None had any effect.</p>
 					<p>Also see #5.</p>
-				<h4>#8: Fixes</h4>
+				<h3 class="as-h4">#8: Fixes</h3>
 					<p>When your security system has been broken, don't
 					release quick fixes, for two reasons: Your fixes may
 					be flawed and may not actually correct the problem,
@@ -1718,7 +1719,7 @@ OUTB(0xcfc), 0x02
 					Implementation
 				</h2>
 				<p>
-					<h4>#9: Data Sheets</h4>
+					<h3 class="as-h4">#9: Data Sheets</h3>
 					<p>Know everything about the components you use.
 					Do read data sheets. Be very careful with components
 					that have legacy functionality.</p>
@@ -1730,14 +1731,14 @@ OUTB(0xcfc), 0x02
 					manual, or else they would have noticed that
 					Intel CPUs do not panic on a FFFFFFFF/00000000
 					wraparound.</p>
-					<h4>#10: Literature</h4>
+					<h3 class="as-h4">#10: Literature</h3>
 					<p>Read (at least!) standard literature. If you are
 					dealing with cryptography, this means you have to
 					read at last Schneier's “Applied Cryptography”.
 					<p>Microsoft's engineers did not know that TEA must
 					not be used as a hash, and that RC4 does not feed
 					the decrypted stream back into the key stream.</p>
-					<h4>#11: Pros</h4>
+					<h3 class="as-h4">#11: Pros</h3>
 					<p>Get experienced professionals to work on your
 					security system, both on the design and the implementation.
 					If it's a money issue, see #1.</p>
@@ -1746,7 +1747,7 @@ OUTB(0xcfc), 0x02
 					had no prior experience with cryptography or the
 					design of a security system. We also know that people
 					on an internship were working on Xbox security.</p>
-					<h4>#12: Completeness</h4>
+					<h3 class="as-h4">#12: Completeness</h3>
 					<p>Check whether your security code catches all
 					cases. If it does not, you did not only waste time
 					implementing all of it, but you may also give hints
@@ -1759,7 +1760,7 @@ OUTB(0xcfc), 0x02
 					and doesn't catch all cases. And the Dashboard
 					hashes all files it is going to read, except for two.
 					This gave us the ideas where to attack.</p>
-					<h4>#13: Leftovers</h4>
+					<h3 class="as-h4">#13: Leftovers</h3>
 					<p>Look at the final product from the perspective of a
 					hacker. Hexdump and disassemble your final builds.
 					There could be leftovers!</p>
@@ -1768,7 +1769,7 @@ OUTB(0xcfc), 0x02
 					about the contents of the actual secret ROM, but
 					also an insight into what Microsoft planned and why
 					some mistakes have been made.</p>
-					<h4>#14: Final Test</h4>
+					<h3 class="as-h4">#14: Final Test</h3>
 					<p>Test your security system when you have the final
 					parts and with the final software components in
 					place. Changing something may very well open
@@ -1787,7 +1788,7 @@ OUTB(0xcfc), 0x02
 					Policies
 				</h2>
 				<p>
-					<h4>#15: Source</h4>
+					<h3 class="as-h4">#15: Source</h3>
 					<p>Keep your source safe. Find engineers you can
 					trust.
 					<p>The complete Xbox source code has leaked, including
@@ -1796,7 +1797,7 @@ OUTB(0xcfc), 0x02
 					running games from hard disk, support for hard
 					disks bigger than 137 GB, custom boot logos etc.
 					This had been previously done by patching the binary.</p>
-					<h4>#16: Many People</h4>
+					<h3 class="as-h4">#16: Many People</h3>
 					<p>Have many good people have a look at both your
 					design and your implementation. Keeping your
 					source code safe means having engineers you can
@@ -1807,7 +1808,7 @@ OUTB(0xcfc), 0x02
 					typically a lot worse than a leak of the source code.
 					<p>It seems a lot like very few people have actually
 					seen the Xbox security code.</p>
-					<h4>#17: Talk</h4>
+					<h3 class="as-h4">#17: Talk</h3>
 					<p>Know your enemy - and talk to them. They are not
 					terrorists that you are not supposed to negotiate
 					with. Their intent is not to harm you but to reach
