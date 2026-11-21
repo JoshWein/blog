@@ -40,7 +40,8 @@ await new Promise(r => server.listen(0, "127.0.0.1", r));
 const origin = `http://127.0.0.1:${server.address().port}`;
 
 const VIEWPORTS = [{ name: "desktop", width: 1280, height: 900 }, { name: "phone", width: 390, height: 844 }];
-// The theme has a prefers-color-scheme: dark variant, so check both.
+// The theme follows prefers-color-scheme until the top-bar toggle saves a choice
+// (js/theme.js), so check both.
 const SCHEMES = ["light", "dark"];
 const browser = await chromium.launch();
 const page = await browser.newPage();
