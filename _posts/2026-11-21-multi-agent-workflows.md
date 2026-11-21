@@ -20,6 +20,7 @@ This post covers how that workflow fits together. It's for people who already us
 * [Automate the friction away](#automate-the-friction-away)
 * [Guardrails](#guardrails)
 * [Deterministic validation](#deterministic-validation)
+* [Next step: auto-merging](#next-step-auto-merging)
 * [Packaging what works](#packaging-what-works)
 * [What I want to try next](#what-i-want-to-try-next)
 * [This is a leadership problem too](#this-is-a-leadership-problem-too)
@@ -240,6 +241,19 @@ Most of the time you still want the agent to use its judgment. The deterministic
 [back to top](#top)
 {: .back-top}
 
+## Next step: auto-merging
+
+Right now I'm the last step on every PR. The obvious next step is to stop being the last step on some of them.
+
+Docs are where I'd start. A change to a README or a doc comment is low risk, easy to revert, and the reviewer loops and checks above already catch most problems in it. Once those pass, there's not much left for me to add by clicking merge. GitHub's [auto-merge](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/automatically-merging-a-pull-request) and [protected branch rules](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) get you most of the way there: require the checks to pass, and have a small workflow turn on auto-merge for PRs whose changes are all docs.
+
+Docs are also becoming less important in the first place. A lot of documentation exists so the next person can understand the code without reading all of it. Agents are getting better and better at reading the code and its context directly, so they need less of that written down, and a stale doc matters less when nobody is relying on it.
+
+I think the future moves further in this direction. As agents understand code and context better, and as more of the "is this safe?" question gets answered by deterministic checks, more kinds of changes can merge on their own, and human review can focus on the changes where judgment actually matters.
+
+[back to top](#top)
+{: .back-top}
+
 ## Packaging what works
 
 Once a workflow works more than once, I try to package it so I don't have to explain it again. Agents have three pieces that help here:
@@ -318,3 +332,4 @@ Anthropic's advice in [Building effective agents](https://www.anthropic.com/rese
 * Du et al., ["Improving Factuality and Reasoning in Language Models through Multiagent Debate"](https://arxiv.org/abs/2305.14325) (2023)
 * Shinn et al., ["Reflexion: Language Agents with Verbal Reinforcement Learning"](https://arxiv.org/abs/2303.11366) (2023)
 * [Automatically merging a pull request](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/automatically-merging-a-pull-request), GitHub Docs
+* [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), GitHub Docs
