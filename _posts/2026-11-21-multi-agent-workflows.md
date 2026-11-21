@@ -23,6 +23,7 @@ This post covers how that workflow fits together. It's for people who already us
 * [Auto-merging](#auto-merging)
 * [Packaging what works](#packaging-what-works)
 * [What I want to try next](#what-i-want-to-try-next)
+* [Software factories](#software-factories)
 * [This is a leadership problem too](#this-is-a-leadership-problem-too)
 * [If you're just starting](#if-youre-just-starting)
 * [Sources](#sources)
@@ -404,6 +405,15 @@ A few ideas I keep coming back to:
 * **A disagreement detector.** Run the same task through several models and flag the places where they meaningfully disagree. The places where models agree are probably fine. The places where they disagree are exactly where a human should look. It's the cross-model review idea turned into something automatic. There's research pointing the same way: in [multiagent debate](https://arxiv.org/abs/2305.14325), several model instances propose answers and argue over them for a few rounds, which improved reasoning and factual accuracy and cut down on hallucinations.
 * **Episodic memory.** Store past decisions and the reasons for them, and when a new task looks like an old one, pull up the similar cases so the agent starts from what we decided last time instead of from scratch. The [Reflexion](https://arxiv.org/abs/2303.11366) paper is a good starting point here. Its agents write reflections on what went wrong and "maintain their own reflective text in an episodic memory buffer" to make better decisions next time.
 * **PRs you can review without reading the code.** I keep tuning what goes into my agents' PR summaries, adding some things and cutting others, with the goal of reaching a point where I don't need to read the diff to trust a change. Most of that comes from the PR spelling out what "done" meant: the acceptance criteria, the tests that prove each one, and that they all passed. The rest is visuals. I built a Chrome extension that builds on GitHub's new [pull request overview page](https://github.blog/changelog/2026-11-05-new-pull-request-overview-page-in-public-preview/) and lays out what changed and how it was checked, so I can judge a PR at a glance instead of scrolling through files.
+
+[back to top](#top)
+{: .back-top}
+
+## Software factories
+
+A lot of people are talking about software factories: fully automated pipelines where agents take work from a ticket all the way to a merged change with little or no human in the loop. I'm not touching that yet. The tools and models are changing too fast, and I'd rather wait until things stabilize a bit more before building something that big around them.
+
+That said, everything in this post is really a version of a personal one. The grilling, the ticket queue, the review loops, the checks and the auto-merging add up to a small factory with me still standing at the end of the line.
 
 [back to top](#top)
 {: .back-top}
