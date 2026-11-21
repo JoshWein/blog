@@ -214,5 +214,5 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 
 /* three-column card figure (morning brief) */
 .cc.three { grid-template-columns: repeat(3, 1fr); }
-@media (max-width: 760px) { .cc.three { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .cc.three { grid-template-columns: 1fr; } .diagram .rwlbl { font-size: 14px; } }
 @media (prefers-reduced-motion: reduce) { .diagram .taxi { animation: none; } }

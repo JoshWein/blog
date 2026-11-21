@@ -112,7 +112,7 @@ The other thing that makes fan-out work is splitting along boundaries that don't
 
 ## Review across models, not within one
 
-This is the one habit I'd push on anyone using agents. I always have a standing instruction to bounce reviews between harnesses before a PR gets opened, and I've consistently gotten better results that way.
+This is a habit I'd push on anyone using agents. I always have a standing instruction to bounce reviews between harnesses before a PR gets opened, and I've consistently gotten better results that way.
 
 A model reviewing its own work tends to agree with itself. It made its choices for reasons that still seem good to it. There's research backing this up: a 2024 paper, ["LLM Evaluators Recognize and Favor Their Own Generations"](https://arxiv.org/abs/2404.13076), found that models rate their own outputs higher than other models' outputs, and the better a model is at spotting its own writing, the stronger the bias. A different model doesn't share those blind spots, so it catches different things. Even a fresh session of the same model helps. The Claude Code best practices call a second session "the easiest independent reviewer you can get", since it never saw the reasoning that produced the code.
 
@@ -157,7 +157,7 @@ Either way, the review comments go back to whoever wrote the code, they fix it, 
 <figcaption>two review loops before the PR reaches me</figcaption>
 </figure>
 
-None of this means I stop reviewing. I still review most of the PRs my agents generate, because every so often an obvious, confidently wrong mistake makes it through all of the automated reviews. I even reviewed this entire blog post before posting it! What the loops buy me is that by the time a PR reaches me, most of the small stuff is gone and I can spend my attention on whether the change is the right one.
+None of this means I stop reviewing. I still review most of the PRs my agents generate, because every so often an obvious, confidently wrong mistake makes it through all of the automated reviews. What the loops buy me is that by the time a PR reaches me, most of the small stuff is gone and I can spend my attention on whether the change is the right one. I even reviewed this entire blog post before posting it!
 
 [back to top](#top)
 {: .back-top}
@@ -204,22 +204,22 @@ If I had to pick one main point for this whole post, it's this: use the tools to
 
 A few things that have helped the most:
 
-* **Scheduled jobs.** The one I use every day is a morning brief. Before I sit down, an agent has already pulled together my setup for the day: my open tickets, what merged yesterday, and any announcements or news that matter to my work. I start the day reading one page instead of opening ten tabs.
+* **Scheduled jobs.** The one I use every day is a morning brief. Before I sit down, an agent has already pulled together my setup for the day: my open tickets, what merged yesterday, and any announcements or news that matter to my work. I start the day reading one page instead of opening ten tabs. There's an example below.
 * **PR watchers.** Small scripts that keep my open PRs synced with the main branch and merge them once they're approved and green. A PR that's done shouldn't need me to click a button (more on that in [auto-merging](#auto-merging)).
 * **Cleanup scripts.** Agents create a lot of mess: disk space, old branches, workspaces nobody is using anymore. I have scripts that clean that up on a schedule. Where I can, I run agents in [remote execution environments](https://code.claude.com/docs/en/claude-code-on-the-web) instead, because a cloud container that gets thrown away when the session ends is the easiest cleanup there is. I still use local development where reuse matters more, like a big repo that's slow to set up or a build cache that takes a long time to warm.
 * **Notifications.** This builds on the command center. An agent that's waiting on me is just sitting there, so I want to know right away. Some way of getting pinged, whether it's a phone notification or a browser notification, keeps things from sitting for hours. In Claude Code you can hook into its [`Notification` event](https://code.claude.com/docs/en/hooks) and send that wherever you'll actually see it.
 
 <figure class="diagram">
-<div class="cc three" role="img" aria-label="Example morning brief with three columns. My tickets: retry webhook failures, in progress with agent 2; pagination bug, new and needs a plan; bump Node to 24, PR open with checks green. Merged yesterday: schema change by agent 1, README update auto-merged, and a lint cleanup by agent 3. Worth knowing: a deploy freeze on Friday, and a library's new major version with a breaking change in auth.">
+<div class="cc three" role="img" aria-label="Example morning brief with three columns. My tickets: retry webhook failures, in progress with agent 2; pagination bug, new and needs a plan; bump Node to 24, PR open with checks green. Merged yesterday: rate limit config by agent 1, README update auto-merged, and flaky test fix by agent 3. Worth knowing: deploy freeze Friday, a team announcement; and auth library v5 is out, a breaking change for a library we use.">
   <div class="col"><p class="cc-h">my tickets</p>
     <div class="card run">retry webhook failures<small>in progress, agent 2</small></div>
     <div class="card wait">pagination bug<small>new, needs a plan</small></div>
     <div class="card">bump Node to 24<small>PR open, checks green</small></div>
   </div>
   <div class="col"><p class="cc-h">merged yesterday</p>
-    <div class="card done">schema change<small>agent 1</small></div>
+    <div class="card done">rate limit config<small>agent 1</small></div>
     <div class="card done">README update<small>auto-merged</small></div>
-    <div class="card done">lint cleanup<small>agent 3</small></div>
+    <div class="card done">flaky test fix<small>agent 3</small></div>
   </div>
   <div class="col"><p class="cc-h">worth knowing</p>
     <div class="card">deploy freeze Friday<small>team announcement</small></div>
@@ -245,7 +245,7 @@ I think of it like an airport. It's good to know which runway a pilot plans to l
 <figure class="diagram">
 <svg viewBox="0 0 720 245" role="img" aria-labelledby="rw-t rw-d">
   <title id="rw-t">Agents announcing their plans before landing</title>
-  <desc id="rw-d">Two agents approach the same runway. Each one states out loud where it plans to land and what it assumes: agent 1 is landing on auth.ts and assumes main is up to date, agent 2 is also landing on auth.ts and assumes nobody else is editing it. Both calls go to the tower, which is me, a reviewer, or another agent. The tower sees they picked the same spot and holds agent 2 before anything collides.</desc>
+  <desc id="rw-d">Two agents approach the same runway. Each one states out loud where it plans to land and what it assumes: agent 1 is landing on auth.ts and assumes main is up to date, agent 2 is also landing on auth.ts and assumes nobody else is editing it. Both calls go to the tower, which is me, a reviewer, or another agent. The tower sees they picked the same spot and holds agent 2, which waits while agent 1 taxis in.</desc>
   <rect class="box" x="10" y="15" width="230" height="78" rx="4"/>
   <text class="lbl" x="125" y="40" text-anchor="middle">agent 1 says</text>
   <text class="sub" x="125" y="60" text-anchor="middle">landing on: auth.ts</text>
@@ -257,23 +257,23 @@ I think of it like an airport. It's good to know which runway a pilot plans to l
   <path class="wire" d="M240 54 H280"/><path class="flow" d="M240 54 H280"/>
   <path class="wire" d="M480 54 H440"/><path class="flow" d="M480 54 H440" style="animation-delay:-.8s"/>
   <rect class="box hot" x="280" y="15" width="160" height="78" rx="4"/>
-  <text class="lbl" x="360" y="44" text-anchor="middle">the tower</text>
-  <text class="sub" x="360" y="64" text-anchor="middle">me, a reviewer,</text>
-  <text class="sub" x="360" y="80" text-anchor="middle">or another agent</text>
+  <text class="lbl" x="360" y="40" text-anchor="middle">the tower</text>
+  <text class="sub" x="360" y="60" text-anchor="middle">me, a reviewer,</text>
+  <text class="sub" x="360" y="78" text-anchor="middle">or another agent</text>
   <path class="wire" d="M360 93 V115"/><path class="flow" d="M360 93 V115" style="animation-delay:-.4s"/>
-  <g class="pulse"><rect class="alert" x="250" y="115" width="220" height="50" rx="4"/></g>
+  <g class="pulse"><rect class="alert" x="230" y="115" width="260" height="50" rx="4"/></g>
   <text class="lbl" x="360" y="137" text-anchor="middle">same spot: hold agent 2</text>
   <text class="sub" x="360" y="155" text-anchor="middle">caught before anyone lands</text>
-  <path class="wire" d="M70 93 V185" stroke-dasharray="3 4"/>
-  <path class="wire" d="M650 93 V185" stroke-dasharray="3 4"/>
+  <path class="wire" d="M60 93 V190" stroke-dasharray="3 4"/>
+  <path class="wire" d="M660 93 V190" stroke-dasharray="3 4"/>
   <rect class="runway" x="10" y="190" width="700" height="44" rx="3"/>
   <line class="rwline" x1="20" y1="212" x2="700" y2="212"/>
   <rect class="spot" x="315" y="192" width="90" height="40" rx="3"/>
   <text class="rwlbl" x="360" y="227" text-anchor="middle">auth.ts</text>
   <g transform="translate(60 212)"><g class="taxi"><path class="plane" d="M-18 -2 L12 -2 Q20 0 12 2 L-18 2 Z M-2 -2 L-10 -15 L-4 -15 L8 -2 Z M-2 2 L-10 15 L-4 15 L8 2 Z M-16 -2 L-21 -9 L-17 -9 L-11 -2 Z M-16 2 L-21 9 L-17 9 L-11 2 Z"/></g></g>
-  <g transform="translate(660 212) scale(-1 1)"><g class="taxi"><path class="plane" d="M-18 -2 L12 -2 Q20 0 12 2 L-18 2 Z M-2 -2 L-10 -15 L-4 -15 L8 -2 Z M-2 2 L-10 15 L-4 15 L8 2 Z M-16 -2 L-21 -9 L-17 -9 L-11 -2 Z M-16 2 L-21 9 L-17 9 L-11 2 Z"/></g></g>
+  <g transform="translate(660 212) scale(-1 1)"><g><path class="plane" d="M-18 -2 L12 -2 Q20 0 12 2 L-18 2 Z M-2 -2 L-10 -15 L-4 -15 L8 -2 Z M-2 2 L-10 15 L-4 15 L8 2 Z M-16 -2 L-21 -9 L-17 -9 L-11 -2 Z M-16 2 L-21 9 L-17 9 L-11 2 Z"/></g></g>
 </svg>
-<figcaption>saying the plan out loud is how two agents find out they picked the same spot</figcaption>
+<figcaption>the tower catches the overlap before anything lands</figcaption>
 </figure>
 
 [back to top](#top)
