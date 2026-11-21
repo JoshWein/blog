@@ -42,7 +42,8 @@ You don't need the skills for this, though. It's just as easy to tell the agent 
 
 It feels slow for the first ten minutes. Then it saves hours, because every agent that picks up a piece of the plan later gets the answers instead of guesses.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Fan out to parallel agents
 
@@ -99,7 +100,8 @@ The part that took me a while to figure out is the standing instruction. Without
 
 The other thing that makes fan-out work is splitting along boundaries that don't overlap. Two agents editing the same file at the same time will make a mess, the same way two people would. If the plan can't be split cleanly, I'd rather run fewer agents. When agents do need to work in the same repo at the same time, give each one its own checkout. [Git worktrees](https://code.claude.com/docs/en/worktrees) make that cheap: each session gets "a separate copy of the files to edit, so one session can build a feature while a second fixes a bug."
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Review across models, not within one
 
@@ -150,7 +152,8 @@ Either way, the review comments go back to whoever wrote the code, they fix it, 
 
 None of this means I stop reviewing. I still review every PR my agents generate, because every so often an obvious, confidently wrong mistake makes it through all of the automated reviews. What the loops buy me is that by the time a PR reaches me, most of the small stuff is gone and I can spend my attention on whether the change is the right one.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## A throwaway command center
 
@@ -162,20 +165,20 @@ Here's a made-up example of the kind of thing I mean:
 
 <figure class="diagram">
 <div class="cc" role="img" aria-label="Example command center with four columns: blocked, running, needs me, and done">
-  <div class="col"><h6>blocked</h6>
+  <div class="col"><p class="cc-h">blocked</p>
     <div class="card wait">update docs<small>waits on api</small></div>
     <div class="card wait">deploy preview<small>waits on ci</small></div>
   </div>
-  <div class="col"><h6>running</h6>
+  <div class="col"><p class="cc-h">running</p>
     <div class="card run">api: pagination<small>agent 1</small></div>
     <div class="card run">ui: empty states<small>agent 2</small></div>
     <div class="card run">tests: flaky suite<small>agent 3</small></div>
   </div>
-  <div class="col"><h6>needs me</h6>
+  <div class="col"><p class="cc-h">needs me</p>
     <div class="card">pick a cache ttl<small>decision</small></div>
     <div class="card">PR #12<small>ready to merge</small></div>
   </div>
-  <div class="col"><h6>done</h6>
+  <div class="col"><p class="cc-h">done</p>
     <div class="card done">schema change<small>merged</small></div>
     <div class="card done">lint cleanup<small>merged</small></div>
   </div>
@@ -185,7 +188,8 @@ Here's a made-up example of the kind of thing I mean:
 
 The "needs me" column is the one that matters. Agents are fast, so I'm usually the bottleneck, and anything that shows me where I'm holding things up pays for itself.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Automate the friction away
 
@@ -200,7 +204,8 @@ A few things that have helped the most:
 
 None of these are big projects. Most of them are a short script or a scheduled prompt, and agents are good at writing those too.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Guardrails
 
@@ -212,7 +217,8 @@ I think of it like an airport. It's good to know which runway a pilot plans to l
 
 The other guardrails are the ones I've already mentioned. Grill before building so the agents aren't guessing. Split work so agents don't collide. Review with a different model than the one that wrote the code. And I still read every PR myself before it merges. I even reviewed this entire blog post before posting it!
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Deterministic validation
 
@@ -229,7 +235,8 @@ The habit I'm trying to build: when a reviewer, human or model, flags the same k
 
 Most of the time you still want the agent to use its judgment. The deterministic layer is for the short list of things where judgment isn't the point.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Packaging what works
 
@@ -243,7 +250,8 @@ The idea I like most here is team plugins: one package with the team's domain kn
 
 One rule I try to follow: only work on improving the harness while other work is actively running. Tweaking skills and prompts is fun, and it's easy to spend a whole afternoon on it while nothing ships. If agents are busy on real work, tuning the setup in the meantime is free. If they're not, it's usually procrastination.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## What I want to try next
 
@@ -252,11 +260,12 @@ Two ideas I keep coming back to:
 * **A disagreement detector.** Run the same task through several models and flag the places where they meaningfully disagree. The places where models agree are probably fine. The places where they disagree are exactly where a human should look. It's the cross-model review idea turned into something automatic. There's research pointing the same way: in [multiagent debate](https://arxiv.org/abs/2305.14325), several model instances propose answers and argue over them for a few rounds, which improved reasoning and factual accuracy and cut down on hallucinations.
 * **Episodic memory.** Store past decisions and the reasons for them, and when a new task looks like an old one, pull up the similar cases so the agent starts from what we decided last time instead of from scratch. The [Reflexion](https://arxiv.org/abs/2303.11366) paper is a good starting point here. Its agents write reflections on what went wrong and "maintain their own reflective text in an episodic memory buffer" to make better decisions next time.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## This is a leadership problem too
 
-At work, the hardest part of this isn't the tooling. It's that everyone is figuring it out at the same time, and seniority doesn't mean you already know the answers. I think leading in this environment means modeling curiosity rather than expertise. For senior engineers, that looks like:
+Sometimes, the hardest part of this isn't the tooling. It's that everyone is figuring it out at the same time, and seniority doesn't mean you already know the answers. I think leading in this environment means modeling curiosity rather than expertise. For senior engineers, that looks like:
 
 * Learning new tools in public, where people can see it.
 * Saying "I don't understand this yet" out loud.
@@ -266,7 +275,8 @@ At work, the hardest part of this isn't the tooling. It's that everyone is figur
 
 There's research behind the safety part. Amy Edmondson defined [psychological safety](https://dash.harvard.edu/entities/publication/13a7b031-0fdd-45ec-a7e0-2b80e2bc679f) in 1999 as "a shared belief held by members of a team that the team is safe for interpersonal risk taking." When Google studied what made its teams effective in [Project Aristotle](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness), psychological safety came out first on its list of what mattered, ahead of dependability, structure and clarity, meaning, and impact. If people are afraid to look slow while they learn agents, they'll just not learn them.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## If you're just starting
 
@@ -280,7 +290,8 @@ You don't need any of the parallel stuff to get value. If you've only used a cha
 
 Anthropic's advice in [Building effective agents](https://www.anthropic.com/research/building-effective-agents) applies to people too: start with "the simplest solution possible" and only add complexity when you need it. The fan-out and the command centers came later for me. The grilling and the cross-model review were the two things that made the biggest difference, and you can start both this week.
 
-##### [back to top](#top)
+[back to top](#top)
+{: .back-top}
 
 ## Sources
 
