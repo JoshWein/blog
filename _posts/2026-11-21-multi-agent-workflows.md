@@ -308,6 +308,26 @@ So when something has to always happen, or never happen, I try to move it out of
 * **CI and branch protection** as the last word. No matter what any agent or reviewer thinks, nothing merges without passing checks, and anything that isn't set up to auto-merge needs a person to approve it.
 * **Scripts for checkable assumptions.** If an assumption can be checked with a script, like whether the branch is up to date or whether a config value exists, a script beats asking the agent to remember to check.
 
+Tests aren't one thing, though. They come in a lot of strengths, and the more of them a PR can point to, the less I need to read the diff to trust it. Roughly from cheapest to strongest:
+
+<figure class="diagram">
+<div class="cc ladder" role="img" aria-label="Ten kinds of checks, from cheapest to strongest: 1, lint and static analysis: seconds, catches patterns; 2, type checks: whole classes of mistakes; 3, unit tests: one function at a time; 4, integration tests: pieces working together; 5, end-to-end tests: an agent drives the real app; 6, screenshot and visual tests: what the user actually sees; 7, property-based tests: thousands of generated inputs; 8, fuzzing: random abuse until it breaks; 9, mutation testing: tests for your tests; 10, formal verification: proofs and model checking.">
+    <div class="card"><b>1</b> lint and static analysis<small>seconds, catches patterns</small></div>
+    <div class="card"><b>2</b> type checks<small>whole classes of mistakes</small></div>
+    <div class="card"><b>3</b> unit tests<small>one function at a time</small></div>
+    <div class="card"><b>4</b> integration tests<small>pieces working together</small></div>
+    <div class="card"><b>5</b> end-to-end tests<small>an agent drives the real app</small></div>
+    <div class="card"><b>6</b> screenshot and visual tests<small>what the user actually sees</small></div>
+    <div class="card"><b>7</b> property-based tests<small>thousands of generated inputs</small></div>
+    <div class="card"><b>8</b> fuzzing<small>random abuse until it breaks</small></div>
+    <div class="card"><b>9</b> mutation testing<small>tests for your tests</small></div>
+    <div class="card"><b>10</b> formal verification<small>proofs and model checking</small></div>
+</div>
+<figcaption>roughly cheapest first; the later rungs used to be hard to justify, and agents make them a lot cheaper to set up</figcaption>
+</figure>
+
+Lauren Tan's talk ["All Code Is Slop (Except Mine)"](https://ai.engineer/code/2026/talks/lauren-tan) is a good tour of the strong end. Her team has agents drive the real app to verify their changes, uses property-based testing on the UI, and has used [TLA+](https://lamport.azurewebsites.net/tla/tla.html) model checking and [Lean](https://lean-lang.org/) proofs on the parts that really can't break. She's also clear that formal verification is "not a silver bullet". You don't need every rung on every project. The point is to know the ladder exists and to climb it where the risk is.
+
 The habit I'm trying to build: when a reviewer, human or model, flags the same kind of problem twice, ask whether it could be a check instead of a comment. A lint rule or a test catches it every time, for free, and nobody has to remember it.
 
 Most of the time you still want the agent to use its judgment. The deterministic layer is for the short list of things where judgment isn't the point.
@@ -433,6 +453,8 @@ Anthropic's advice in [Building effective agents](https://www.anthropic.com/rese
 * Amy Edmondson, ["Psychological Safety and Learning Behavior in Work Teams"](https://dash.harvard.edu/entities/publication/13a7b031-0fdd-45ec-a7e0-2b80e2bc679f), Administrative Science Quarterly (1999)
 * [Building effective agents](https://www.anthropic.com/research/building-effective-agents), Anthropic (2024)
 * [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system), Anthropic (2025)
+* [The TLA+ home page](https://lamport.azurewebsites.net/tla/tla.html), Leslie Lamport
+* [Lean](https://lean-lang.org/), the Lean theorem prover
 * [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices), Claude Code docs
 * [Run parallel sessions with worktrees](https://code.claude.com/docs/en/worktrees), Claude Code docs
 * [git-worktree documentation](https://git-scm.com/docs/git-worktree), Git

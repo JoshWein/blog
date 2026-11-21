@@ -216,3 +216,8 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 .cc.three { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 760px) { .cc.three { grid-template-columns: 1fr; } .diagram .rwlbl { font-size: 14px; } }
 @media (prefers-reduced-motion: reduce) { .diagram .taxi { animation: none; } }
+
+/* testing ladder */
+.cc.ladder { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.cc.ladder .card b { font-family: var(--mono); color: var(--accent); margin-right: 2px; }
+@media (max-width: 760px) { .cc.ladder { grid-template-columns: 1fr 1fr; } }
