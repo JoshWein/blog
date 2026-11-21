@@ -201,3 +201,18 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 @keyframes qpull { 0%, 100% { opacity: 1; } 8% { opacity: .15; } 40% { opacity: 1; } }
 @keyframes pull { 0% { offset-distance: 0%; opacity: 0; } 4% { opacity: 1; } 22% { offset-distance: 100%; opacity: 1; } 28%, 100% { offset-distance: 100%; opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .diagram .qtop { animation: none; } .diagram .mover { display: none; } }
+
+/* guardrails: runway callouts */
+.diagram .runway { fill: var(--wait-bg); stroke: var(--wait-line); stroke-width: 1.2; }
+.diagram .rwline { stroke: var(--wait-text); stroke-width: 2; stroke-dasharray: 14 12; }
+.diagram .spot { fill: var(--accent); opacity: .25; }
+.diagram .rwlbl { fill: var(--wait-text); font-size: 12px; font-family: var(--mono); }
+.diagram .plane { fill: var(--ink); }
+.diagram .taxi { animation: taxi 6s ease-in-out infinite; } /* parent g mirrors the right-hand plane */
+.diagram .alert { fill: var(--bg); stroke: var(--accent); stroke-width: 2; }
+@keyframes taxi { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(60px); } }
+
+/* three-column card figure (morning brief) */
+.cc.three { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 760px) { .cc.three { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .diagram .taxi { animation: none; } }
