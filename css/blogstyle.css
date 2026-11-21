@@ -188,3 +188,13 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 @media (prefers-reduced-motion: reduce) {
   .diagram .flow, .diagram .pulse, .cc .run small::before { animation: none; }
 }
+
+/* fan-out: tickets pulled off a queue */
+.diagram .ticket rect { fill: var(--wait-bg); stroke: var(--wait-line); stroke-width: 1.2; }
+.diagram .ticket text { fill: var(--wait-text); font-size: 11px; font-family: var(--mono); }
+.diagram .qtop { animation: qpull 2s ease-in-out infinite; }
+.diagram .mover { opacity: 0; offset-rotate: 0deg; offset-distance: 0%; animation: pull 8s ease-in-out infinite; }
+@keyframes qpull { 0%, 100% { opacity: 1; } 8% { opacity: .15; } 40% { opacity: 1; } }
+@keyframes pull { 0% { offset-distance: 0%; opacity: 0; } 4% { opacity: 1; } 22% { offset-distance: 100%; opacity: 1; } 28%, 100% { offset-distance: 100%; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .diagram .qtop { animation: none; } .diagram .mover { display: none; } }
+.cc.two { grid-template-columns: 1fr 1fr; }

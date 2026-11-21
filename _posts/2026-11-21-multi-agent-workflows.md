@@ -55,48 +55,50 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
 <figure class="diagram">
 <svg viewBox="0 0 720 320" role="img" aria-labelledby="fan-t fan-d">
   <title id="fan-t">Fan-out diagram</title>
-  <desc id="fan-d">I hand a plan to a coordinator agent. The coordinator starts four agents in parallel, each on its own area. Each agent opens a pull request, and once its work is done the loop goes back to the coordinator to pick up more unblocked work.</desc>
-  <path class="wire" d="M130 150 H180"/>
-  <path class="flow" d="M130 150 H180"/>
-  <g>
-    <path class="wire" d="M320 150 C355 150 355 45 390 45"/>
-    <path class="wire" d="M320 150 C355 150 355 115 390 115"/>
-    <path class="wire" d="M320 150 C355 150 355 185 390 185"/>
-    <path class="wire" d="M320 150 C355 150 355 255 390 255"/>
-    <path class="flow" d="M320 150 C355 150 355 45 390 45"/>
-    <path class="flow" d="M320 150 C355 150 355 115 390 115" style="animation-delay:-.4s"/>
-    <path class="flow" d="M320 150 C355 150 355 185 390 185" style="animation-delay:-.8s"/>
-    <path class="flow" d="M320 150 C355 150 355 255 390 255" style="animation-delay:-1.2s"/>
-  </g>
-  <g>
-    <path class="wire" d="M540 45 C570 45 570 150 600 150"/>
-    <path class="wire" d="M540 115 C570 115 570 150 600 150"/>
-    <path class="wire" d="M540 185 C570 185 570 150 600 150"/>
-    <path class="wire" d="M540 255 C570 255 570 150 600 150"/>
-  </g>
-  <path class="wire" d="M650 180 C650 340 250 340 250 180" stroke-dasharray="4 4"/>
-  <path class="wire" d="M244 190 L250 180 L256 190"/>
-  <text class="sub" x="240" y="232" text-anchor="end">done? pick up</text>
-  <text class="sub" x="240" y="248" text-anchor="end">more unblocked work</text>
-  <rect class="box" x="20" y="120" width="110" height="60" rx="4"/>
-  <text class="lbl" x="75" y="148" text-anchor="middle">me</text>
-  <text class="sub" x="75" y="166" text-anchor="middle">the plan</text>
-  <rect class="box hot" x="180" y="120" width="140" height="60" rx="4"/>
-  <text class="lbl" x="250" y="148" text-anchor="middle">coordinator</text>
-  <text class="sub" x="250" y="166" text-anchor="middle">splits + assigns</text>
-  <rect class="box" x="390" y="20" width="150" height="50" rx="4"/>
-  <text class="lbl" x="465" y="50" text-anchor="middle">agent: api</text>
-  <rect class="box" x="390" y="90" width="150" height="50" rx="4"/>
-  <text class="lbl" x="465" y="120" text-anchor="middle">agent: ui</text>
-  <rect class="box" x="390" y="160" width="150" height="50" rx="4"/>
-  <text class="lbl" x="465" y="190" text-anchor="middle">agent: tests</text>
-  <rect class="box" x="390" y="230" width="150" height="50" rx="4"/>
-  <text class="lbl" x="465" y="260" text-anchor="middle">agent: docs</text>
+  <desc id="fan-d">I turn the plan into a queue of tickets. The coordinator pulls tickets off the queue one at a time and hands each to one of four agents working in parallel. Each agent opens a pull request, and when its work is done the loop goes back to the coordinator to pull the next unblocked ticket.</desc>
+  <path class="wire" d="M90 150 H110"/><path class="flow" d="M90 150 H110"/>
+  <path class="wire" d="M230 150 H250"/><path class="flow" d="M230 150 H250" style="animation-delay:-.6s"/>
+  <path class="wire" d="M370 150 C390 150 390 45 410 45"/><path class="flow" d="M370 150 C390 150 390 45 410 45" style="animation-delay:-0.0s"/>
+  <path class="wire" d="M370 150 C390 150 390 115 410 115"/><path class="flow" d="M370 150 C390 150 390 115 410 115" style="animation-delay:-0.4s"/>
+  <path class="wire" d="M370 150 C390 150 390 185 410 185"/><path class="flow" d="M370 150 C390 150 390 185 410 185" style="animation-delay:-0.8s"/>
+  <path class="wire" d="M370 150 C390 150 390 255 410 255"/><path class="flow" d="M370 150 C390 150 390 255 410 255" style="animation-delay:-1.2s"/>
+  <path class="wire" d="M550 45 C575 45 575 150 600 150"/>
+  <path class="wire" d="M550 115 C575 115 575 150 600 150"/>
+  <path class="wire" d="M550 185 C575 185 575 150 600 150"/>
+  <path class="wire" d="M550 255 C575 255 575 150 600 150"/>
+  <path class="wire" d="M650 180 C650 340 310 340 310 180" stroke-dasharray="4 4"/>
+  <path class="wire" d="M304 190 L310 180 L316 190"/>
+  <text class="sub" x="300" y="240" text-anchor="end">done? pull the next</text>
+  <text class="sub" x="300" y="256" text-anchor="end">unblocked ticket</text>
+  <rect class="box" x="10" y="125" width="80" height="50" rx="4"/>
+  <text class="lbl" x="50" y="148" text-anchor="middle">me</text>
+  <text class="sub" x="50" y="164" text-anchor="middle">the plan</text>
+  <rect class="box" x="110" y="85" width="120" height="130" rx="4"/>
+  <text class="lbl" x="170" y="105" text-anchor="middle">ticket queue</text>
+  <g class="ticket qtop"><rect x="125" y="115" width="90" height="20" rx="3"/></g>
+  <g class="ticket"><rect x="125" y="140" width="90" height="20" rx="3"/></g>
+  <g class="ticket"><rect x="125" y="165" width="90" height="20" rx="3"/></g>
+  <g class="ticket"><rect x="125" y="190" width="90" height="20" rx="3"/></g>
+  <rect class="box hot" x="250" y="120" width="120" height="60" rx="4"/>
+  <text class="lbl" x="310" y="148" text-anchor="middle">coordinator</text>
+  <text class="sub" x="310" y="166" text-anchor="middle">assigns tickets</text>
+  <rect class="box" x="410" y="20" width="140" height="50" rx="4"/>
+  <text class="lbl" x="480" y="50" text-anchor="middle">agent: api</text>
+  <rect class="box" x="410" y="90" width="140" height="50" rx="4"/>
+  <text class="lbl" x="480" y="120" text-anchor="middle">agent: ui</text>
+  <rect class="box" x="410" y="160" width="140" height="50" rx="4"/>
+  <text class="lbl" x="480" y="190" text-anchor="middle">agent: tests</text>
+  <rect class="box" x="410" y="230" width="140" height="50" rx="4"/>
+  <text class="lbl" x="480" y="260" text-anchor="middle">agent: docs</text>
   <rect class="box" x="600" y="120" width="100" height="60" rx="4"/>
   <text class="lbl" x="650" y="148" text-anchor="middle">PRs</text>
   <circle class="dot pulse" cx="650" cy="166" r="4"/>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 45 432 45'); animation-delay: 0s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#1</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 115 432 115'); animation-delay: 2s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#2</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 185 432 185'); animation-delay: 4s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#3</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 255 432 255'); animation-delay: 6s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#4</text></g>
 </svg>
-<figcaption>one plan, one coordinator, several agents working at once</figcaption>
+<figcaption>tickets come off the queue, the coordinator hands them out, and several agents work at once</figcaption>
 </figure>
 
 The part that took me a while to figure out is the standing instruction. Without one, an agent finishes its task, reports back, and sits there until I notice. Now I almost always tell the coordinator something like "when a task is done, keep picking up the next unblocked piece of work". That one sentence turns a batch of tasks into a queue that drains itself. "Unblocked" is the important word. It keeps agents from grabbing work that depends on something another agent hasn't finished yet.
@@ -227,6 +229,24 @@ The other guardrails are the ones I've already mentioned. Grill before building 
 
 Everything in the guardrails section is still an instruction, and an instruction is a request. Agents follow them nearly every time, but nearly isn't always. Anthropic's [Claude Code best practices](https://code.claude.com/docs/en/best-practices) split instructions into two kinds. Non-deterministic ones (your prompt, a CLAUDE.md file, a skill) are read by the model, and "there's no guarantee that it'll follow your instructions." Deterministic ones (hooks, deny rules, tests, CI, branch protection) are enforced by the tooling, and they apply "every time, no matter what the model decided to do."
 
+<figure class="diagram">
+<div class="cc two" role="img" aria-label="Two columns. Instructions the model decides whether to follow: your prompt, CLAUDE.md and skills, asking it to prove it's done, and its own summary of what it did. Rules the tooling enforces: tests and type checks, hooks, deny rules and the sandbox, and CI with branch protection.">
+  <div class="col"><p class="cc-h">the model decides</p>
+    <div class="card wait">your prompt<small>usually followed</small></div>
+    <div class="card wait">CLAUDE.md and skills<small>usually followed</small></div>
+    <div class="card wait">"show me it's done"<small>usually followed</small></div>
+    <div class="card wait">its own summary<small>usually right</small></div>
+  </div>
+  <div class="col"><p class="cc-h">the tooling enforces</p>
+    <div class="card run">tests and type checks<small>every time</small></div>
+    <div class="card run">hooks<small>every time</small></div>
+    <div class="card run">deny rules and sandbox<small>every time</small></div>
+    <div class="card run">CI and branch protection<small>every time</small></div>
+  </div>
+</div>
+<figcaption>the same rule can live on either side; move the ones that can't have exceptions to the right</figcaption>
+</figure>
+
 So when something has to always happen, or never happen, I try to move it out of the prompt and into something that runs:
 
 * **Tests, type checks and linters** that the agent has to get green before it says it's done. "Done" means the checks pass, not that the agent says it's done.
@@ -244,6 +264,38 @@ Most of the time you still want the agent to use its judgment. The deterministic
 ## Auto-merging
 
 Right now I'm the last step on most PRs, but not all of them. For certain projects, and for docs, we already auto-merge.
+
+<figure class="diagram">
+<svg viewBox="0 0 720 210" role="img" aria-labelledby="am-t am-d">
+  <title id="am-t">Auto-merge decision flow</title>
+  <desc id="am-d">An agent's pull request goes through the checks. If they fail, the agent fixes it and tries again. If they pass and the change is docs only or in a project that allows it, it auto-merges. Otherwise it goes to a person for review before merging.</desc>
+  <path class="wire" d="M110 95 H150"/><path class="flow" d="M110 95 H150"/>
+  <path class="wire" d="M290 95 H330"/><path class="flow" d="M290 95 H330" style="animation-delay:-.5s"/>
+  <path class="wire" d="M490 95 C510 95 510 45 530 45"/><path class="flow" d="M490 95 C510 95 510 45 530 45" style="animation-delay:-1s"/>
+  <path class="wire" d="M490 95 C510 95 510 150 530 150"/>
+  <text class="sub" x="512" y="60" text-anchor="end">yes</text>
+  <text class="sub" x="512" y="140" text-anchor="end">no</text>
+  <text class="sub" x="310" y="88" text-anchor="middle">yes</text>
+  <path class="wire" d="M220 125 C220 190 60 190 60 125" stroke-dasharray="4 4"/>
+  <path class="wire" d="M54 135 L60 125 L66 135"/>
+  <text class="sub" x="140" y="200" text-anchor="middle">no: the agent fixes it</text>
+  <rect class="box" x="10" y="65" width="100" height="60" rx="4"/>
+  <text class="lbl" x="60" y="93" text-anchor="middle">PR</text>
+  <text class="sub" x="60" y="111" text-anchor="middle">from an agent</text>
+  <rect class="box" x="150" y="65" width="140" height="60" rx="4"/>
+  <text class="lbl" x="220" y="93" text-anchor="middle">checks green?</text>
+  <text class="sub" x="220" y="111" text-anchor="middle">tests, reviews, CI</text>
+  <rect class="box" x="330" y="65" width="160" height="60" rx="4"/>
+  <text class="lbl" x="410" y="93" text-anchor="middle">safe to skip me?</text>
+  <text class="sub" x="410" y="111" text-anchor="middle">docs, trusted projects</text>
+  <rect class="box hot" x="530" y="20" width="180" height="50" rx="4"/>
+  <text class="lbl" x="620" y="50" text-anchor="middle">auto-merge</text>
+  <rect class="box" x="530" y="125" width="180" height="50" rx="4"/>
+  <text class="lbl" x="620" y="148" text-anchor="middle">I review + merge</text>
+  <text class="sub" x="620" y="165" text-anchor="middle">most PRs, for now</text>
+</svg>
+<figcaption>the "safe to skip me" box should keep growing</figcaption>
+</figure>
 
 Docs are the easy place to start. A change to a README or a doc comment is low risk, easy to revert, and the reviewer loops and checks above already catch most problems in it. Once those pass, there's not much left for me to add by clicking merge. GitHub's [auto-merge](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/automatically-merging-a-pull-request) and [protected branch rules](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) get you most of the way there: require the checks to pass, and have a small workflow turn on auto-merge for PRs whose changes are all docs.
 
