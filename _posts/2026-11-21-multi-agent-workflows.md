@@ -293,6 +293,7 @@ Anthropic's advice in [Building effective agents](https://www.anthropic.com/rese
 * [Introduction to the Model Context Protocol](https://modelcontextprotocol.io/introduction)
 * [Codex](https://developers.openai.com/codex), OpenAI
 * [Codex plugin for Claude Code](https://github.com/openai/codex-plugin-cc), OpenAI on GitHub
+* Lauren Tan, ["All Code Is Slop (Except Mine)"](https://ai.engineer/code/2026/talks/lauren-tan), AI Engineer CODE 2026 ([video](https://www.youtube.com/watch?v=ZZ19zhYnDKY))
 * Matt Pocock, [skills](https://github.com/mattpocock/skills) (including `grilling` and `wayfinder`), GitHub
 * [Guide: Understand team effectiveness](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness), Google re:Work
 * Amy Edmondson, ["Psychological Safety and Learning Behavior in Work Teams"](https://dash.harvard.edu/entities/publication/13a7b031-0fdd-45ec-a7e0-2b80e2bc679f), Administrative Science Quarterly (1999)
