@@ -12,6 +12,12 @@ I do this at work, where I'm a tech lead, and on my own projects. Earlier this m
 
 This post covers how that workflow fits together. It's for people who already use agents, and also for people who've only tried a chat window and wonder what the fuss is about. But it's actually mainly for me, as a living document that I can update as things change.
 
+Part of this is a cathartic stream of consciousness to make sure I actually do understand my own workflow. While I don't yet have a section here covering many of the mental aspects of the workflow, taking some time to look across everything I'm doing has always been a helpful exercise in finding the most impactful next steps to take. The sections here may be a bit disjointed in some cases, but I hope to make it smoother as I iterate on it, just like the workflow itself. It will never be perfect, but as a very famous fish once said:
+
+> "Just keep swimming."
+>
+> Dory, *Finding Nemo* (2003)
+
 * [The tools](#the-tools)
 * [Get grilled before anything gets built](#get-grilled-before-anything-gets-built)
 * [Fan out to parallel agents](#fan-out-to-parallel-agents)
