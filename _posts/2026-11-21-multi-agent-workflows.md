@@ -52,9 +52,9 @@ Once there's a plan, I usually have one session act as a coordinator. It splits 
 It isn't free. When Anthropic wrote up [their multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system), a lead agent with parallel subagents beat a single Claude Opus 4 agent by 90.2% on their internal research eval, but multi-agent systems used about 15 times more tokens than a normal chat. Fan-out buys you speed and coverage, and you pay for it in tokens.
 
 <figure class="diagram">
-<svg viewBox="0 0 720 300" role="img" aria-labelledby="fan-t fan-d">
+<svg viewBox="0 0 720 320" role="img" aria-labelledby="fan-t fan-d">
   <title id="fan-t">Fan-out diagram</title>
-  <desc id="fan-d">I hand a plan to a coordinator agent. The coordinator starts four agents in parallel, each on its own area. Each agent opens a pull request, and finished agents loop back to the coordinator to pick up more unblocked work.</desc>
+  <desc id="fan-d">I hand a plan to a coordinator agent. The coordinator starts four agents in parallel, each on its own area. Each agent opens a pull request, and once its work is done the loop goes back to the coordinator to pick up more unblocked work.</desc>
   <path class="wire" d="M130 150 H180"/>
   <path class="flow" d="M130 150 H180"/>
   <g>
@@ -73,7 +73,8 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
     <path class="wire" d="M540 185 C570 185 570 150 600 150"/>
     <path class="wire" d="M540 255 C570 255 570 150 600 150"/>
   </g>
-  <path class="wire" d="M465 280 C465 298 250 298 250 180" stroke-dasharray="4 4"/>
+  <path class="wire" d="M650 180 C650 340 250 340 250 180" stroke-dasharray="4 4"/>
+  <path class="wire" d="M244 190 L250 180 L256 190"/>
   <text class="sub" x="240" y="232" text-anchor="end">done? pick up</text>
   <text class="sub" x="240" y="248" text-anchor="end">more unblocked work</text>
   <rect class="box" x="20" y="120" width="110" height="60" rx="4"/>
