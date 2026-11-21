@@ -10,7 +10,7 @@ A year ago I'd have described my job as writing code. Now it's closer to running
 
 I do this at work, where I'm a tech lead, and on my own projects. Earlier this month I used it to clean up this site and its blog, plus a pile of old side projects that live on the site. In about three days that came to around 40 merged pull requests across the site and blog repos, each one opened by an agent and reviewed before I merged it.
 
-This post covers how that workflow fits together. It's for people who already use agents, and also for people who've only tried a chat window and wonder what the fuss is about. I'll keep work examples generic. The workflow is the interesting part anyway.
+This post covers how that workflow fits together. It's for people who already use agents, and also for people who've only tried a chat window and wonder what the fuss is about. I'll keep work examples generic.
 
 * [The tools](#the-tools)
 * [Get grilled before anything gets built](#get-grilled-before-anything-gets-built)
