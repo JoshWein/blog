@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How I Work with a Team of Coding Agents"
+title: "How I Work with a Team of Coding Agents (Without Losing My Sanity)"
 description: 'Most of my code is written by agents now, and the job has turned into running a small team of them. Here is the workflow I use at work and on side projects: getting grilled before any code, fanning work out to parallel agents, reviewing across different models, and a throwaway command center to keep track of it all.'
 ---
 
