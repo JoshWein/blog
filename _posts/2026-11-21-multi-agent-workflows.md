@@ -112,12 +112,12 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
   <rect class="box" x="600" y="120" width="100" height="60" rx="4"/>
   <text class="lbl" x="650" y="148" text-anchor="middle">PRs</text>
   <circle class="dot pulse" cx="650" cy="166" r="4"/>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 45 396 45'); animation-delay: 0s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#1</text></g>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 115 396 115'); animation-delay: 2s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#2</text></g>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 185 396 185'); animation-delay: 4s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#3</text></g>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 255 396 255'); animation-delay: 6s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#4</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 45 396 45'); animation-delay: -8s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#1</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 115 396 115'); animation-delay: -6s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#2</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 185 396 185'); animation-delay: -4s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#3</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 255 396 255'); animation-delay: -2s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#4</text></g>
 </svg>
-<figcaption>each worker picks up a ticket, works it, opens a PR, and asks for the next one</figcaption>
+<figcaption>the coordinator hands tickets to workers running in parallel; each one works its ticket, opens a PR, and asks for the next</figcaption>
 </figure>
 
 The part that took me a while to figure out is the standing instruction that makes that handoff happen. Without one, an agent finishes its task, reports back, and sits there until I notice. Now I almost always tell the coordinator something like "when a task is done, keep picking up the next unblocked piece of work". That one sentence turns a batch of tasks into a queue that drains itself. "Unblocked" is the important word. It keeps agents from grabbing work that depends on something another agent hasn't finished yet.
