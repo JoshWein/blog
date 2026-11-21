@@ -6,11 +6,11 @@ description: 'Most of my code is written by agents now, and the job has turned i
 
 <div id="top"></div>
 
-A year ago I'd have described my job as writing code. Now it's closer to running a small team. On a normal day I have a few agents working at once, each on a different part of the plan, and most of my time goes into deciding what they should work on, unblocking them, and reviewing what comes back.
+A year ago I'd have described my job as writing code (not really, but I'd like to think at least half my time was spent writing code). Now it's closer to running a small team. On a normal day I have a few agents working at once, each on a different part of a plan, and most of my time goes into deciding what they should work on, unblocking them, and reviewing what comes back.
 
 I do this at work, where I'm a tech lead, and on my own projects. Earlier this month I used it to clean up this site and its blog, plus a pile of old side projects that live on the site. The amount of work I can get through has gone up a lot, both there and at work, and every change was still opened as a pull request by an agent and reviewed before I merged it.
 
-This post covers how that workflow fits together. It's for people who already use agents, and also for people who've only tried a chat window and wonder what the fuss is about. I'll keep work examples generic.
+This post covers how that workflow fits together. It's for people who already use agents, and also for people who've only tried a chat window and wonder what the fuss is about.
 
 * [The tools](#the-tools)
 * [Get grilled before anything gets built](#get-grilled-before-anything-gets-built)
