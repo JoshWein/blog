@@ -58,17 +58,17 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
 <figure class="diagram">
 <svg viewBox="0 0 720 320" role="img" aria-labelledby="fan-t fan-d">
   <title id="fan-t">Fan-out diagram</title>
-  <desc id="fan-d">I turn the plan into a queue of tickets. The coordinator pulls tickets off the queue one at a time and hands each to one of four generic worker agents working in parallel. Each worker opens a pull request, and when a worker is done the coordinator passes it the next unblocked ticket.</desc>
+  <desc id="fan-d">I turn the plan into a queue of tickets. The coordinator pulls tickets off the queue one at a time and hands each to one of four generic worker agents working in parallel. Each worker shows its status as it goes: waiting for a ticket, working on it, opening a pull request, then done and asking for more, at which point the coordinator passes it the next unblocked ticket.</desc>
   <path class="wire" d="M90 150 H110"/><path class="flow" d="M90 150 H110"/>
   <path class="wire" d="M230 150 H250"/><path class="flow" d="M230 150 H250" style="animation-delay:-.6s"/>
   <path class="wire" d="M370 150 C390 150 390 45 410 45"/><path class="flow" d="M370 150 C390 150 390 45 410 45" style="animation-delay:-0.0s"/>
   <path class="wire" d="M370 150 C390 150 390 115 410 115"/><path class="flow" d="M370 150 C390 150 390 115 410 115" style="animation-delay:-0.4s"/>
   <path class="wire" d="M370 150 C390 150 390 185 410 185"/><path class="flow" d="M370 150 C390 150 390 185 410 185" style="animation-delay:-0.8s"/>
   <path class="wire" d="M370 150 C390 150 390 255 410 255"/><path class="flow" d="M370 150 C390 150 390 255 410 255" style="animation-delay:-1.2s"/>
-  <path class="wire" d="M550 45 C575 45 575 150 600 150"/>
-  <path class="wire" d="M550 115 C575 115 575 150 600 150"/>
-  <path class="wire" d="M550 185 C575 185 575 150 600 150"/>
-  <path class="wire" d="M550 255 C575 255 575 150 600 150"/>
+  <path class="wire" d="M550 45 C575 45 575 150 600 150"/><path class="flow prflow" d="M550 45 C575 45 575 150 600 150" style="animation-delay:-8s"/>
+  <path class="wire" d="M550 115 C575 115 575 150 600 150"/><path class="flow prflow" d="M550 115 C575 115 575 150 600 150" style="animation-delay:-6s"/>
+  <path class="wire" d="M550 185 C575 185 575 150 600 150"/><path class="flow prflow" d="M550 185 C575 185 575 150 600 150" style="animation-delay:-4s"/>
+  <path class="wire" d="M550 255 C575 255 575 150 600 150"/><path class="flow prflow" d="M550 255 C575 255 575 150 600 150" style="animation-delay:-2s"/>
   <path class="wire" d="M650 180 C650 340 310 340 310 180" stroke-dasharray="4 4"/>
   <path class="wire" d="M304 190 L310 180 L316 190"/>
   <text class="sub" x="300" y="240" text-anchor="end">worker done? it gets</text>
@@ -86,22 +86,38 @@ It isn't free. When Anthropic wrote up [their multi-agent research system](https
   <text class="lbl" x="310" y="148" text-anchor="middle">coordinator</text>
   <text class="sub" x="310" y="166" text-anchor="middle">assigns tickets</text>
   <rect class="box" x="410" y="20" width="140" height="50" rx="4"/>
-  <text class="lbl" x="480" y="50" text-anchor="middle">worker agent</text>
+  <text class="lbl" x="480" y="41" text-anchor="middle">worker agent</text>
+  <text class="sub st st-wait" x="480" y="59" text-anchor="middle" style="animation-delay:-8s">waiting for ticket</text>
+  <text class="sub st st-work" x="480" y="59" text-anchor="middle" style="animation-delay:-8s">working on #1</text>
+  <text class="sub st st-pr" x="480" y="59" text-anchor="middle" style="animation-delay:-8s">opening a PR</text>
+  <text class="sub st st-done" x="480" y="59" text-anchor="middle" style="animation-delay:-8s">done, next please</text>
   <rect class="box" x="410" y="90" width="140" height="50" rx="4"/>
-  <text class="lbl" x="480" y="120" text-anchor="middle">worker agent</text>
+  <text class="lbl" x="480" y="111" text-anchor="middle">worker agent</text>
+  <text class="sub st st-wait" x="480" y="129" text-anchor="middle" style="animation-delay:-6s">waiting for ticket</text>
+  <text class="sub st st-work" x="480" y="129" text-anchor="middle" style="animation-delay:-6s">working on #2</text>
+  <text class="sub st st-pr" x="480" y="129" text-anchor="middle" style="animation-delay:-6s">opening a PR</text>
+  <text class="sub st st-done" x="480" y="129" text-anchor="middle" style="animation-delay:-6s">done, next please</text>
   <rect class="box" x="410" y="160" width="140" height="50" rx="4"/>
-  <text class="lbl" x="480" y="190" text-anchor="middle">worker agent</text>
+  <text class="lbl" x="480" y="181" text-anchor="middle">worker agent</text>
+  <text class="sub st st-wait" x="480" y="199" text-anchor="middle" style="animation-delay:-4s">waiting for ticket</text>
+  <text class="sub st st-work" x="480" y="199" text-anchor="middle" style="animation-delay:-4s">working on #3</text>
+  <text class="sub st st-pr" x="480" y="199" text-anchor="middle" style="animation-delay:-4s">opening a PR</text>
+  <text class="sub st st-done" x="480" y="199" text-anchor="middle" style="animation-delay:-4s">done, next please</text>
   <rect class="box" x="410" y="230" width="140" height="50" rx="4"/>
-  <text class="lbl" x="480" y="260" text-anchor="middle">worker agent</text>
+  <text class="lbl" x="480" y="251" text-anchor="middle">worker agent</text>
+  <text class="sub st st-wait" x="480" y="269" text-anchor="middle" style="animation-delay:-2s">waiting for ticket</text>
+  <text class="sub st st-work" x="480" y="269" text-anchor="middle" style="animation-delay:-2s">working on #4</text>
+  <text class="sub st st-pr" x="480" y="269" text-anchor="middle" style="animation-delay:-2s">opening a PR</text>
+  <text class="sub st st-done" x="480" y="269" text-anchor="middle" style="animation-delay:-2s">done, next please</text>
   <rect class="box" x="600" y="120" width="100" height="60" rx="4"/>
   <text class="lbl" x="650" y="148" text-anchor="middle">PRs</text>
   <circle class="dot pulse" cx="650" cy="166" r="4"/>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 45 396 45'); animation-delay: 0s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#1</text></g>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 115 396 115'); animation-delay: 2s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#2</text></g>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 185 396 185'); animation-delay: 4s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#3</text></g>
-  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 255 396 255'); animation-delay: 6s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#4</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 45 396 45'); animation-delay: -8s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#1</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 115 396 115'); animation-delay: -6s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#2</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 185 396 185'); animation-delay: -4s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#3</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 255 396 255'); animation-delay: -2s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#4</text></g>
 </svg>
-<figcaption>tickets come off the queue, the coordinator hands them out, and several worker agents work at once</figcaption>
+<figcaption>the coordinator hands tickets to workers running in parallel; each one works its ticket, opens a PR, and asks for the next</figcaption>
 </figure>
 
 The part that took me a while to figure out is the standing instruction that makes that handoff happen. Without one, an agent finishes its task, reports back, and sits there until I notice. Now I almost always tell the coordinator something like "when a task is done, keep picking up the next unblocked piece of work". That one sentence turns a batch of tasks into a queue that drains itself. "Unblocked" is the important word. It keeps agents from grabbing work that depends on something another agent hasn't finished yet.
