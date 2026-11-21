@@ -37,7 +37,7 @@ The most common way agent work goes wrong for me isn't bad code. It's good code 
 
 So I start most real pieces of work by having the agent interview me. Matt Pocock has a set of open source [skills](https://github.com/mattpocock/skills) for this. His `grilling` skill tells the agent to "interview the user relentlessly about a plan, decision, or idea until every branch of the design tree is resolved". His `wayfinder` skill goes further for work that's too big for one session. It plans the work as "a shared map of decision tickets on the issue tracker" and resolves them one at a time.
 
-You don't need the skills for this, though. It's just as easy to tell the agent to "grill me" about the work until we have a plan, and then have it write everything down in a clean doc that the other agents can read later.
+You don't need the skills for this, though. It's just as easy to tell the agent to "grill me" about the work until we have a plan, and then have it write everything down in a clean doc that the other agents can read later. Anthropic's own [Claude Code best practices](https://code.claude.com/docs/en/best-practices) suggest the same thing: ask Claude to interview you until it could write the spec, write it to a file, and then start a fresh session to build from it.
 
 It feels slow for the first ten minutes. Then it saves hours, because every agent that picks up a piece of the plan later gets the answers instead of guesses.
 
@@ -45,7 +45,9 @@ It feels slow for the first ten minutes. Then it saves hours, because every agen
 
 ## Fan out to parallel agents
 
-Once there's a plan, I usually have one session act as a coordinator. It splits the plan into areas that don't step on each other and starts a subagent for each one, all at the same time. Claude Code supports this directly: [subagents](https://code.claude.com/docs/en/sub-agents) each run in their own context window with their own instructions, so one can be deep in a migration while another writes tests and neither fills up the other's context with noise.
+Once there's a plan, I usually have one session act as a coordinator. It splits the plan into areas that don't step on each other and starts a subagent for each one, all at the same time. Claude Code supports this directly: [subagents](https://code.claude.com/docs/en/sub-agents) each run in their own context window with their own instructions, so one can be deep in a migration while another writes tests and neither fills up the other's context with noise. Anthropic calls this the [orchestrator-workers](https://www.anthropic.com/research/building-effective-agents) pattern, where "a central LLM dynamically breaks down tasks, delegates them to worker LLMs, and synthesizes their results."
+
+It isn't free. When Anthropic wrote up [their multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system), a lead agent with parallel subagents beat a single Claude Opus 4 agent by 90.2% on their internal research eval, but multi-agent systems used about 15 times more tokens than a normal chat. Fan-out buys you speed and coverage, and you pay for it in tokens.
 
 <figure class="diagram">
 <svg viewBox="0 0 720 300" role="img" aria-labelledby="fan-t fan-d">
@@ -94,7 +96,7 @@ Once there's a plan, I usually have one session act as a coordinator. It splits 
 
 The part that took me a while to figure out is the standing instruction. Without one, an agent finishes its task, reports back, and sits there until I notice. Now I almost always tell the coordinator something like "when a task is done, keep picking up the next unblocked piece of work". That one sentence turns a batch of tasks into a queue that drains itself. "Unblocked" is the important word. It keeps agents from grabbing work that depends on something another agent hasn't finished yet.
 
-The other thing that makes fan-out work is splitting along boundaries that don't overlap. Two agents editing the same file at the same time will make a mess, the same way two people would. If the plan can't be split cleanly, I'd rather run fewer agents.
+The other thing that makes fan-out work is splitting along boundaries that don't overlap. Two agents editing the same file at the same time will make a mess, the same way two people would. If the plan can't be split cleanly, I'd rather run fewer agents. When agents do need to work in the same repo at the same time, give each one its own checkout. [Git worktrees](https://code.claude.com/docs/en/worktrees) make that cheap: each session gets "a separate copy of the files to edit, so one session can build a feature while a second fixes a bug."
 
 ##### [back to top](#top)
 
@@ -102,7 +104,9 @@ The other thing that makes fan-out work is splitting along boundaries that don't
 
 This is the one habit I'd push on anyone using agents. I always have a standing instruction to bounce reviews between harnesses before a PR gets opened, and I've consistently gotten better results that way.
 
-A model reviewing its own work tends to agree with itself. It made its choices for reasons that still seem good to it. A different model doesn't share those blind spots, so it catches different things. OpenAI ships an official [Codex plugin for Claude Code](https://github.com/openai/codex-plugin-cc) that makes this easy. Claude can call `/codex:review` for a normal review or `/codex:adversarial-review` for "a steerable challenge review", and it can also hand whole tasks to Codex.
+A model reviewing its own work tends to agree with itself. It made its choices for reasons that still seem good to it. There's research backing this up: a 2024 paper, ["LLM Evaluators Recognize and Favor Their Own Generations"](https://arxiv.org/abs/2404.13076), found that models rate their own outputs higher than other models' outputs, and the better a model is at spotting its own writing, the stronger the bias. A different model doesn't share those blind spots, so it catches different things. Even a fresh session of the same model helps. The Claude Code best practices call a second session "the easiest independent reviewer you can get", since it never saw the reasoning that produced the code.
+
+OpenAI ships an official [Codex plugin for Claude Code](https://github.com/openai/codex-plugin-cc) that makes this easy. Claude can call `/codex:review` for a normal review or `/codex:adversarial-review` for "a steerable challenge review", and it can also hand whole tasks to Codex.
 
 In practice it goes one of two ways:
 
@@ -189,7 +193,7 @@ If I had to pick one main point for this whole post, it's this: use the tools to
 A few things that have helped the most:
 
 * **Scheduled jobs.** The one I use every day is a morning brief. Before I sit down, an agent has already pulled together my setup for the day: my open tickets, what merged yesterday, and any announcements or news that matter to my work. I start the day reading one page instead of opening ten tabs.
-* **PR watchers.** Small scripts that keep my open PRs synced with the main branch and merge them once they're approved and green. A PR that's done shouldn't need me to click a button.
+* **PR watchers.** Small scripts that keep my open PRs synced with the main branch and merge them once they're approved and green. A PR that's done shouldn't need me to click a button. If your repo allows it, GitHub's built-in [auto-merge](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/automatically-merging-a-pull-request) handles the last step: it merges a PR "after all required reviews and status checks pass."
 * **Cleanup scripts.** Agents create a lot of mess: disk space, old branches, workspaces nobody is using anymore. I have scripts that clean that up on a schedule. Where I can, I run agents in [remote execution environments](https://code.claude.com/docs/en/claude-code-on-the-web) instead, because a cloud container that gets thrown away when the session ends is the easiest cleanup there is. I still use local development where reuse matters more, like a big repo that's slow to set up or a build cache that takes a long time to warm.
 * **Notifications.** This builds on the command center. An agent that's waiting on me is just sitting there, so I want to know right away. Some way of getting pinged, whether it's a phone notification or a browser notification, keeps things from sitting for hours. In Claude Code you can hook into its [`Notification` event](https://code.claude.com/docs/en/hooks) and send that wherever you'll actually see it.
 
@@ -227,8 +231,8 @@ One rule I try to follow: only work on improving the harness while other work is
 
 Two ideas I keep coming back to:
 
-* **A disagreement detector.** Run the same task through several models and flag the places where they meaningfully disagree. The places where models agree are probably fine. The places where they disagree are exactly where a human should look. It's the cross-model review idea turned into something automatic.
-* **Episodic memory.** Store past decisions and the reasons for them, and when a new task looks like an old one, pull up the similar cases so the agent starts from what we decided last time instead of from scratch.
+* **A disagreement detector.** Run the same task through several models and flag the places where they meaningfully disagree. The places where models agree are probably fine. The places where they disagree are exactly where a human should look. It's the cross-model review idea turned into something automatic. There's research pointing the same way: in [multiagent debate](https://arxiv.org/abs/2305.14325), several model instances propose answers and argue over them for a few rounds, which improved reasoning and factual accuracy and cut down on hallucinations.
+* **Episodic memory.** Store past decisions and the reasons for them, and when a new task looks like an old one, pull up the similar cases so the agent starts from what we decided last time instead of from scratch. The [Reflexion](https://arxiv.org/abs/2303.11366) paper is a good starting point here. Its agents write reflections on what went wrong and "maintain their own reflective text in an episodic memory buffer" to make better decisions next time.
 
 ##### [back to top](#top)
 
@@ -242,7 +246,7 @@ At work, the hardest part of this isn't the tooling. It's that everyone is figur
 * Making it safe for people to experiment and get it wrong.
 * Giving people the time and resources to adapt, instead of expecting it to happen on top of their normal work.
 
-There's research behind the safety part. When Google studied what made its teams effective in [Project Aristotle](https://rework.withgoogle.com/en/guides/understanding-team-effectiveness), psychological safety came out as the most important factor, ahead of things like dependability and structure. If people are afraid to look slow while they learn agents, they'll just not learn them.
+There's research behind the safety part. Amy Edmondson defined [psychological safety](https://dash.harvard.edu/entities/publication/13a7b031-0fdd-45ec-a7e0-2b80e2bc679f) in 1999 as "a shared belief held by members of a team that the team is safe for interpersonal risk taking." When Google studied what made its teams effective in [Project Aristotle](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness), psychological safety came out first on its list of what mattered, ahead of dependability, structure and clarity, meaning, and impact. If people are afraid to look slow while they learn agents, they'll just not learn them.
 
 ##### [back to top](#top)
 
@@ -256,7 +260,7 @@ You don't need any of the parallel stuff to get value. If you've only used a cha
 4. Once that feels normal, run two agents at once on two separate pieces of work.
 5. When you catch yourself explaining the same thing twice, turn it into a skill.
 
-The fan-out and the command centers came later for me. The grilling and the cross-model review were the two things that made the biggest difference, and you can start both this week.
+Anthropic's advice in [Building effective agents](https://www.anthropic.com/research/building-effective-agents) applies to people too: start with "the simplest solution possible" and only add complexity when you need it. The fan-out and the command centers came later for me. The grilling and the cross-model review were the two things that made the biggest difference, and you can start both this week.
 
 ##### [back to top](#top)
 
@@ -272,4 +276,13 @@ The fan-out and the command centers came later for me. The grilling and the cros
 * [Codex](https://developers.openai.com/codex), OpenAI
 * [Codex plugin for Claude Code](https://github.com/openai/codex-plugin-cc), OpenAI on GitHub
 * Matt Pocock, [skills](https://github.com/mattpocock/skills) (including `grilling` and `wayfinder`), GitHub
-* [Guide: Understand team effectiveness](https://rework.withgoogle.com/en/guides/understanding-team-effectiveness), Google re:Work
+* [Guide: Understand team effectiveness](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness), Google re:Work
+* Amy Edmondson, ["Psychological Safety and Learning Behavior in Work Teams"](https://dash.harvard.edu/entities/publication/13a7b031-0fdd-45ec-a7e0-2b80e2bc679f), Administrative Science Quarterly (1999)
+* [Building effective agents](https://www.anthropic.com/research/building-effective-agents), Anthropic (2024)
+* [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system), Anthropic (2025)
+* [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices), Claude Code docs
+* [Run parallel sessions with Git worktrees](https://code.claude.com/docs/en/worktrees), Claude Code docs
+* Panickssery, Bowman and Feng, ["LLM Evaluators Recognize and Favor Their Own Generations"](https://arxiv.org/abs/2404.13076) (2024)
+* Du et al., ["Improving Factuality and Reasoning in Language Models through Multiagent Debate"](https://arxiv.org/abs/2305.14325) (2023)
+* Shinn et al., ["Reflexion: Language Agents with Verbal Reinforcement Learning"](https://arxiv.org/abs/2303.11366) (2023)
+* [Automatically merging a pull request](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/automatically-merging-a-pull-request), GitHub Docs
