@@ -233,7 +233,7 @@ Most of the time you still want the agent to use its judgment. The deterministic
 
 ## Packaging what works
 
-Once a workflow works more than once, I try to package it so I don't have to explain it again. Claude Code has three pieces that help here:
+Once a workflow works more than once, I try to package it so I don't have to explain it again. Agents have three pieces that help here:
 
 * [Skills](https://code.claude.com/docs/en/skills) are folders of instructions the agent loads when a task calls for them. They're a good fit for tasks that repeat but aren't deterministic enough to script, like "review this the way our team reviews" or "plan this migration".
 * [MCP servers](https://modelcontextprotocol.io/introduction) connect the agent to your other systems, like your issue tracker or your docs, so it can look things up instead of asking you.
