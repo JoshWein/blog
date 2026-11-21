@@ -33,6 +33,8 @@ I'm not loyal to one tool. My main one is [Claude Code](https://code.claude.com/
 
 The fact that I mix them matters more than which ones I pick. Different models make different mistakes, and that turns out to be the most useful thing about having more than one. More on that in the review section.
 
+This lineup will probably look different in a few months. Every harness and model keeps improving, and whichever is best at a given job changes often, so I try not to get too attached.
+
 ## Get grilled before anything gets built
 
 The most common way agent work goes wrong for me isn't bad code. It's good code for the wrong thing. If I give an agent a one-line ask, it fills in all the gaps with guesses, and it guesses with confidence.
@@ -48,67 +50,69 @@ It feels slow for the first ten minutes. Then it saves hours, because every agen
 
 ## Fan out to parallel agents
 
-Once there's a plan, I usually have one session act as a coordinator. It splits the plan into areas that don't step on each other and starts a subagent for each one, all at the same time. Claude Code supports this directly: [subagents](https://code.claude.com/docs/en/sub-agents) each run in their own context window with their own instructions, so one can be deep in a migration while another writes tests and neither fills up the other's context with noise. Anthropic calls this the [orchestrator-workers](https://www.anthropic.com/research/building-effective-agents) pattern, where "a central LLM dynamically breaks down tasks, delegates them to worker LLMs, and synthesizes their results."
+Once there's a plan, I usually have one session act as a coordinator. It breaks the plan into tickets that don't step on each other, then hands each ticket to a generic worker agent, several at the same time. As the coordinator sees a worker finish, it passes that worker the next unblocked ticket. Claude Code supports this directly: [subagents](https://code.claude.com/docs/en/sub-agents) each run in their own context window with their own instructions, so one can be deep in a migration while another writes tests and neither fills up the other's context with noise. Anthropic calls this the [orchestrator-workers](https://www.anthropic.com/research/building-effective-agents) pattern, where "a central LLM dynamically breaks down tasks, delegates them to worker LLMs, and synthesizes their results."
 
 It isn't free. When Anthropic wrote up [their multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system), a lead agent with parallel subagents beat a single Claude Opus 4 agent by 90.2% on their internal research eval, but multi-agent systems used about 15 times more tokens than a normal chat. Fan-out buys you speed and coverage, and you pay for it in tokens.
 
 <figure class="diagram">
 <svg viewBox="0 0 720 320" role="img" aria-labelledby="fan-t fan-d">
   <title id="fan-t">Fan-out diagram</title>
-  <desc id="fan-d">I hand a plan to a coordinator agent. The coordinator starts four agents in parallel, each on its own area. Each agent opens a pull request, and once its work is done the loop goes back to the coordinator to pick up more unblocked work.</desc>
-  <path class="wire" d="M130 150 H180"/>
-  <path class="flow" d="M130 150 H180"/>
-  <g>
-    <path class="wire" d="M320 150 C355 150 355 45 390 45"/>
-    <path class="wire" d="M320 150 C355 150 355 115 390 115"/>
-    <path class="wire" d="M320 150 C355 150 355 185 390 185"/>
-    <path class="wire" d="M320 150 C355 150 355 255 390 255"/>
-    <path class="flow" d="M320 150 C355 150 355 45 390 45"/>
-    <path class="flow" d="M320 150 C355 150 355 115 390 115" style="animation-delay:-.4s"/>
-    <path class="flow" d="M320 150 C355 150 355 185 390 185" style="animation-delay:-.8s"/>
-    <path class="flow" d="M320 150 C355 150 355 255 390 255" style="animation-delay:-1.2s"/>
-  </g>
-  <g>
-    <path class="wire" d="M540 45 C570 45 570 150 600 150"/>
-    <path class="wire" d="M540 115 C570 115 570 150 600 150"/>
-    <path class="wire" d="M540 185 C570 185 570 150 600 150"/>
-    <path class="wire" d="M540 255 C570 255 570 150 600 150"/>
-  </g>
-  <path class="wire" d="M650 180 C650 340 250 340 250 180" stroke-dasharray="4 4"/>
-  <path class="wire" d="M244 190 L250 180 L256 190"/>
-  <text class="sub" x="240" y="232" text-anchor="end">done? pick up</text>
-  <text class="sub" x="240" y="248" text-anchor="end">more unblocked work</text>
-  <rect class="box" x="20" y="120" width="110" height="60" rx="4"/>
-  <text class="lbl" x="75" y="148" text-anchor="middle">me</text>
-  <text class="sub" x="75" y="166" text-anchor="middle">the plan</text>
-  <rect class="box hot" x="180" y="120" width="140" height="60" rx="4"/>
-  <text class="lbl" x="250" y="148" text-anchor="middle">coordinator</text>
-  <text class="sub" x="250" y="166" text-anchor="middle">splits + assigns</text>
-  <rect class="box" x="390" y="20" width="150" height="50" rx="4"/>
-  <text class="lbl" x="465" y="50" text-anchor="middle">agent: api</text>
-  <rect class="box" x="390" y="90" width="150" height="50" rx="4"/>
-  <text class="lbl" x="465" y="120" text-anchor="middle">agent: ui</text>
-  <rect class="box" x="390" y="160" width="150" height="50" rx="4"/>
-  <text class="lbl" x="465" y="190" text-anchor="middle">agent: tests</text>
-  <rect class="box" x="390" y="230" width="150" height="50" rx="4"/>
-  <text class="lbl" x="465" y="260" text-anchor="middle">agent: docs</text>
+  <desc id="fan-d">I turn the plan into a queue of tickets. The coordinator pulls tickets off the queue one at a time and hands each to one of four generic worker agents working in parallel. Each worker opens a pull request, and when a worker is done the coordinator passes it the next unblocked ticket.</desc>
+  <path class="wire" d="M90 150 H110"/><path class="flow" d="M90 150 H110"/>
+  <path class="wire" d="M230 150 H250"/><path class="flow" d="M230 150 H250" style="animation-delay:-.6s"/>
+  <path class="wire" d="M370 150 C390 150 390 45 410 45"/><path class="flow" d="M370 150 C390 150 390 45 410 45" style="animation-delay:-0.0s"/>
+  <path class="wire" d="M370 150 C390 150 390 115 410 115"/><path class="flow" d="M370 150 C390 150 390 115 410 115" style="animation-delay:-0.4s"/>
+  <path class="wire" d="M370 150 C390 150 390 185 410 185"/><path class="flow" d="M370 150 C390 150 390 185 410 185" style="animation-delay:-0.8s"/>
+  <path class="wire" d="M370 150 C390 150 390 255 410 255"/><path class="flow" d="M370 150 C390 150 390 255 410 255" style="animation-delay:-1.2s"/>
+  <path class="wire" d="M550 45 C575 45 575 150 600 150"/>
+  <path class="wire" d="M550 115 C575 115 575 150 600 150"/>
+  <path class="wire" d="M550 185 C575 185 575 150 600 150"/>
+  <path class="wire" d="M550 255 C575 255 575 150 600 150"/>
+  <path class="wire" d="M650 180 C650 340 310 340 310 180" stroke-dasharray="4 4"/>
+  <path class="wire" d="M304 190 L310 180 L316 190"/>
+  <text class="sub" x="300" y="240" text-anchor="end">worker done? it gets</text>
+  <text class="sub" x="300" y="256" text-anchor="end">the next ticket</text>
+  <rect class="box" x="10" y="125" width="80" height="50" rx="4"/>
+  <text class="lbl" x="50" y="148" text-anchor="middle">me</text>
+  <text class="sub" x="50" y="164" text-anchor="middle">the plan</text>
+  <rect class="box" x="110" y="85" width="120" height="130" rx="4"/>
+  <text class="lbl" x="170" y="105" text-anchor="middle">ticket queue</text>
+  <g class="ticket qtop"><rect x="125" y="115" width="90" height="20" rx="3"/></g>
+  <g class="ticket"><rect x="125" y="140" width="90" height="20" rx="3"/></g>
+  <g class="ticket"><rect x="125" y="165" width="90" height="20" rx="3"/></g>
+  <g class="ticket"><rect x="125" y="190" width="90" height="20" rx="3"/></g>
+  <rect class="box hot" x="250" y="120" width="120" height="60" rx="4"/>
+  <text class="lbl" x="310" y="148" text-anchor="middle">coordinator</text>
+  <text class="sub" x="310" y="166" text-anchor="middle">assigns tickets</text>
+  <rect class="box" x="410" y="20" width="140" height="50" rx="4"/>
+  <text class="lbl" x="480" y="50" text-anchor="middle">worker agent</text>
+  <rect class="box" x="410" y="90" width="140" height="50" rx="4"/>
+  <text class="lbl" x="480" y="120" text-anchor="middle">worker agent</text>
+  <rect class="box" x="410" y="160" width="140" height="50" rx="4"/>
+  <text class="lbl" x="480" y="190" text-anchor="middle">worker agent</text>
+  <rect class="box" x="410" y="230" width="140" height="50" rx="4"/>
+  <text class="lbl" x="480" y="260" text-anchor="middle">worker agent</text>
   <rect class="box" x="600" y="120" width="100" height="60" rx="4"/>
   <text class="lbl" x="650" y="148" text-anchor="middle">PRs</text>
   <circle class="dot pulse" cx="650" cy="166" r="4"/>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 45 396 45'); animation-delay: 0s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#1</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 115 396 115'); animation-delay: 2s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#2</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 185 396 185'); animation-delay: 4s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#3</text></g>
+  <g class="ticket mover" style="offset-path: path('M170 125 C230 125 230 150 310 150 C390 150 390 255 396 255'); animation-delay: 6s"><rect x="-22" y="-10" width="44" height="20" rx="3"/><text x="0" y="4" text-anchor="middle">#4</text></g>
 </svg>
-<figcaption>one plan, one coordinator, several agents working at once</figcaption>
+<figcaption>tickets come off the queue, the coordinator hands them out, and several worker agents work at once</figcaption>
 </figure>
 
-The part that took me a while to figure out is the standing instruction. Without one, an agent finishes its task, reports back, and sits there until I notice. Now I almost always tell the coordinator something like "when a task is done, keep picking up the next unblocked piece of work". That one sentence turns a batch of tasks into a queue that drains itself. "Unblocked" is the important word. It keeps agents from grabbing work that depends on something another agent hasn't finished yet.
+The part that took me a while to figure out is the standing instruction that makes that handoff happen. Without one, an agent finishes its task, reports back, and sits there until I notice. Now I almost always tell the coordinator something like "when a task is done, keep picking up the next unblocked piece of work". That one sentence turns a batch of tasks into a queue that drains itself. "Unblocked" is the important word. It keeps agents from grabbing work that depends on something another agent hasn't finished yet.
 
-The other thing that makes fan-out work is splitting along boundaries that don't overlap. Two agents editing the same file at the same time will make a mess, the same way two people would. If the plan can't be split cleanly, I'd rather run fewer agents. When agents do need to work in the same repo at the same time, give each one its own checkout. [Git worktrees](https://code.claude.com/docs/en/worktrees) make that cheap: each session gets "a separate copy of the files to edit, so one session can build a feature while a second fixes a bug."
+The other thing that makes fan-out work is splitting along boundaries that don't overlap. Two agents editing the same file at the same time will make a mess, the same way two people would. If the plan can't be split cleanly, I'd rather run fewer agents. When agents do need to work in the same repo at the same time, give each one its own checkout. [Git worktrees](https://git-scm.com/docs/git-worktree) are the cheap way to do that: extra working folders attached to the same repo, each on its own branch, and Claude Code can [set them up for you](https://code.claude.com/docs/en/worktrees). Once you're running a lot of agents, it's probably worth keeping a pool of worktrees that are already set up and get reused between tickets, so each new agent doesn't wait on a fresh install and first build. [treehouse](https://github.com/kunchenguid/treehouse) is one tool that manages a pool like that.
 
 [back to top](#top)
 {: .back-top}
 
 ## Review across models, not within one
 
-This is the one habit I'd push on anyone using agents. I always have a standing instruction to bounce reviews between harnesses before a PR gets opened, and I've consistently gotten better results that way.
+This is a habit I'd push on anyone using agents. I always have a standing instruction to bounce reviews between harnesses before a PR gets opened, and I've consistently gotten better results that way.
 
 A model reviewing its own work tends to agree with itself. It made its choices for reasons that still seem good to it. There's research backing this up: a 2024 paper, ["LLM Evaluators Recognize and Favor Their Own Generations"](https://arxiv.org/abs/2404.13076), found that models rate their own outputs higher than other models' outputs, and the better a model is at spotting its own writing, the stronger the bias. A different model doesn't share those blind spots, so it catches different things. Even a fresh session of the same model helps. The Claude Code best practices call a second session "the easiest independent reviewer you can get", since it never saw the reasoning that produced the code.
 
@@ -153,7 +157,7 @@ Either way, the review comments go back to whoever wrote the code, they fix it, 
 <figcaption>two review loops before the PR reaches me</figcaption>
 </figure>
 
-None of this means I stop reviewing. I still review most of the PRs my agents generate, because every so often an obvious, confidently wrong mistake makes it through all of the automated reviews. What the loops buy me is that by the time a PR reaches me, most of the small stuff is gone and I can spend my attention on whether the change is the right one.
+None of this means I stop reviewing. I still review most of the PRs my agents generate, because every so often an obvious, confidently wrong mistake makes it through all of the automated reviews. What the loops buy me is that by the time a PR reaches me, most of the small stuff is gone and I can spend my attention on whether the change is the right one. I even reviewed this entire blog post before posting it!
 
 [back to top](#top)
 {: .back-top}
@@ -200,10 +204,30 @@ If I had to pick one main point for this whole post, it's this: use the tools to
 
 A few things that have helped the most:
 
-* **Scheduled jobs.** The one I use every day is a morning brief. Before I sit down, an agent has already pulled together my setup for the day: my open tickets, what merged yesterday, and any announcements or news that matter to my work. I start the day reading one page instead of opening ten tabs.
-* **PR watchers.** Small scripts that keep my open PRs synced with the main branch and merge them once they're approved and green. A PR that's done shouldn't need me to click a button. If your repo allows it, GitHub's built-in [auto-merge](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/automatically-merging-a-pull-request) handles the last step: it merges a PR "after all required reviews and status checks pass."
+* **Scheduled jobs.** The one I use every day is a morning brief. Before I sit down, an agent has already pulled together my setup for the day: my open tickets, what merged yesterday, and any announcements or news that matter to my work. I start the day reading one page instead of opening ten tabs. There's an example below.
+* **PR watchers.** Small scripts that keep my open PRs synced with the main branch and merge them once they're approved and green. A PR that's done shouldn't need me to click a button (more on that in [auto-merging](#auto-merging)).
 * **Cleanup scripts.** Agents create a lot of mess: disk space, old branches, workspaces nobody is using anymore. I have scripts that clean that up on a schedule. Where I can, I run agents in [remote execution environments](https://code.claude.com/docs/en/claude-code-on-the-web) instead, because a cloud container that gets thrown away when the session ends is the easiest cleanup there is. I still use local development where reuse matters more, like a big repo that's slow to set up or a build cache that takes a long time to warm.
 * **Notifications.** This builds on the command center. An agent that's waiting on me is just sitting there, so I want to know right away. Some way of getting pinged, whether it's a phone notification or a browser notification, keeps things from sitting for hours. In Claude Code you can hook into its [`Notification` event](https://code.claude.com/docs/en/hooks) and send that wherever you'll actually see it.
+
+<figure class="diagram">
+<div class="cc three" role="img" aria-label="Example morning brief with three columns. My tickets: retry webhook failures, in progress with agent 2; pagination bug, new and needs a plan; bump Node to 24, PR open with checks green. Merged yesterday: rate limit config by agent 1, README update auto-merged, and flaky test fix by agent 3. Worth knowing: deploy freeze Friday, a team announcement; and auth library v5 is out, a breaking change for a library we use.">
+  <div class="col"><p class="cc-h">my tickets</p>
+    <div class="card run">retry webhook failures<small>in progress, agent 2</small></div>
+    <div class="card wait">pagination bug<small>new, needs a plan</small></div>
+    <div class="card">bump Node to 24<small>PR open, checks green</small></div>
+  </div>
+  <div class="col"><p class="cc-h">merged yesterday</p>
+    <div class="card done">rate limit config<small>agent 1</small></div>
+    <div class="card done">README update<small>auto-merged</small></div>
+    <div class="card done">flaky test fix<small>agent 3</small></div>
+  </div>
+  <div class="col"><p class="cc-h">worth knowing</p>
+    <div class="card">deploy freeze Friday<small>team announcement</small></div>
+    <div class="card">auth library v5 is out<small>breaking change, we use it</small></div>
+  </div>
+</div>
+<figcaption>an example morning brief, waiting for me before I sit down</figcaption>
+</figure>
 
 None of these are big projects. Most of them are a short script or a scheduled prompt, and agents are good at writing those too.
 
@@ -218,21 +242,91 @@ The second half of that is making agents loud about their assumptions. I put ins
 
 I think of it like an airport. It's good to know which runway a pilot plans to land on, and which way they'll taxi once they're down, before it happens rather than after. Nobody in the tower is assuming the pilot is bad. It's that saying the plan out loud is how two planes find out they were headed for the same spot.
 
-The other guardrails are the ones I've already mentioned. Grill before building so the agents aren't guessing. Split work so agents don't collide. Review with a different model than the one that wrote the code. And I still read most PRs myself before they merge. I even reviewed this entire blog post before posting it!
+<figure class="diagram">
+<svg viewBox="0 0 720 245" role="img" aria-labelledby="rw-t rw-d">
+  <title id="rw-t">Two planes radioing their plans before landing</title>
+  <desc id="rw-d">Two planes approach the same runway from opposite ends. Plane 1 radios that it is landing on runway 2 from the west. Plane 2 radios that it is also landing on runway 2, from the other direction. Both calls go to the tower, which stands for me, a reviewer, or another agent. The tower hears that they picked the same runway and tells plane 2 to hold while plane 1 lands.</desc>
+  <rect class="box" x="10" y="15" width="230" height="78" rx="4"/>
+  <text class="lbl" x="125" y="40" text-anchor="middle">plane 1 radios in</text>
+  <text class="sub" x="125" y="60" text-anchor="middle">"landing on runway 2,</text>
+  <text class="sub" x="125" y="78" text-anchor="middle">coming in from the west"</text>
+  <rect class="box" x="480" y="15" width="230" height="78" rx="4"/>
+  <text class="lbl" x="595" y="40" text-anchor="middle">plane 2 radios in</text>
+  <text class="sub" x="595" y="60" text-anchor="middle">"also landing on runway 2,</text>
+  <text class="sub" x="595" y="78" text-anchor="middle">from the other direction"</text>
+  <path class="wire" d="M240 54 H280"/><path class="flow" d="M240 54 H280"/>
+  <path class="wire" d="M480 54 H440"/><path class="flow" d="M480 54 H440" style="animation-delay:-.8s"/>
+  <rect class="box hot" x="280" y="15" width="160" height="78" rx="4"/>
+  <text class="lbl" x="360" y="40" text-anchor="middle">the tower</text>
+  <text class="sub" x="360" y="60" text-anchor="middle">me, a reviewer,</text>
+  <text class="sub" x="360" y="78" text-anchor="middle">or another agent</text>
+  <path class="wire" d="M360 93 V115"/><path class="flow" d="M360 93 V115" style="animation-delay:-.4s"/>
+  <g class="pulse"><rect class="alert" x="230" y="115" width="260" height="50" rx="4"/></g>
+  <text class="lbl" x="360" y="137" text-anchor="middle">same runway: plane 2, hold</text>
+  <text class="sub" x="360" y="155" text-anchor="middle">caught before anyone lands</text>
+  <path class="wire" d="M60 93 V190" stroke-dasharray="3 4"/>
+  <path class="wire" d="M660 93 V190" stroke-dasharray="3 4"/>
+  <rect class="runway" x="10" y="190" width="700" height="44" rx="3"/>
+  <line class="rwline" x1="20" y1="212" x2="700" y2="212"/>
+  <rect class="spot" x="315" y="192" width="90" height="40" rx="3"/>
+  <text class="rwlbl" x="360" y="227" text-anchor="middle">runway 2</text>
+  <g transform="translate(60 212)"><g class="taxi"><path class="plane" d="M-18 -2 L12 -2 Q20 0 12 2 L-18 2 Z M-2 -2 L-10 -15 L-4 -15 L8 -2 Z M-2 2 L-10 15 L-4 15 L8 2 Z M-16 -2 L-21 -9 L-17 -9 L-11 -2 Z M-16 2 L-21 9 L-17 9 L-11 2 Z"/></g></g>
+  <g transform="translate(660 212) scale(-1 1)"><g><path class="plane" d="M-18 -2 L12 -2 Q20 0 12 2 L-18 2 Z M-2 -2 L-10 -15 L-4 -15 L8 -2 Z M-2 2 L-10 15 L-4 15 L8 2 Z M-16 -2 L-21 -9 L-17 -9 L-11 -2 Z M-16 2 L-21 9 L-17 9 L-11 2 Z"/></g></g>
+</svg>
+<figcaption>the tower catches the overlap before anything lands</figcaption>
+</figure>
 
 [back to top](#top)
 {: .back-top}
 
 ## Deterministic validation
 
-Everything in the guardrails section is still an instruction, and an instruction is a request. Agents follow them nearly every time, but nearly isn't always. Anthropic's [Claude Code best practices](https://code.claude.com/docs/en/best-practices) split instructions into two kinds. Non-deterministic ones (your prompt, a CLAUDE.md file, a skill) are read by the model, and "there's no guarantee that it'll follow your instructions." Deterministic ones (hooks, deny rules, tests, CI, branch protection) are enforced by the tooling, and they apply "every time, no matter what the model decided to do."
+Everything in the guardrails section is still an instruction, and an instruction is a request. Agents follow them nearly every time, but nearly isn't always. Anthropic's [Claude Code best practices](https://code.claude.com/docs/en/best-practices) split instructions into two kinds. Non-deterministic ones (your prompt, an AGENTS.md file, a skill) are read by the model, and "there's no guarantee that it'll follow your instructions." Deterministic ones (hooks, deny rules, tests, CI, branch protection) are enforced by the tooling, and they apply "every time, no matter what the model decided to do."
+
+<figure class="diagram">
+<div class="cc two" role="img" aria-label="Two columns. Instructions the model decides whether to follow: your prompt, AGENTS.md and skills, asking it to prove it's done, and its own summary of what it did. Rules the tooling enforces: tests and type checks, hooks, deny rules and the sandbox, and CI with branch protection.">
+  <div class="col"><p class="cc-h">the model decides</p>
+    <div class="card wait">your prompt<small>usually followed</small></div>
+    <div class="card wait">AGENTS.md and skills<small>usually followed</small></div>
+    <div class="card wait">"show me it's done"<small>usually followed</small></div>
+    <div class="card wait">its own summary<small>usually right</small></div>
+  </div>
+  <div class="col"><p class="cc-h">the tooling enforces</p>
+    <div class="card run">tests and type checks<small>every time</small></div>
+    <div class="card run">hooks<small>every time</small></div>
+    <div class="card run">deny rules and sandbox<small>every time</small></div>
+    <div class="card run">CI and branch protection<small>every time</small></div>
+  </div>
+</div>
+<figcaption>the same rule can live on either side; move the ones that can't have exceptions to the right</figcaption>
+</figure>
 
 So when something has to always happen, or never happen, I try to move it out of the prompt and into something that runs:
 
 * **Tests, type checks and linters** that the agent has to get green before it says it's done. "Done" means the checks pass, not that the agent says it's done.
 * **[Hooks](https://code.claude.com/docs/en/hooks-guide)** that run at fixed points in the agent's loop, like formatting every file it edits or blocking edits to generated code. In the docs' words, "certain actions always happen rather than relying on the LLM to choose to run them."
-* **CI and branch protection** as the last word. No matter what any agent or reviewer thinks, nothing merges without passing checks and a person approving it.
+* **CI and branch protection** as the last word. No matter what any agent or reviewer thinks, nothing merges without passing checks, and anything that isn't set up to auto-merge needs a person to approve it.
 * **Scripts for checkable assumptions.** If an assumption can be checked with a script, like whether the branch is up to date or whether a config value exists, a script beats asking the agent to remember to check.
+
+Tests aren't one thing, though. They come in a lot of strengths, and the more of them a PR can point to, the less I need to read the diff to trust it. Roughly from cheapest to strongest:
+
+<figure class="diagram">
+<div class="cc ladder" role="img" aria-label="Ten kinds of checks, from cheapest to strongest: 1, lint and static analysis: seconds, catches patterns; 2, type checks: whole classes of mistakes; 3, unit tests: one function at a time; 4, integration tests: pieces working together; 5, end-to-end tests: an agent drives the real app; 6, screenshot and visual tests: what the user actually sees; 7, property-based tests: thousands of generated inputs; 8, fuzzing: random abuse until it breaks; 9, mutation testing: tests for your tests; 10, formal verification: proofs and model checking.">
+    <div class="card"><b>1</b> lint and static analysis<small>seconds, catches patterns</small></div>
+    <div class="card"><b>2</b> type checks<small>whole classes of mistakes</small></div>
+    <div class="card"><b>3</b> unit tests<small>one function at a time</small></div>
+    <div class="card"><b>4</b> integration tests<small>pieces working together</small></div>
+    <div class="card"><b>5</b> end-to-end tests<small>an agent drives the real app</small></div>
+    <div class="card"><b>6</b> screenshot and visual tests<small>what the user actually sees</small></div>
+    <div class="card"><b>7</b> property-based tests<small>thousands of generated inputs</small></div>
+    <div class="card"><b>8</b> fuzzing<small>random abuse until it breaks</small></div>
+    <div class="card"><b>9</b> mutation testing<small>tests for your tests</small></div>
+    <div class="card"><b>10</b> formal verification<small>proofs and model checking</small></div>
+</div>
+<figcaption>roughly cheapest first; the later rungs used to be hard to justify, and agents make them a lot cheaper to set up</figcaption>
+</figure>
+
+Lauren Tan's talk ["All Code Is Slop (Except Mine)"](https://ai.engineer/code/2026/talks/lauren-tan) is a good tour of the strong end. Her team has agents drive the real app to verify their changes, uses property-based testing on the UI, and has used [TLA+](https://lamport.azurewebsites.net/tla/tla.html) model checking and [Lean](https://lean-lang.org/) proofs on the parts that really can't break. She's also clear that formal verification is "not a silver bullet". You don't need every rung on every project. The point is to know the ladder exists and to climb it where the risk is.
 
 The habit I'm trying to build: when a reviewer, human or model, flags the same kind of problem twice, ask whether it could be a check instead of a comment. A lint rule or a test catches it every time, for free, and nobody has to remember it.
 
@@ -244,6 +338,38 @@ Most of the time you still want the agent to use its judgment. The deterministic
 ## Auto-merging
 
 Right now I'm the last step on most PRs, but not all of them. For certain projects, and for docs, we already auto-merge.
+
+<figure class="diagram">
+<svg viewBox="0 0 720 210" role="img" aria-labelledby="am-t am-d">
+  <title id="am-t">Auto-merge decision flow</title>
+  <desc id="am-d">An agent's pull request goes through the checks. If they fail, the agent fixes it and tries again. If they pass and the change is docs only or in a project that allows it, it auto-merges. Otherwise it goes to a person for review before merging.</desc>
+  <path class="wire" d="M110 95 H150"/><path class="flow" d="M110 95 H150"/>
+  <path class="wire" d="M290 95 H330"/><path class="flow" d="M290 95 H330" style="animation-delay:-.5s"/>
+  <path class="wire" d="M490 95 C510 95 510 45 530 45"/><path class="flow" d="M490 95 C510 95 510 45 530 45" style="animation-delay:-1s"/>
+  <path class="wire" d="M490 95 C510 95 510 150 530 150"/>
+  <text class="sub" x="498" y="62" text-anchor="end">yes</text>
+  <text class="sub" x="498" y="138" text-anchor="end">no</text>
+  <text class="sub" x="310" y="88" text-anchor="middle">yes</text>
+  <path class="wire" d="M220 125 C220 190 60 190 60 125" stroke-dasharray="4 4"/>
+  <path class="wire" d="M54 135 L60 125 L66 135"/>
+  <text class="sub" x="140" y="200" text-anchor="middle">no: the agent fixes it</text>
+  <rect class="box" x="10" y="65" width="100" height="60" rx="4"/>
+  <text class="lbl" x="60" y="93" text-anchor="middle">PR</text>
+  <text class="sub" x="60" y="111" text-anchor="middle">from an agent</text>
+  <rect class="box" x="150" y="65" width="140" height="60" rx="4"/>
+  <text class="lbl" x="220" y="93" text-anchor="middle">checks green?</text>
+  <text class="sub" x="220" y="111" text-anchor="middle">tests, reviews, CI</text>
+  <rect class="box" x="330" y="65" width="160" height="60" rx="4"/>
+  <text class="lbl" x="410" y="93" text-anchor="middle">safe to skip me?</text>
+  <text class="sub" x="410" y="111" text-anchor="middle">docs, low-risk projects</text>
+  <rect class="box hot" x="530" y="20" width="180" height="50" rx="4"/>
+  <text class="lbl" x="620" y="50" text-anchor="middle">auto-merge</text>
+  <rect class="box" x="530" y="125" width="180" height="50" rx="4"/>
+  <text class="lbl" x="620" y="148" text-anchor="middle">I review + merge</text>
+  <text class="sub" x="620" y="165" text-anchor="middle">most PRs, for now</text>
+</svg>
+<figcaption>the "safe to skip me" box should keep growing</figcaption>
+</figure>
 
 Docs are the easy place to start. A change to a README or a doc comment is low risk, easy to revert, and the reviewer loops and checks above already catch most problems in it. Once those pass, there's not much left for me to add by clicking merge. GitHub's [auto-merge](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/automatically-merging-a-pull-request) and [protected branch rules](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) get you most of the way there: require the checks to pass, and have a small workflow turn on auto-merge for PRs whose changes are all docs.
 
@@ -271,10 +397,11 @@ One rule I try to follow: only work on improving the harness while other work is
 
 ## What I want to try next
 
-Two ideas I keep coming back to:
+A few ideas I keep coming back to:
 
 * **A disagreement detector.** Run the same task through several models and flag the places where they meaningfully disagree. The places where models agree are probably fine. The places where they disagree are exactly where a human should look. It's the cross-model review idea turned into something automatic. There's research pointing the same way: in [multiagent debate](https://arxiv.org/abs/2305.14325), several model instances propose answers and argue over them for a few rounds, which improved reasoning and factual accuracy and cut down on hallucinations.
 * **Episodic memory.** Store past decisions and the reasons for them, and when a new task looks like an old one, pull up the similar cases so the agent starts from what we decided last time instead of from scratch. The [Reflexion](https://arxiv.org/abs/2303.11366) paper is a good starting point here. Its agents write reflections on what went wrong and "maintain their own reflective text in an episodic memory buffer" to make better decisions next time.
+* **PRs you can review without reading the code.** I keep tuning what goes into my agents' PR summaries, adding some things and cutting others, with the goal of reaching a point where I don't need to read the diff to trust a change. Most of that comes from the PR spelling out what "done" meant: the acceptance criteria, the tests that prove each one, and that they all passed. The rest is visuals. I built a Chrome extension that builds on GitHub's new [pull request overview page](https://github.blog/changelog/2026-11-05-new-pull-request-overview-page-in-public-preview/) and lays out what changed and how it was checked, so I can judge a PR at a glance instead of scrolling through files.
 
 [back to top](#top)
 {: .back-top}
@@ -326,10 +453,15 @@ Anthropic's advice in [Building effective agents](https://www.anthropic.com/rese
 * Amy Edmondson, ["Psychological Safety and Learning Behavior in Work Teams"](https://dash.harvard.edu/entities/publication/13a7b031-0fdd-45ec-a7e0-2b80e2bc679f), Administrative Science Quarterly (1999)
 * [Building effective agents](https://www.anthropic.com/research/building-effective-agents), Anthropic (2024)
 * [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system), Anthropic (2025)
+* [The TLA+ home page](https://lamport.azurewebsites.net/tla/tla.html), Leslie Lamport
+* [Lean](https://lean-lang.org/), the Lean theorem prover
 * [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices), Claude Code docs
-* [Run parallel sessions with Git worktrees](https://code.claude.com/docs/en/worktrees), Claude Code docs
+* [Run parallel sessions with worktrees](https://code.claude.com/docs/en/worktrees), Claude Code docs
+* [git-worktree documentation](https://git-scm.com/docs/git-worktree), Git
+* [treehouse](https://github.com/kunchenguid/treehouse), a pool of reusable git worktrees for agents
 * Panickssery, Bowman and Feng, ["LLM Evaluators Recognize and Favor Their Own Generations"](https://arxiv.org/abs/2404.13076) (2024)
 * Du et al., ["Improving Factuality and Reasoning in Language Models through Multiagent Debate"](https://arxiv.org/abs/2305.14325) (2023)
 * Shinn et al., ["Reflexion: Language Agents with Verbal Reinforcement Learning"](https://arxiv.org/abs/2303.11366) (2023)
 * [Automatically merging a pull request](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/automatically-merging-a-pull-request), GitHub Docs
+* [New pull request overview page in public preview](https://github.blog/changelog/2026-11-05-new-pull-request-overview-page-in-public-preview/), GitHub Changelog
 * [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), GitHub Docs

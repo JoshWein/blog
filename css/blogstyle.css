@@ -175,6 +175,7 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 /* mock command center: sticky notes */
 .cc { font-family: var(--sans); font-size: 13px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .cc .col { min-width: 0; }
+.cc.two { grid-template-columns: 1fr 1fr; } /* two-column comparison figure */
 .cc .cc-h { margin: 0 0 8px; font-family: var(--head); font-size: 14px; font-weight: 700; color: var(--ink); }
 .cc .card { background: var(--bg); border: 1px solid var(--line); border-radius: 3px; padding: 7px 9px; margin-bottom: 8px; color: var(--ink); overflow-wrap: anywhere; }
 .cc .card small { display: block; color: var(--muted); font-size: 12px; }
@@ -188,3 +189,35 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 @media (prefers-reduced-motion: reduce) {
   .diagram .flow, .diagram .pulse, .cc .run small::before { animation: none; }
 }
+
+/* fan-out: tickets pulled off a queue */
+.diagram .ticket rect { fill: var(--wait-bg); stroke: var(--wait-line); stroke-width: 1.2; }
+.diagram .ticket text { fill: var(--wait-text); font-size: 11px; font-family: var(--mono); }
+.diagram .qtop { animation: qpull 2s ease-in-out infinite; }
+.diagram .mover { display: none; }
+@supports (offset-path: path('M0 0')) {
+  .diagram .mover { display: inline; opacity: 0; offset-rotate: 0deg; offset-distance: 0%; animation: pull 8s ease-in-out infinite; }
+}
+@keyframes qpull { 0%, 100% { opacity: 1; } 8% { opacity: .15; } 40% { opacity: 1; } }
+@keyframes pull { 0% { offset-distance: 0%; opacity: 0; } 4% { opacity: 1; } 22% { offset-distance: 100%; opacity: 1; } 28%, 100% { offset-distance: 100%; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .diagram .qtop { animation: none; } .diagram .mover { display: none; } }
+
+/* guardrails: runway callouts */
+.diagram .runway { fill: var(--wait-bg); stroke: var(--wait-line); stroke-width: 1.2; }
+.diagram .rwline { stroke: var(--wait-text); stroke-width: 2; stroke-dasharray: 14 12; }
+.diagram .spot { fill: var(--accent); opacity: .25; }
+.diagram .rwlbl { fill: var(--wait-text); font-size: 12px; font-family: var(--mono); }
+.diagram .plane { fill: var(--ink); }
+.diagram .taxi { animation: taxi 6s ease-in-out infinite; } /* parent g mirrors the right-hand plane */
+.diagram .alert { fill: var(--bg); stroke: var(--accent); stroke-width: 2; }
+@keyframes taxi { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(60px); } }
+
+/* three-column card figure (morning brief) */
+.cc.three { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 760px) { .cc.three { grid-template-columns: 1fr; } .diagram .rwlbl { font-size: 14px; } }
+@media (prefers-reduced-motion: reduce) { .diagram .taxi { animation: none; } }
+
+/* testing ladder */
+.cc.ladder { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.cc.ladder .card b { font-family: var(--mono); color: var(--accent); margin-right: 2px; }
+@media (max-width: 760px) { .cc.ladder { grid-template-columns: 1fr 1fr; } }
