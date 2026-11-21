@@ -20,6 +20,7 @@
   --wire: #9aa7b5;
   --run-line: #9fdcbc; --run-text: #2f4a3c;
   --wait-bg: #fff3c4; --wait-line: #ecd77f; --wait-text: #5a4a12;
+  --bursts: url("bursts-light.svg");
   color-scheme: light dark;
   --green: var(--accent); --green-dark: var(--ink); --ice: var(--ink); --mint: var(--accent);
 }
@@ -27,8 +28,11 @@
 html { scroll-behavior: smooth; scroll-padding-top: 80px; height: 100%; }
 body { margin: 0; min-height: 100%; display: flex; flex-direction: column; color: var(--text); font: 17px/1.7 var(--sans);
   background-color: var(--desk);
-  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 24px 24px; }
+  /* color bursts: thin straight lines in blue, red and yellow (css/bursts-*.svg), over the graph paper */
+  background-image: var(--bursts), linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 1600px auto, 24px 24px, 24px 24px;
+  background-position: top center, 0 0, 0 0;
+  background-repeat: no-repeat, repeat, repeat; }
 main { flex: 1 0 auto; }
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { color: var(--ink); background: var(--hl); }
@@ -108,6 +112,8 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
   body { font-size: 17px; }
   .wrap { padding: 0 16px; }
   .bar { padding: 8px 0; }
+  /* phones have almost no desk beside the sheet, and the lines would run behind the title */
+  body { --bursts: none; }
   .bar .wrap { margin: 0 8px; padding: 0 6px; }
   .bar nav { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); padding-right: 24px; }
   .bar .home { display: none; }
@@ -120,6 +126,7 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 /* Dark mode: same notebook, read at night. A slate desk, a dark sheet, a dimmer highlighter. */
 @media (prefers-color-scheme: dark) {
   :root {
+    --bursts: url("bursts-dark.svg");
     --desk: #12171d;
     --grid: rgba(150, 180, 220, .07);
     --bg: #1a2129;
