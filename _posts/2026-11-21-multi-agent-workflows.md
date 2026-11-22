@@ -1,6 +1,6 @@
 ---
 layout: post
-last_modified_at: 2026-11-21 16:20:00 -0800
+last_modified_at: 2026-11-21 16:30:00 -0800
 title: "How I Work with a Team of Coding Agents (Without Losing My Sanity)"
 description: 'Most of my code is written by agents now, and the job has turned into running a small team of them. Here is the workflow I use at work and on side projects: getting grilled before any code, fanning work out to parallel agents, reviewing across different models, and a throwaway command center to keep track of it all.'
 ---
@@ -422,8 +422,10 @@ It also helps to think about all of this as Swiss cheese. The [Swiss cheese mode
   <g class="bug" style="animation-name:sc-x3;animation-delay:-1.5s"><g class="bug-y" style="animation-name:sc-y3;animation-delay:-1.5s"><g class="bug-body" style="animation-delay:-1.5s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g><g class="bug-hit" style="animation-delay:-1.5s"><path d="M-5 -5 L5 5 M5 -5 L-5 5"/></g></g></g>
   <text class="sub" x="20" y="25">bugs</text>
 </svg>
+<div class="bug-launch" hidden><button type="button">Release a bug</button> <span class="bug-status" aria-live="polite"></span></div>
 <figcaption>every layer has holes and they keep shifting; the trick is stacking enough different ones that the holes rarely line up</figcaption>
 </figure>
+<script src="{{ site.baseurl }}/js/swiss-cheese.js" defer></script>
 
 The habit I'm trying to build: when a reviewer, human or model, flags the same kind of problem twice, ask whether it could be a check instead of a comment. A lint rule or a test catches it every time, for free, and nobody has to remember it.
 
