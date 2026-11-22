@@ -221,7 +221,7 @@ Here's a made-up example of the kind of thing I mean:
 
 The "needs me" column is the one that matters. Agents are fast, so I'm usually the bottleneck, and anything that shows me where I'm holding things up pays for itself.
 
-What goes on it depends on the project. Here are some panels I've found useful, or would reach for on the right project. Try putting one together:
+What goes on it depends on the project. Here are some panels: some I've found useful, and some I'd use on the right project. Try putting one together:
 
 <figure class="diagram ccb">
 <div class="ccb-controls" hidden>
@@ -247,6 +247,7 @@ What goes on it depends on the project. Here are some panels I've found useful, 
     <button type="button" class="chip" data-panel="flaky" aria-pressed="false">Flaky tests</button>
   </div>
 </div>
+<p class="ccb-status" aria-live="polite"></p>
 <div class="ccb-grid">
   <section class="cell wide" data-panel="roadmap"><p class="cc-h">Roadmap flow</p>
     <svg viewBox="0 0 200 74" aria-hidden="true" focusable="false">
@@ -276,16 +277,16 @@ What goes on it depends on the project. Here are some panels I've found useful, 
     <div class="row"><span class="dot ok"></span><span>auth</span><small>in prod</small></div><div class="row"><span class="dot run"></span><span>billing</span><small>on staging</small></div><div class="row"><span class="dot idle"></span><span>search</span><small>not started</small></div>
   </section>
   <section class="cell" data-panel="migration" hidden><p class="cc-h">Migration progress</p>
-    <div class="row"><span>services</span><span class="meter"><i style="--w:58%"></i></span><small>7 of 12</small></div><div class="row"><span>tables</span><span class="meter"><i style="--w:80%"></i></span><small>16 of 20</small></div>
+    <div class="row meter-row"><span>services</span><span class="meter"><i style="--w:58%"></i></span><small>7 of 12</small></div><div class="row meter-row"><span>tables</span><span class="meter"><i style="--w:80%"></i></span><small>16 of 20</small></div>
   </section>
   <section class="cell" data-panel="assume" hidden><p class="cc-h">Assumptions log</p>
     <div class="row"><span class="dot me"></span><span>v2 api stays stable</span><small>unchecked</small></div><div class="row"><span class="dot ok"></span><span>no prod writes</span><small>confirmed</small></div>
   </section>
   <section class="cell" data-panel="tokens" hidden><p class="cc-h">Token budget</p>
-    <div class="row"><span>Claude</span><span class="meter"><i style="--w:62%"></i></span><small>62% used</small></div><div class="row"><span>Codex</span><span class="meter"><i style="--w:30%"></i></span><small>30% used</small></div>
+    <div class="row meter-row"><span>Claude</span><span class="meter"><i style="--w:62%"></i></span><small>62% used</small></div><div class="row meter-row"><span>Codex</span><span class="meter"><i style="--w:30%"></i></span><small>30% used</small></div>
   </section>
   <section class="cell" data-panel="worktrees" hidden><p class="cc-h">Worktrees and disk</p>
-    <div class="row"><span>worktrees</span><span class="meter"><i style="--w:63%"></i></span><small>5 of 8 in use</small></div><div class="row"><span>disk</span><span class="meter"><i style="--w:45%"></i></span><small>41 GB free</small></div>
+    <div class="row meter-row"><span>worktrees</span><span class="meter"><i style="--w:63%"></i></span><small>5 of 8 in use</small></div><div class="row meter-row"><span>disk</span><span class="meter"><i style="--w:45%"></i></span><small>41 GB free</small></div>
   </section>
   <section class="cell" data-panel="flaky" hidden><p class="cc-h">Flaky tests</p>
     <div class="row"><span class="dot bad"></span><span>checkout.spec</span><small>3 of 20 runs</small></div><div class="row"><span class="dot idle"></span><span>search.spec</span><small>1 of 20 runs</small></div>

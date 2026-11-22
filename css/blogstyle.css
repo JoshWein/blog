@@ -303,19 +303,20 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 .ccb-chips .chip[aria-pressed="true"] { background: var(--hl); border-color: var(--run-line); font-weight: 700; }
 .ccb-chips .chip[aria-pressed="true"]::before { content: "\2713  "; color: var(--accent); }
 .ccb-chips .preset { border-style: dashed; }
-.ccb-grid { font-family: var(--sans); font-size: 13px; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+.ccb-chips .preset[aria-pressed="true"] { border-style: solid; border-color: var(--run-line); background: var(--hl); font-weight: 700; }
+.ccb-status { margin: -4px 0 10px; font-family: var(--sans); font-size: 13px; color: var(--muted); min-height: 1em; }
+.ccb-grid { font-family: var(--sans); font-size: 13px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(170px, 100%), 1fr)); gap: 10px; }
 .ccb .cell { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; min-width: 0; color: var(--ink); }
-.ccb .cell.wide { grid-column: span 2; }
 .ccb .cell .cc-h { margin: 0 0 6px; font-family: var(--head); font-size: 14px; font-weight: 700; }
 .ccb .row { display: grid; grid-template-columns: auto 1fr; column-gap: 6px; align-items: center; margin-bottom: 5px; overflow-wrap: anywhere; }
 .ccb .row small, .ccb .cell > small { grid-column: 2; display: block; color: var(--muted); font-size: 12px; }
-.ccb .row:has(.meter) { grid-template-columns: 72px 1fr; }
+.ccb .meter-row { grid-template-columns: 72px 1fr; }
 .ccb .meter { height: 8px; border-radius: 4px; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; }
 .ccb .meter i { display: block; height: 100%; width: var(--w); background: var(--accent); }
-.ccb .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--wire); }
+.ccb .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
 .ccb .dot.ok { background: var(--accent); }
 .ccb .dot.bad { background: var(--bug); }
-.ccb .dot.me { background: var(--wait-line); }
+.ccb .dot.me { background: var(--wait-text); }
 .ccb .dot.run { background: var(--accent); animation: pulse 1.6s ease-in-out infinite; }
 .ccb .cell svg { width: 100%; max-width: 260px; height: auto; display: block; margin-bottom: 4px; }
 .ccb .rm-edge { fill: none; stroke: var(--wire); stroke-width: 2; }
@@ -323,7 +324,7 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 .ccb .rm-node.done { fill: var(--accent); stroke: var(--accent); }
 .ccb .rm-node.now { fill: var(--hl); stroke: var(--run-line); animation: pulse 1.6s ease-in-out infinite; }
 .ccb .rm-node.todo { stroke: var(--wire); stroke-dasharray: 3 3; }
-@media (max-width: 420px) { .ccb .cell.wide { grid-column: auto; } }
+@media (min-width: 600px) { .ccb .cell.wide { grid-column: span 2; } }
 @media (prefers-reduced-motion: no-preference) {
   .ccb .cell.pop { animation: ccb-pop .35s ease-out; }
   .ccb .cell.pop .meter i { animation: ccb-fill .8s ease-out; }
