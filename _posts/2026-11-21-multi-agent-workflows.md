@@ -1,6 +1,6 @@
 ---
 layout: post
-last_modified_at: 2026-11-21 16:20:00 -0800
+last_modified_at: 2026-11-21 16:30:00 -0800
 title: "How I Work with a Team of Coding Agents (Without Losing My Sanity)"
 description: 'Most of my code is written by agents now, and the job has turned into running a small team of them. Here is the workflow I use at work and on side projects: getting grilled before any code, fanning work out to parallel agents, reviewing across different models, and a throwaway command center to keep track of it all.'
 ---
@@ -268,7 +268,7 @@ Agents are confident, and they're confident about things that stopped being true
 
 The second half of that is making agents loud about their assumptions. I put instructions about this into as many places as I can: the planning step, the task prompts, the review prompts. An assumption that's written down can be cross-checked by me, by a reviewer model, or by another agent. One that stays in the agent's head just quietly turns into a bug.
 
-I think of it like an airport. It's good to know which runway a pilot plans to land on, and which way they'll taxi once they're down, before it happens rather than after. Nobody in the tower is assuming the pilot is bad. It's that saying the plan out loud is how two planes find out they were headed for the same spot.
+I think of it like an airport. It's good to know which runway a pilot plans to land on, and which way they'll taxi once they're down, before it happens rather than after. Worst case, I still want to know while it's happening, so I can help revert, guide, or fix the approach. Nobody in the tower is assuming the pilot is bad. It's that saying the plan out loud is how two planes find out they were headed for the same spot.
 
 <figure class="diagram">
 <svg viewBox="0 0 720 245" role="img" aria-labelledby="rw-t rw-d">
@@ -422,8 +422,10 @@ It also helps to think about all of this as Swiss cheese. The [Swiss cheese mode
   <g class="bug" style="animation-name:sc-x3;animation-delay:-1.5s"><g class="bug-y" style="animation-name:sc-y3;animation-delay:-1.5s"><g class="bug-body" style="animation-delay:-1.5s"><circle r="6"/><path d="M-4 -7 L-7 -10 M4 -7 L7 -10 M-7 0 H-10 M7 0 H10 M-4 7 L-7 10 M4 7 L7 10"/></g><g class="bug-hit" style="animation-delay:-1.5s"><path d="M-5 -5 L5 5 M5 -5 L-5 5"/></g></g></g>
   <text class="sub" x="20" y="25">bugs</text>
 </svg>
+<div class="bug-launch" hidden><button type="button">Release a bug</button> <span class="bug-status" aria-live="polite"></span></div>
 <figcaption>every layer has holes and they keep shifting; the trick is stacking enough different ones that the holes rarely line up</figcaption>
 </figure>
+<script src="{{ site.baseurl }}/js/swiss-cheese.js" defer></script>
 
 The habit I'm trying to build: when a reviewer, human or model, flags the same kind of problem twice, ask whether it could be a check instead of a comment. A lint rule or a test catches it every time, for free, and nobody has to remember it.
 
