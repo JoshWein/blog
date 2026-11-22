@@ -227,9 +227,9 @@ What goes on it depends on the project. Here are some panels: some I've found us
 <div class="ccb-controls" hidden>
   <p class="ccb-h" id="ccb-presets">Start from</p>
   <div class="ccb-chips" role="group" aria-labelledby="ccb-presets">
-    <button type="button" class="preset" data-panels="roadmap needs agents prs ci inbox">Feature work</button>
+    <button type="button" class="preset" data-panels="roadmap needs agents remote prs ci inbox">Feature work</button>
     <button type="button" class="preset" data-panels="roadmap needs migration deploys ci assume">Migration</button>
-    <button type="button" class="preset" data-panels="needs deploys prs ci worktrees">Side project cleanup</button>
+    <button type="button" class="preset" data-panels="needs deploys prs ci remote worktrees">Side project cleanup</button>
   </div>
   <p class="ccb-h" id="ccb-panels">Panels</p>
   <div class="ccb-chips" role="group" aria-labelledby="ccb-panels">
@@ -243,6 +243,7 @@ What goes on it depends on the project. Here are some panels: some I've found us
     <button type="button" class="chip" data-panel="migration" aria-pressed="false">Migration progress</button>
     <button type="button" class="chip" data-panel="assume" aria-pressed="false">Assumptions log</button>
     <button type="button" class="chip" data-panel="tokens" aria-pressed="false">Token budget</button>
+    <button type="button" class="chip" data-panel="remote" aria-pressed="true">Remote dev environments</button>
     <button type="button" class="chip" data-panel="worktrees" aria-pressed="false">Worktrees and disk</button>
     <button type="button" class="chip" data-panel="flaky" aria-pressed="false">Flaky tests</button>
   </div>
@@ -284,6 +285,9 @@ What goes on it depends on the project. Here are some panels: some I've found us
   </section>
   <section class="cell" data-panel="tokens" hidden><p class="cc-h">Token budget</p>
     <div class="row meter-row"><span>Claude</span><span class="meter"><i style="--w:62%"></i></span><small>62% used</small></div><div class="row meter-row"><span>Codex</span><span class="meter"><i style="--w:30%"></i></span><small>30% used</small></div>
+  </section>
+  <section class="cell" data-panel="remote"><p class="cc-h">Remote dev environments</p>
+    <div class="row"><span class="dot run"></span><span>env 1: api</span><small>running, 2h 10m</small></div><div class="row"><span class="dot run"></span><span>env 2: ui</span><small>running, 45m</small></div><div class="row"><span class="dot idle"></span><span>env 3: docs</span><small>idle, stops in 20m</small></div><div class="row meter-row"><span>this month</span><span class="meter"><i style="--w:46%"></i></span><small>46 of 100 compute hours</small></div>
   </section>
   <section class="cell" data-panel="worktrees" hidden><p class="cc-h">Worktrees and disk</p>
     <div class="row meter-row"><span>worktrees</span><span class="meter"><i style="--w:63%"></i></span><small>5 of 8 in use</small></div><div class="row meter-row"><span>disk</span><span class="meter"><i style="--w:45%"></i></span><small>41 GB free</small></div>
