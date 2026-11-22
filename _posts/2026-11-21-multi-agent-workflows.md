@@ -1,6 +1,6 @@
 ---
 layout: post
-last_modified_at: 2026-11-21 16:45:00 -0800
+last_modified_at: 2026-11-21 16:55:00 -0800
 title: "How I Work with a Team of Coding Agents (Without Losing My Sanity)"
 description: 'Most of my code is written by agents now, and the job has turned into running a small team of them. Here is the workflow I use at work and on side projects: getting grilled before any code, fanning work out to parallel agents, reviewing across different models, and a throwaway command center to keep track of it all.'
 ---
@@ -37,7 +37,7 @@ Part of this is a cathartic stream of consciousness to make sure I actually do u
 
 ## The tools
 
-I'm not loyal to one tool. At this exact moment in time, my main one is [Claude Code](https://code.claude.com/docs/en/overview), and I use OpenAI's [Codex](https://developers.openai.com/codex) a lot alongside it. When I run out of tokens on both, I drop to GitHub Copilot. For some kinds of web research I still just use ChatGPT in the browser, because it's good at that and doesn't need access to my code.
+I'm not loyal to one tool. At this exact moment in time, my main one is [Claude Code](https://code.claude.com/docs/en/overview), and I use OpenAI's [Codex](https://learn.chatgpt.com/codex) a lot alongside it. When I run out of tokens on both, I drop to GitHub Copilot. For some kinds of web research I still just use ChatGPT in the browser, because it's good at that and doesn't need access to my code.
 
 The fact that I mix them matters more than which ones I pick. Different models make different mistakes, and that turns out to be the most useful thing about having more than one. More on that in the review section.
 
@@ -632,9 +632,9 @@ Anthropic's advice in [Building effective agents](https://www.anthropic.com/rese
 * [Claude Code on the web](https://code.claude.com/docs/en/claude-code-on-the-web), Claude Code docs
 * [Plugins](https://code.claude.com/docs/en/plugins), Claude Code docs
 * [Introduction to the Model Context Protocol](https://modelcontextprotocol.io/introduction)
-* [Codex](https://developers.openai.com/codex), OpenAI
+* [Codex](https://learn.chatgpt.com/codex), OpenAI
 * [Codex plugin for Claude Code](https://github.com/openai/codex-plugin-cc), OpenAI on GitHub
-* Lauren Tan, ["All Code Is Slop (Except Mine)"](https://ai.engineer/code/2026/talks/lauren-tan), AI Engineer CODE 2026 ([video](https://www.youtube.com/watch?v=ZZ19zhYnDKY))
+* Lauren Tan, ["All Code Is Slop (Except Mine)"](https://ai.engineer/code/2026/talks/lauren-tan), AI Engineer CODE 2026 ([video](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3662s))
 * Matt Pocock, [skills](https://github.com/mattpocock/skills) (including `grilling` and `wayfinder`), GitHub
 * [Guide: Understand team effectiveness](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness), Google re:Work
 * Amy Edmondson, ["Psychological Safety and Learning Behavior in Work Teams"](https://dash.harvard.edu/entities/publication/13a7b031-0fdd-45ec-a7e0-2b80e2bc679f), Administrative Science Quarterly (1999)
