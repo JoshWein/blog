@@ -3,6 +3,7 @@ description: This blog will serve as a place to put any interesting things I've 
 url: https://www.joshwein.xyz
 baseurl: /blog
 author: Josh Wein
+timezone: America/Los_Angeles
 
 plugins:
   - jekyll-seo-tag
