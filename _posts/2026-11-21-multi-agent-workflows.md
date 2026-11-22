@@ -498,7 +498,7 @@ It also helps to think about all of this as Swiss cheese. The [Swiss cheese mode
   <text class="sub" x="20" y="25">bugs</text>
 </svg>
 <div class="bug-launch" hidden><button type="button">Release a bug</button> <span class="bug-status" aria-live="polite"></span></div>
-<figcaption>every layer has holes and they keep shifting; the trick is stacking enough different ones that the holes rarely line up</figcaption>
+<figcaption>every layer has holes and they keep shifting; the trick is stacking enough different ones that the holes rarely line up (ignore the fact that I'm pretending I have no holes and am an infallible last layer)</figcaption>
 </figure>
 <script src="{{ site.baseurl }}/js/swiss-cheese.js" defer></script>
 
