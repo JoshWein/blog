@@ -268,7 +268,7 @@ Agents are confident, and they're confident about things that stopped being true
 
 The second half of that is making agents loud about their assumptions. I put instructions about this into as many places as I can: the planning step, the task prompts, the review prompts. An assumption that's written down can be cross-checked by me, by a reviewer model, or by another agent. One that stays in the agent's head just quietly turns into a bug.
 
-I think of it like an airport. It's good to know which runway a pilot plans to land on, and which way they'll taxi once they're down, before it happens rather than after. Nobody in the tower is assuming the pilot is bad. It's that saying the plan out loud is how two planes find out they were headed for the same spot.
+I think of it like an airport. It's good to know which runway a pilot plans to land on, and which way they'll taxi once they're down, before it happens rather than after. Worst case, I still want to know while it's happening, so I can help revert, guide, or fix the approach. Nobody in the tower is assuming the pilot is bad. It's that saying the plan out loud is how two planes find out they were headed for the same spot.
 
 <figure class="diagram">
 <svg viewBox="0 0 720 245" role="img" aria-labelledby="rw-t rw-d">

@@ -17,6 +17,7 @@
   function sync() { box.hidden = !motion.matches; }
   sync();
   if (motion.addEventListener) motion.addEventListener('change', sync);
+  else if (motion.addListener) motion.addListener(sync);
 
   var layers = Array.prototype.map.call(svg.querySelectorAll('.layer'), function (g) {
     var r = g.querySelector('rect');
@@ -29,9 +30,11 @@
   });
   var live = 0;
 
-  function offset(layer) {   // how far the slice has slid right now
-    var m = svg.getScreenCTM(), n = layer.g.getScreenCTM();
-    return m && n ? m.inverse().multiply(n).f : 0;
+  function offset(layer) {   // how far the slice has slid right now (the CSS animation's value)
+    var t = getComputedStyle(layer.g).transform;
+    if (!t || t === 'none') return 0;
+    var m = t.match(/matrix\(([^)]+)\)/);
+    return m ? parseFloat(m[1].split(',')[5]) || 0 : 0;
   }
   function nearestHole(layer, y) {
     var off = offset(layer), best = null;
@@ -74,7 +77,7 @@
     }
 
     (function step(now) {
-      var dt = Math.min((now - last) / 1000, 0.05);
+      var dt = Math.max(0, Math.min((now - last) / 1000, 0.05));
       last = now;
       if (inside >= 0) {
         // Riding through a hole: stay in it as the slice slides.
@@ -90,6 +93,8 @@
           if (target !== null && Math.abs(target - y) <= 5) inside = next;
           else return caught(next);
         }
+      } else if (x > 740) {   // made it past every layer (can't happen while "me" has no holes)
+        g.remove(); live--; return;
       }
       x += SPEED * dt;
       g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
