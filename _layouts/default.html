@@ -57,6 +57,7 @@
     <h1>{{ page.title }}</h1>
     {% if page.title_description %}<div class="role">{{ page.title_description }}</div>{% endif %}
     {% if page.date != null %}<div class="date">Written on: {{ page.date | date: '%B %d, %Y' }}</div>{% endif %}
+    {% if page.last_modified_at %}<div class="date">Last updated: <time datetime="{{ page.last_modified_at | date_to_xmlschema }}">{{ page.last_modified_at | date: '%B %-d, %Y at %-I:%M %p' }} Pacific</time></div>{% endif %}
     <div class="rule" aria-hidden="true"></div>
   </div>
   <section class="page-body">
