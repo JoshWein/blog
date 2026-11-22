@@ -135,7 +135,7 @@ The other thing that makes fan-out work is splitting along boundaries that don't
 
 ## Review across models, not within one
 
-This is a habit I'd push on anyone using agents. I always have a standing instruction to bounce reviews between harnesses before a PR gets opened, and I've consistently gotten better results that way.
+This is a habit I'd push on anyone using agents (for now, at least, until new models make this point moot). I always have a standing instruction to bounce reviews between harnesses before a PR gets opened, and I've consistently gotten better results that way.
 
 A model reviewing its own work tends to agree with itself. It made its choices for reasons that still seem good to it. There's research backing this up: a 2024 paper, ["LLM Evaluators Recognize and Favor Their Own Generations"](https://arxiv.org/abs/2404.13076), found that models rate their own outputs higher than other models' outputs, and the better a model is at spotting its own writing, the stronger the bias. A different model doesn't share those blind spots, so it catches different things. Even a fresh session of the same model helps. The Claude Code best practices call a second session "the easiest independent reviewer you can get", since it never saw the reasoning that produced the code.
 
