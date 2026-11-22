@@ -291,3 +291,43 @@ footer a { color: var(--text); text-decoration: none; display: inline-block; pad
 @keyframes sc-y2 { 0.00% { transform: translateY(150.0px); } 9.75% { transform: translateY(143.7px); } 13.50% { transform: translateY(141.8px); } 17.25% { transform: translateY(140.3px); } 22.25% { transform: translateY(155.8px); } 26.00% { transform: translateY(157.8px); } 29.75% { transform: translateY(159.4px); } 34.75% { transform: translateY(147.9px); } 38.50% { transform: translateY(145.5px); } 42.25% { transform: translateY(143.3px); } 47.25% { transform: translateY(160.1px); } 51.00% { transform: translateY(160.8px); } 54.75% { transform: translateY(160.9px); } 60.00% { transform: translateY(140.5px); } 100% { transform: translateY(140.5px); } }
 @keyframes sc-x3 { 0% { transform: translateX(20px); opacity: 0; } 4% { opacity: 1; } 60% { transform: translateX(600px); } 90% { opacity: 1; } 97%, 100% { transform: translateX(600px); opacity: 0; } }
 @keyframes sc-y3 { 0.00% { transform: translateY(195.0px); } 8.07% { transform: translateY(185.4px); } 11.17% { transform: translateY(186.7px); } 14.28% { transform: translateY(188.2px); } 18.41% { transform: translateY(205.4px); } 21.52% { transform: translateY(204.6px); } 24.62% { transform: translateY(203.3px); } 28.76% { transform: translateY(184.3px); } 31.86% { transform: translateY(184.0px); } 34.97% { transform: translateY(184.3px); } 39.10% { transform: translateY(203.5px); } 42.21% { transform: translateY(202.0px); } 45.31% { transform: translateY(200.3px); } 49.45% { transform: translateY(184.9px); } 52.55% { transform: translateY(185.8px); } 55.66% { transform: translateY(187.1px); } 60.00% { transform: translateY(205.0px); } 100% { transform: translateY(205.0px); } }
+
+/* command center builder */
+.ccb-controls[hidden], .ccb .cell[hidden] { display: none; }
+.ccb-h { margin: 0 0 6px; font-family: var(--head); font-size: 14px; font-weight: 700; color: var(--ink); }
+.ccb-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.ccb-chips button { font: inherit; font-family: var(--sans); font-size: 13px; padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg); color: var(--ink); cursor: pointer; }
+.ccb-chips button:hover { background: var(--bg-2); }
+.ccb-chips button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ccb-chips .chip[aria-pressed="true"] { background: var(--hl); border-color: var(--run-line); font-weight: 700; }
+.ccb-chips .chip[aria-pressed="true"]::before { content: "\2713  "; color: var(--accent); }
+.ccb-chips .preset { border-style: dashed; }
+.ccb-grid { font-family: var(--sans); font-size: 13px; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+.ccb .cell { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; min-width: 0; color: var(--ink); }
+.ccb .cell.wide { grid-column: span 2; }
+.ccb .cell .cc-h { margin: 0 0 6px; font-family: var(--head); font-size: 14px; font-weight: 700; }
+.ccb .row { display: grid; grid-template-columns: auto 1fr; column-gap: 6px; align-items: center; margin-bottom: 5px; overflow-wrap: anywhere; }
+.ccb .row small, .ccb .cell > small { grid-column: 2; display: block; color: var(--muted); font-size: 12px; }
+.ccb .row:has(.meter) { grid-template-columns: 72px 1fr; }
+.ccb .meter { height: 8px; border-radius: 4px; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; }
+.ccb .meter i { display: block; height: 100%; width: var(--w); background: var(--accent); }
+.ccb .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--wire); }
+.ccb .dot.ok { background: var(--accent); }
+.ccb .dot.bad { background: var(--bug); }
+.ccb .dot.me { background: var(--wait-line); }
+.ccb .dot.run { background: var(--accent); animation: pulse 1.6s ease-in-out infinite; }
+.ccb .cell svg { width: 100%; max-width: 260px; height: auto; display: block; margin-bottom: 4px; }
+.ccb .rm-edge { fill: none; stroke: var(--wire); stroke-width: 2; }
+.ccb .rm-node { stroke-width: 2; stroke: var(--ink); fill: var(--bg); }
+.ccb .rm-node.done { fill: var(--accent); stroke: var(--accent); }
+.ccb .rm-node.now { fill: var(--hl); stroke: var(--run-line); animation: pulse 1.6s ease-in-out infinite; }
+.ccb .rm-node.todo { stroke: var(--wire); stroke-dasharray: 3 3; }
+@media (max-width: 420px) { .ccb .cell.wide { grid-column: auto; } }
+@media (prefers-reduced-motion: no-preference) {
+  .ccb .cell.pop { animation: ccb-pop .35s ease-out; }
+  .ccb .cell.pop .meter i { animation: ccb-fill .8s ease-out; }
+}
+@keyframes ccb-pop { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: none; } }
+@keyframes ccb-fill { from { width: 0; } }
+@media (prefers-reduced-motion: reduce) { .ccb .dot.run, .ccb .rm-node.now { animation: none; } }
