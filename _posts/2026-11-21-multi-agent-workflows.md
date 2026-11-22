@@ -1,6 +1,6 @@
 ---
 layout: post
-last_modified_at: 2026-11-21 16:30:00 -0800
+last_modified_at: 2026-11-21 16:45:00 -0800
 title: "How I Work with a Team of Coding Agents (Without Losing My Sanity)"
 description: 'Most of my code is written by agents now, and the job has turned into running a small team of them. Here is the workflow I use at work and on side projects: getting grilled before any code, fanning work out to parallel agents, reviewing across different models, and a throwaway command center to keep track of it all.'
 ---
@@ -221,6 +221,85 @@ Here's a made-up example of the kind of thing I mean:
 
 The "needs me" column is the one that matters. Agents are fast, so I'm usually the bottleneck, and anything that shows me where I'm holding things up pays for itself.
 
+What goes on it depends on the project. Here are some panels: some I've found useful, and some I'd use on the right project. Try putting one together:
+
+<figure class="diagram ccb">
+<div class="ccb-controls" hidden>
+  <p class="ccb-h" id="ccb-presets">Start from</p>
+  <div class="ccb-chips" role="group" aria-labelledby="ccb-presets">
+    <button type="button" class="preset" data-panels="roadmap needs agents remote prs ci inbox">Feature work</button>
+    <button type="button" class="preset" data-panels="roadmap needs migration deploys ci assume">Migration</button>
+    <button type="button" class="preset" data-panels="needs deploys prs ci remote worktrees">Side project cleanup</button>
+  </div>
+  <p class="ccb-h" id="ccb-panels">Panels</p>
+  <div class="ccb-chips" role="group" aria-labelledby="ccb-panels">
+    <button type="button" class="chip" data-panel="roadmap" aria-pressed="true">Roadmap flow</button>
+    <button type="button" class="chip" data-panel="needs" aria-pressed="true">Needs me</button>
+    <button type="button" class="chip" data-panel="agents" aria-pressed="true">Agents</button>
+    <button type="button" class="chip" data-panel="ci" aria-pressed="true">CI</button>
+    <button type="button" class="chip" data-panel="prs" aria-pressed="true">PR queue</button>
+    <button type="button" class="chip" data-panel="inbox" aria-pressed="true">Notifications</button>
+    <button type="button" class="chip" data-panel="deploys" aria-pressed="false">Deploys</button>
+    <button type="button" class="chip" data-panel="migration" aria-pressed="false">Migration progress</button>
+    <button type="button" class="chip" data-panel="assume" aria-pressed="false">Assumptions log</button>
+    <button type="button" class="chip" data-panel="tokens" aria-pressed="false">Token budget</button>
+    <button type="button" class="chip" data-panel="remote" aria-pressed="true">Remote dev environments</button>
+    <button type="button" class="chip" data-panel="worktrees" aria-pressed="false">Worktrees and disk</button>
+    <button type="button" class="chip" data-panel="flaky" aria-pressed="false">Flaky tests</button>
+  </div>
+</div>
+<p class="ccb-status" aria-live="polite"></p>
+<div class="ccb-grid">
+  <section class="cell wide" data-panel="roadmap"><p class="cc-h">Roadmap flow</p>
+    <svg viewBox="0 0 200 74" aria-hidden="true" focusable="false">
+      <path class="rm-edge" d="M30 14 H86 M100 14 H156 M30 37 H86 M100 37 C120 37 120 14 142 14 M30 60 H86"/>
+      <circle class="rm-node done" cx="22" cy="14" r="7"/><circle class="rm-node done" cx="93" cy="14" r="7"/><circle class="rm-node now" cx="163" cy="14" r="7"/>
+      <circle class="rm-node done" cx="22" cy="37" r="7"/><circle class="rm-node now" cx="93" cy="37" r="7"/>
+      <circle class="rm-node now" cx="22" cy="60" r="7"/><circle class="rm-node todo" cx="93" cy="60" r="7"/>
+    </svg>
+    <small>api, ui and docs lanes: ui waits on api</small>
+  </section>
+  <section class="cell" data-panel="needs"><p class="cc-h">Needs me</p>
+    <div class="row"><span class="dot me"></span><span>pick a cache ttl</span><small>decision</small></div><div class="row"><span class="dot me"></span><span>PR #12</span><small>ready to merge</small></div>
+  </section>
+  <section class="cell" data-panel="agents"><p class="cc-h">Agents</p>
+    <div class="row"><span class="dot run"></span><span>agent 1: api</span><small>running</small></div><div class="row"><span class="dot run"></span><span>agent 2: ui</span><small>running</small></div><div class="row"><span class="dot idle"></span><span>agent 3</span><small>waiting for a ticket</small></div>
+  </section>
+  <section class="cell" data-panel="ci"><p class="cc-h">CI</p>
+    <div class="row"><span class="dot ok"></span><span>main</span><small>passing</small></div><div class="row"><span class="dot bad"></span><span>PR #13</span><small>failing</small></div><div class="row"><span class="dot run"></span><span>PR #14</span><small>running</small></div>
+  </section>
+  <section class="cell" data-panel="prs"><p class="cc-h">PR queue</p>
+    <div class="row"><span class="dot ok"></span><span>#12 pagination</span><small>ready</small></div><div class="row"><span class="dot idle"></span><span>#13 empty states</span><small>in review</small></div><div class="row"><span class="dot idle"></span><span>#14 flaky suite</span><small>draft</small></div>
+  </section>
+  <section class="cell" data-panel="inbox"><p class="cc-h">Notifications</p>
+    <div class="row"><span class="dot me"></span><span>api</span><small>3 new, deduplicated</small></div><div class="row"><span class="dot idle"></span><span>ui</span><small>1 new</small></div><div class="row"><span class="dot idle"></span><span>docs</span><small>nothing new</small></div>
+  </section>
+  <section class="cell" data-panel="deploys" hidden><p class="cc-h">Deploys</p>
+    <div class="row"><span class="dot ok"></span><span>auth</span><small>in prod</small></div><div class="row"><span class="dot run"></span><span>billing</span><small>on staging</small></div><div class="row"><span class="dot idle"></span><span>search</span><small>not started</small></div>
+  </section>
+  <section class="cell" data-panel="migration" hidden><p class="cc-h">Migration progress</p>
+    <div class="row meter-row"><span>services</span><span class="meter"><i style="--w:58%"></i></span><small>7 of 12</small></div><div class="row meter-row"><span>tables</span><span class="meter"><i style="--w:80%"></i></span><small>16 of 20</small></div>
+  </section>
+  <section class="cell" data-panel="assume" hidden><p class="cc-h">Assumptions log</p>
+    <div class="row"><span class="dot me"></span><span>v2 api stays stable</span><small>unchecked</small></div><div class="row"><span class="dot ok"></span><span>no prod writes</span><small>confirmed</small></div>
+  </section>
+  <section class="cell" data-panel="tokens" hidden><p class="cc-h">Token budget</p>
+    <div class="row meter-row"><span>Claude</span><span class="meter"><i style="--w:62%"></i></span><small>62% used</small></div><div class="row meter-row"><span>Codex</span><span class="meter"><i style="--w:30%"></i></span><small>30% used</small></div>
+  </section>
+  <section class="cell" data-panel="remote"><p class="cc-h">Remote dev environments</p>
+    <div class="row"><span class="dot run"></span><span>env 1: api</span><small>running, 2h 10m</small></div><div class="row"><span class="dot run"></span><span>env 2: ui</span><small>running, 45m</small></div><div class="row"><span class="dot idle"></span><span>env 3: docs</span><small>idle, stops in 20m</small></div><div class="row meter-row"><span>this month</span><span class="meter"><i style="--w:46%"></i></span><small>46 of 100 compute hours</small></div>
+  </section>
+  <section class="cell" data-panel="worktrees" hidden><p class="cc-h">Worktrees and disk</p>
+    <div class="row meter-row"><span>worktrees</span><span class="meter"><i style="--w:63%"></i></span><small>5 of 8 in use</small></div><div class="row meter-row"><span>disk</span><span class="meter"><i style="--w:45%"></i></span><small>41 GB free</small></div>
+  </section>
+  <section class="cell" data-panel="flaky" hidden><p class="cc-h">Flaky tests</p>
+    <div class="row"><span class="dot bad"></span><span>checkout.spec</span><small>3 of 20 runs</small></div><div class="row"><span class="dot idle"></span><span>search.spec</span><small>1 of 20 runs</small></div>
+  </section>
+</div>
+<figcaption>pick a starting point, then turn panels on and off; every project wants a slightly different mix</figcaption>
+</figure>
+<script src="{{ site.baseurl }}/js/command-center.js" defer></script>
+
 The other half of keeping this manageable is protecting my own focus. Even with several projects going at once, I try to keep things smooth instead of overwhelming. I give each project a longer chunk of focus rather than bouncing between all of them every few minutes. The agents don't mind waiting a bit, but every switch costs me time to reload where things stand, and with enough of them, that overhead eats most of the time the agents saved. So I try to control my context switches instead of letting them control me. As useful as notifications are, I don't act on them the moment they arrive. A notification is a sign that something needs checking, not an order to drop what I'm doing. That's where a deduplicated notification history earns its keep: when I'm ready to move to a new area, I can see everything that piled up there in one place instead of chasing each ping as it came in.
 
 [back to top](#top)
@@ -423,7 +502,7 @@ It also helps to think about all of this as Swiss cheese. The [Swiss cheese mode
   <text class="sub" x="20" y="25">bugs</text>
 </svg>
 <div class="bug-launch" hidden><button type="button">Release a bug</button> <span class="bug-status" aria-live="polite"></span></div>
-<figcaption>every layer has holes and they keep shifting; the trick is stacking enough different ones that the holes rarely line up</figcaption>
+<figcaption>every layer has holes and they keep shifting; the trick is stacking enough different ones that the holes rarely line up (ignore the fact that I'm pretending I have no holes and am an infallible last layer)</figcaption>
 </figure>
 <script src="{{ site.baseurl }}/js/swiss-cheese.js" defer></script>
 
